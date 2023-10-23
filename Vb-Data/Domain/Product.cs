@@ -1,0 +1,53 @@
+﻿using Vb_Base.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Vb_Data.Domain.User;
+
+namespace Vb_Data.Domain
+{
+    public class Product : BaseModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Type { get; set; }
+        public int StockQuantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal TaxRate { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+
+        public virtual List<InvoiceDetail> InvoiceDetails { get; set; }
+    }
+
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+    {
+        public void Configure(EntityTypeBuilder<Product> builder)
+        {
+            builder.Property(x => x.InsertUserId).IsRequired();
+            builder.Property(x => x.UpdateUserId).IsRequired(false).HasDefaultValue(0);
+            builder.Property(x => x.InsertDate).IsRequired();
+            builder.Property(x => x.UpdateDate).IsRequired(false);
+            builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
+
+            builder.Property(x => x.Name).IsRequired(true).HasMaxLength(50);
+            builder.Property(x => x.Description).IsRequired(true).HasMaxLength(100);
+            builder.Property(x => x.Type).IsRequired(true).HasMaxLength(20);
+            builder.Property(x => x.StockQuantity).IsRequired(true);
+            builder.Property(x => x.Price).IsRequired(true).HasPrecision(10, 2);
+            builder.Property(x => x.TaxRate).IsRequired(true).HasPrecision(2, 2);
+
+            builder.Property(x => x.CompanyId).IsRequired(false);
+
+            builder.HasMany(x => x.InvoiceDetails)
+                .WithOne(x => x.Product)
+                .HasForeignKey(x => x.ProductId)
+                .IsRequired(false);
+        }
+    }
+}
