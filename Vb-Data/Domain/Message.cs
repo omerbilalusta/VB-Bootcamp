@@ -22,14 +22,14 @@ namespace Vb_Data.Domain
         public void Configure(EntityTypeBuilder<Message> builder)
         {
             builder.Property(x => x.InsertUserId).IsRequired();
-            builder.Property(x => x.UpdateUserId).IsRequired(false).HasDefaultValue(0);
+            builder.Property(x => x.UpdateUserId).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.InsertDate).IsRequired();
             builder.Property(x => x.UpdateDate).IsRequired(false);
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
-            builder.Property(x => x.ChatId).IsRequired(false);
+            builder.Property(x => x.ChatId).IsRequired();
 
-            builder.Property(x => x.Content).IsRequired(true);
+            builder.Property(x => x.Content).IsRequired();
 
         }
     }

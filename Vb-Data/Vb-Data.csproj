@@ -23,5 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Vb-Base\Vb-Base.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
 
 </Project>

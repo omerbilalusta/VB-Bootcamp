@@ -3,10 +3,63 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vb_Data.Context;
+using Vb_Data.Domain;
+using Vb_Data.Domain.User;
+using Vb_Data.Repository;
 
 namespace Vb_Data.UnitOfWork
 {
-    internal class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
+        private readonly VbDbContext dbContext;
+        public UnitOfWork(VbDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+
+            CompanyRepository = new GenericRepository<Company>(dbContext);
+            DealerRepository = new GenericRepository<Dealer>(dbContext);
+            ChatRepository = new GenericRepository<Chat>(dbContext);
+            InvoiceRepository = new GenericRepository<Invoice>(dbContext);
+            InvoiceDetailRepository = new GenericRepository<InvoiceDetail>(dbContext);
+            MessageRepository = new GenericRepository<Message>(dbContext);
+            OrderRepository = new GenericRepository<Order>(dbContext);
+            OrderRejectRepository = new GenericRepository<OrderReject>(dbContext);
+            ProductRepository = new GenericRepository<Product>(dbContext);
+
+        }
+
+        public void Commit()
+        {
+            dbContext.SaveChanges();
+        }
+
+        public void CommitTransaction()
+        {
+            using (var transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    dbContext.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new InvalidOperationException("Transaction failed. " + ex.Message);
+                }
+            }
+        }
+
+        public IGenericRepository<Company> CompanyRepository { get; private set; }
+        public IGenericRepository<Dealer> DealerRepository { get; private set; }
+        public IGenericRepository<Chat> ChatRepository { get; private set; }
+        public IGenericRepository<Invoice> InvoiceRepository { get; private set; }
+        public IGenericRepository<InvoiceDetail> InvoiceDetailRepository { get; private set; }
+        public IGenericRepository<Message> MessageRepository { get; private set; }
+        public IGenericRepository<Order> OrderRepository { get; private set; }
+        public IGenericRepository<OrderReject> OrderRejectRepository { get; private set; }
+        public IGenericRepository<Product> ProductRepository { get; private set; }
+        
     }
 }

@@ -26,15 +26,15 @@ namespace Vb_Data.Domain
         public void Configure(EntityTypeBuilder<Invoice> builder)
         {
             builder.Property(x => x.InsertUserId).IsRequired();
-            builder.Property(x => x.UpdateUserId).IsRequired(false).HasDefaultValue(0);
+            builder.Property(x => x.UpdateUserId).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.InsertDate).IsRequired();
             builder.Property(x => x.UpdateDate).IsRequired(false);
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
-            builder.Property(x => x.Amount).IsRequired(true);
-            builder.Property(x => x.PaymentMethod).IsRequired(true).HasMaxLength(10);
+            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.PaymentMethod).IsRequired().HasMaxLength(10);
 
-            builder.Property(x => x.OrderId).IsRequired(true);
+            builder.Property(x => x.OrderId).IsRequired();
 
             builder.HasOne(x => x.Order)
                 .WithOne(x => x.Invoice)

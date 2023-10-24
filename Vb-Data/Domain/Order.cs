@@ -33,23 +33,23 @@ namespace Vb_Data.Domain
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.Property(x => x.InsertUserId).IsRequired();
-            builder.Property(x => x.UpdateUserId).IsRequired(false).HasDefaultValue(0);
+            builder.Property(x => x.UpdateUserId).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.InsertDate).IsRequired();
             builder.Property(x => x.UpdateDate).IsRequired(false);
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
-            builder.Property(x => x.PaymentMethod).IsRequired(true).HasMaxLength(50);
-            builder.Property(x => x.PaymentMethod).IsRequired(true).HasDefaultValue(false);
-            builder.Property(x => x.PaymentSuccess).IsRequired(false);
-            builder.Property(x => x.Amount).IsRequired(true);
-            builder.Property(x => x.OrderNumber).IsRequired(true);
+            builder.Property(x => x.PaymentMethod).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.CompanyApprove).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.PaymentSuccess).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.OrderNumber).IsRequired();
 
-            builder.Property(x => x.DealerId).IsRequired(false);
-            builder.Property(x => x.CompanyId).IsRequired(false);
-            builder.Property(x => x.InvoiceId).IsRequired(false);
-            builder.Property(x => x.OrderRejectId).IsRequired(false);
+            builder.Property(x => x.DealerId).IsRequired();
+            builder.Property(x => x.CompanyId).IsRequired();
+            builder.Property(x => x.InvoiceId).IsRequired().HasDefaultValue(0);
+            builder.Property(x => x.OrderRejectId).IsRequired().HasDefaultValue(0);
 
-            builder.HasIndex(x => x.OrderNumber).IsUnique(true);
+            builder.HasIndex(x => x.OrderNumber).IsUnique();
 
             builder.HasOne(x => x.Invoice)
                 .WithOne(x => x.Order)
