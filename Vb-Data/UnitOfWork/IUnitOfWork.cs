@@ -11,7 +11,7 @@ namespace Vb_Data.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        void CommitAsync(CancellationToken cancellationToken);
         void CommitTransaction();
         IGenericRepository<Company> CompanyRepository { get; }
         IGenericRepository<Dealer> DealerRepository { get; }

@@ -12,13 +12,16 @@ namespace Vb_Data.Domain
 {
     public class InvoiceDetail : BaseModel
     {
+        public int Piece { get; set; }
+        public decimal TotalAmountByProduct { get; set; }
+
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
         public int InvoiceId { get; set; }
         public virtual Invoice Invoice { get; set; }
     }
 
-    public class InvoiceDetailonfiguration : IEntityTypeConfiguration<InvoiceDetail>
+    public class InvoiceDetailConfiguration : IEntityTypeConfiguration<InvoiceDetail>
     {
         public void Configure(EntityTypeBuilder<InvoiceDetail> builder)
         {
@@ -28,6 +31,8 @@ namespace Vb_Data.Domain
             builder.Property(x => x.UpdateDate).IsRequired(false);
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
+            builder.Property(x => x.Piece).IsRequired();
+            builder.Property(x => x.TotalAmountByProduct).IsRequired();
             builder.Property(x => x.ProductId).IsRequired();
             builder.Property(x => x.InvoiceId).IsRequired();
         }

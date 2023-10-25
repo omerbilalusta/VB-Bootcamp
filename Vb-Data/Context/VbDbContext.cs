@@ -23,11 +23,12 @@ namespace Vb_Data.Context
             modelBuilder.ApplyConfiguration(new DealerConfiguration());
             modelBuilder.ApplyConfiguration(new ChatConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
-            modelBuilder.ApplyConfiguration(new InvoiceDetailonfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
             modelBuilder.ApplyConfiguration(new MessageConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderRejectConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

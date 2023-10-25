@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Vb_Data.Context;
 using Vb_Data.Domain;
@@ -29,13 +30,14 @@ namespace Vb_Data.UnitOfWork
 
         }
 
-        public void Commit()
+        public async void CommitAsync(CancellationToken cancellationToken)
         {
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public void CommitTransaction()
-        {
+        public void CommitTransaction() //Transaction işleminin async olmaması gerektiğini düşündüm. Çünkü transaction içerisinde manipüle
+        {                               //ettiğimiz veriler RollBack gerçekleşmesi gerektiği takdirde veri tutarlılığını bozacağını düşündüm.
+                                        //Bu düşünce hatalı ise benim bildiğim Transaction mantığının hatalı olduğundandır.
             using (var transaction = dbContext.Database.BeginTransaction())
             {
                 try

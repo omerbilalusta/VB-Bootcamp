@@ -12,11 +12,14 @@ namespace Vb_Data.Domain
 {
     public class Invoice : BaseModel
     {
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
+        public bool InvoiceExist { get; set; }
 
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
+        public int PaymentId { get; set; }
+        public virtual Payment Payment { get; set; }
 
         public virtual List<InvoiceDetail> InvoiceDetails { get; set; }
     }
@@ -32,9 +35,11 @@ namespace Vb_Data.Domain
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.InvoiceExist).IsRequired().HasDefaultValue(false);
             builder.Property(x => x.PaymentMethod).IsRequired().HasMaxLength(10);
 
             builder.Property(x => x.OrderId).IsRequired();
+            builder.Property(x => x.PaymentId).IsRequired();
 
             builder.HasOne(x => x.Order)
                 .WithOne(x => x.Invoice)
@@ -44,6 +49,11 @@ namespace Vb_Data.Domain
             builder.HasMany(x => x.InvoiceDetails)
                 .WithOne(x => x.Invoice)
                 .HasForeignKey(x => x.InvoiceId)
+                .IsRequired(false);
+
+            builder.HasOne(x => x.Payment)
+                .WithOne(x => x.Invoice)
+                .HasForeignKey<Payment>()
                 .IsRequired(false);
         }
     }

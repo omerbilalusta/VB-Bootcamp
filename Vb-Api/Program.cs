@@ -1,3 +1,5 @@
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +11,11 @@ using Vb_Base.Token;
 using Vb_Data.Context;
 using Vb_Data.UnitOfWork;
 using Vb_Operation.Cqrs;
+using Vb_Operation.Mapping;
+using Vb_Operation.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
-var JwtConfig = builder.Configuration.GetSection("JwtConfig").Get<Vb_Base.Token.JwtConfig>();
+
 // Add services to the container.
 
 string connection = builder.Configuration.GetConnectionString("MsSqlConnection");
@@ -20,7 +24,16 @@ builder.Services.AddDbContext<VbDbContext>(opts => opts.UseSqlServer(connection)
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddMediatR(typeof(CreateTokenCommandDealer).GetTypeInfo().Assembly);
 
+var JwtConfig = builder.Configuration.GetSection("JwtConfig").Get<Vb_Base.Token.JwtConfig>();
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+
+var config = new MapperConfiguration(cfg => { cfg.AddProfile(new MappingProfile()); });
+builder.Services.AddSingleton(config.CreateMapper());
+
+builder.Services.AddControllers().AddFluentValidation(x =>
+{
+    x.RegisterValidatorsFromAssemblyContaining<BaseValidator>();
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Vb_Base.Model;
 using Vb_Data.Context;
 
@@ -18,24 +13,25 @@ namespace Vb_Data.Repository
             this.dbContext = dbContext;
         }
 
-        public void Create(TEntity entity, int userId)
+        public async Task<TEntity> CreateAsync(TEntity entity, int userId, CancellationToken cancellationToken)
         {
             entity.InsertDate = DateTime.Now;
             entity.InsertUserId = userId;
-            dbContext.Set<TEntity>().Add(entity);
+            await dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+            return entity;
         }
 
-        public void CreateRange(List<TEntity> entities, int userId)
+        public async void CreateRangeAsync(List<TEntity> entities, int userId, CancellationToken cancellationToken)
         {
             entities.ForEach(x =>
             {
                 x.InsertDate = DateTime.Now;
                 x.InsertUserId = userId;
             });
-            dbContext.Set<TEntity>().AddRange(entities);
+            await dbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
         }
 
-        public bool Delete(int id, int userId)
+        public async Task<bool> DeleteAsync(int id, int userId, CancellationToken cancellationToken)
         {
             var entity = dbContext.Set<TEntity>().Find(id);
             if(entity == null)
@@ -58,7 +54,7 @@ namespace Vb_Data.Repository
             dbContext.Set<TEntity>().Update(entity);
         }
 
-        public bool DeleteHard(int id)
+        public async Task<bool> DeleteHardAsync(int id, CancellationToken cancellationToken)
         {
             var entity = dbContext.Set<TEntity>().Find(id);
             if (entity == null)
@@ -68,18 +64,19 @@ namespace Vb_Data.Repository
             return true;
         }
 
-        public void DeleteHard(TEntity entity)
+        public async void DeleteHardAsync(TEntity entity, CancellationToken cancellationToken)
         {
             dbContext.Set<TEntity>().Remove(entity);
         }
 
-        public List<TEntity> GetAll(params string[] includes)
+        public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken, params string[] includes)
         {
             var query = dbContext.Set<TEntity>().AsQueryable();
             if(includes.Any())
                 query = includes.Aggregate(query, (current, incl) => current.Include(incl));
 
-            return query.ToList();
+            var response = query.ToList();
+            return response;
         }
 
         public IQueryable<TEntity> GetAsQueryable(params string[] includes)
@@ -91,7 +88,7 @@ namespace Vb_Data.Repository
             return query;
         }
 
-        public async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, int id, params string[] includes)
+        public async Task<TEntity> GetByIdAsync(int id, CancellationToken cancellationToken, params string[] includes)
         {
             var query = dbContext.Set<TEntity>().AsQueryable();
             if(includes.Any())

@@ -15,12 +15,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\" />
-    <Folder Include="Validation\" />
-    <Folder Include="Query\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Vb-Data\Vb-Data.csproj" />
     <ProjectReference Include="..\Vb-DTO\Vb-DTO.csproj" />
   </ItemGroup>

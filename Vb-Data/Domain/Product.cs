@@ -36,7 +36,7 @@ namespace Vb_Data.Domain
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.Description).IsRequired().HasMaxLength(150);
             builder.Property(x => x.Type).IsRequired().HasMaxLength(20);
             builder.Property(x => x.StockQuantity).IsRequired();
             builder.Property(x => x.Price).IsRequired().HasPrecision(10, 2);

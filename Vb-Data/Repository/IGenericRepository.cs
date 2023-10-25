@@ -10,17 +10,17 @@ namespace Vb_Data.Repository
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseModel
     {
-        List<TEntity> GetAll(params string[] includes);
-        Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, int id, params string[] includes);
-        void Create (TEntity entity, int userId);
-        void CreateRange( List<TEntity> entities, int userId);
+        Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken, params string[] includes);
+        Task<TEntity> GetByIdAsync(int id, CancellationToken cancellationToken, params string[] includes);
+        Task<TEntity> CreateAsync(TEntity entity, int userId, CancellationToken cancellationToken);
+        void CreateRangeAsync( List<TEntity> entities, int userId, CancellationToken cancellationToken);
         void Update(TEntity entity, int userId);
-        bool Delete(int id, int userId);
+        Task<bool> DeleteAsync(int id, int userId, CancellationToken cancellationToken);
         void Delete(TEntity entity, int userId);
-        bool DeleteHard(int id);
-        void DeleteHard(TEntity entity);
+        Task<bool> DeleteHardAsync(int id, CancellationToken cancellationToken);
+        void DeleteHardAsync(TEntity entity, CancellationToken cancellationToken);
         IQueryable<TEntity> GetAsQueryable(params string[] includes);
-        IEnumerable<TEntity> Where (Expression<Func<TEntity, bool>> expression, params string[] includes);
+        IEnumerable<TEntity> Where(Expression<Func<TEntity, bool>> expression, params string[] includes);
 
     }
 }
