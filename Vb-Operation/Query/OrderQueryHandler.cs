@@ -16,8 +16,7 @@ namespace Vb_Operation.Query
     public class OrderQueryHandler :
         IRequestHandler<GetAllOrdersQuery, ApiResponse<List<OrderResponse>>>,
         IRequestHandler<GetOrderByIdQuery, ApiResponse<OrderResponse>>,
-        IRequestHandler<GetOrderByCompanyQuery, ApiResponse<List<OrderResponse>>>,
-        IRequestHandler<GetOrderByDealerQuery, ApiResponse<List<OrderResponse>>>,
+        IRequestHandler<GetOrderByCompanyDealerQuery, ApiResponse<List<OrderResponse>>>,
         IRequestHandler<GetDeclinedOrders, ApiResponse<List<OrderResponse>>>
     {
         private readonly IUnitOfWork unitOfWork;
@@ -31,7 +30,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken) //bu metodun varligi cok mantikli degil
         {
-            var list = unitOfWork.OrderRepository.GetAllAsync(cancellationToken);
+            var list = await unitOfWork.OrderRepository.GetAllAsync(cancellationToken);
             var mappedList = mapper.Map<List<OrderResponse>>(list);
 
             return new ApiResponse<List<OrderResponse>>(mappedList);
@@ -39,7 +38,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<OrderResponse>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)  //Company'ler sadece kendi urunlerini gorebilsin diye userId'de ayrica kontrol ediliyor.
         {
-            var entity = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefaultAsync(x => x.Id == request.Id && x.CompanyId == request.userId, cancellationToken);
+            var entity = await unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefaultAsync(x => x.Id == request.Id && x.CompanyId == request.userId, cancellationToken);
             if (entity == null)
                 return new ApiResponse<OrderResponse>("Order not found");
 
@@ -55,17 +54,9 @@ namespace Vb_Operation.Query
             return new ApiResponse<List<OrderResponse>>(mapped);
         }
 
-        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByCompanyQuery request, CancellationToken cancellationToken) //sadece company'ler icin kullanilacak metot
+        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByCompanyDealerQuery request, CancellationToken cancellationToken) //sadece company'ler icin kullanilacak metot
         {
-            var list = unitOfWork.OrderRepository.GetAsQueryable().Where(x => x.CompanyId == request.userId).ToListAsync(cancellationToken);
-
-            var mapped = mapper.Map<List<OrderResponse>>(list);
-            return new ApiResponse<List<OrderResponse>>(mapped);
-        }
-
-        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByDealerQuery request, CancellationToken cancellationToken)//sadece dealer'lar tarafından kullanilacak olan ve company tarafindan decline edilmemis metot
-        {
-            var list = unitOfWork.OrderRepository.GetAsQueryable().Where(x => x.IsActive == true && x.DealerId == request.userId).ToListAsync(cancellationToken);
+            var list = await unitOfWork.OrderRepository.GetAsQueryable().Where(x => x.CompanyId == request.userId || x.DealerId == request.userId).ToListAsync(cancellationToken);
 
             var mapped = mapper.Map<List<OrderResponse>>(list);
             return new ApiResponse<List<OrderResponse>>(mapped);

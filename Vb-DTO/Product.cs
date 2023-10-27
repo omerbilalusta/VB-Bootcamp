@@ -20,6 +20,6 @@
         public decimal Price { get; set; }
 
         public int CompanyId { get; set; }
-        public virtual CompanyResponse Company { get; set; }
+        public virtual CompanyResponseShort Company { get; set; }
     }
 }

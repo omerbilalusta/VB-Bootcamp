@@ -27,6 +27,7 @@ namespace Vb_Data.UnitOfWork
             OrderRepository = new GenericRepository<Order>(dbContext);
             OrderRejectRepository = new GenericRepository<OrderReject>(dbContext);
             ProductRepository = new GenericRepository<Product>(dbContext);
+            PaymentRepository = new GenericRepository<Payment>(dbContext);
 
         }
 
@@ -62,6 +63,6 @@ namespace Vb_Data.UnitOfWork
         public IGenericRepository<Order> OrderRepository { get; private set; }
         public IGenericRepository<OrderReject> OrderRejectRepository { get; private set; }
         public IGenericRepository<Product> ProductRepository { get; private set; }
-        
+        public IGenericRepository<Payment> PaymentRepository { get; private set; }
     }
 }

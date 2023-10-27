@@ -18,7 +18,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllProducts")]
         public async Task<ApiResponse<List<ProductResponse>>> GetAllProducts()
         {
             var operation = new GetAllProductQuery();
@@ -26,8 +26,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ApiResponse<ProductResponse>> GetProdutsById(int Id)
+        [HttpGet("GetProdutsById")]
+        public async Task<ApiResponse<ProductResponse>> GetProdutsById([FromQuery] int Id)
         {
             var operation = new GetProductByIdQuery(Id);
             var result = await mediator.Send(operation);
@@ -43,7 +43,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ApiResponse> UpdateProduct([FromBody] ProductRequest request, int Id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
@@ -52,8 +52,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ApiResponse> DeleteProduct(int Id)
+        [HttpDelete]
+        public async Task<ApiResponse> DeleteProduct([FromQuery] int Id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new DeleteProductCommand(Id, int.Parse(userId));
@@ -61,7 +61,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("filter/{id}")]
+        [HttpGet("filter")]
         public async Task<ApiResponse<List<ProductResponse>>> GetProductByFilter([FromQuery] int? Id)
         {
             var operation = new GetProductByFilterQuery(Id);

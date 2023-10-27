@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LinqKit;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,15 +31,15 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<ProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
-            var list = unitOfWork.ProductRepository.GetAllAsync(cancellationToken);
+            var list = unitOfWork.ProductRepository.GetAsQueryable("Company").ToListAsync(cancellationToken);
 
-            var mappedList = mapper.Map<List<ProductResponse>>(list);
+            var mappedList = mapper.Map<List<ProductResponse>>(list.Result);
             return new ApiResponse<List<ProductResponse>>(mappedList);
         }
 
         public async Task<ApiResponse<ProductResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = unitOfWork.ProductRepository.GetByIdAsync(request.Id, cancellationToken);
+            var entity = await unitOfWork.ProductRepository.GetByIdAsync(request.Id, cancellationToken, "Company");
 
             if (entity == null)
                 return new ApiResponse<ProductResponse>("Product not found");

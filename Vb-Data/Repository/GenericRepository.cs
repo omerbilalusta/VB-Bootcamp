@@ -93,12 +93,8 @@ namespace Vb_Data.Repository
             var query = dbContext.Set<TEntity>().AsQueryable();
             if(includes.Any())
                 query = includes.Aggregate(query, (current, includes) => current.Include(includes));
-
-            var entity = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-            if (entity == null)
-                throw new NullReferenceException("Not Found");
             
-            return entity;
+            return await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public void Update(TEntity entity, int userId)

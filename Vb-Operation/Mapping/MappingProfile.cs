@@ -11,12 +11,16 @@ namespace Vb_Operation.Mapping
         {
             CreateMap<CompanyRequest, Company>();
             CreateMap<Company, CompanyResponse>();
+            CreateMap<Company, CompanyResponse2>();
 
             CreateMap<ProductRequest, Product>();
             CreateMap<Product, ProductResponse>();
 
             CreateMap<DealerRequest, Dealer>();
             CreateMap<Dealer, DealerResponse>();
+
+            CreateMap<InvoiceRequest, Invoice>();
+            CreateMap<Invoice, InvoiceResponse>();
 
             CreateMap<InvoiceDetailRequest, InvoiceDetail>();
             CreateMap<InvoiceDetail, InvoiceDetailResponse>()

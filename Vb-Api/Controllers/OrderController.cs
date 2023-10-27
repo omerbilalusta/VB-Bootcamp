@@ -28,8 +28,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ApiResponse<OrderResponse>> GetOrderById(int Id)
+        [HttpGet("GetOrderById")]
+        public async Task<ApiResponse<OrderResponse>> GetOrderById([FromQuery] int Id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new GetOrderByIdQuery(Id, int.Parse(userId));
@@ -37,20 +37,11 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("GetOrdersByCompany")]
+        [HttpGet("GetOrdersByCompanyDealer")]
         public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByCompany()
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByCompanyQuery(int.Parse(userId));
-            var result = await mediator.Send(operation);
-            return result;
-        }
-
-        [HttpGet("GetOrdersByDealer")]
-        public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByDealer()
-        {
-            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByDealerQuery(int.Parse(userId));
+            var operation = new GetOrderByCompanyDealerQuery(int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }
@@ -73,8 +64,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpPut("{id}")]
-        public async Task<ApiResponse> Put(int id, [FromBody] OrderRequest request)
+        [HttpPut]
+        public async Task<ApiResponse> Put([FromQuery] int id, [FromBody] OrderRequest request)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new UpdateOrderCommand(request, id, int.Parse(userId));
@@ -82,8 +73,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ApiResponse> Delete(int id)
+        [HttpDelete]
+        public async Task<ApiResponse> Delete([FromQuery]int id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new DeleteOrderCommand(id, int.Parse(userId));

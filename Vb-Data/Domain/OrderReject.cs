@@ -35,7 +35,7 @@ namespace Vb_Data.Domain
             builder.HasOne(x => x.Order)
                 .WithOne(x => x.OrderReject)
                 .HasForeignKey<Order>()
-                .IsRequired(false);
+                .IsRequired(true);
         }
     }
 }

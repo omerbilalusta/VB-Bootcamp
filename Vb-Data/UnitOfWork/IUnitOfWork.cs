@@ -22,5 +22,6 @@ namespace Vb_Data.UnitOfWork
         IGenericRepository<Order> OrderRepository { get; }
         IGenericRepository<OrderReject> OrderRejectRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }
+        IGenericRepository<Payment> PaymentRepository { get; }
     }
 }

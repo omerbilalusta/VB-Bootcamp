@@ -21,4 +21,11 @@ namespace Vb_DTO
 
         public virtual List<ProductResponse> Products { get; set; }
     }
+
+    public class CompanyResponseShort
+    {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public int TaxNumber { get; set; }
+    }
 }
