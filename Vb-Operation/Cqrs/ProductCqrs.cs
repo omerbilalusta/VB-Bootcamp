@@ -11,6 +11,7 @@ namespace Vb_Operation.Cqrs
 {
     public record CreateProductCommand(ProductRequest model, int userId) : IRequest<ApiResponse<ProductResponse>>;
     public record UpdateProductCommand(ProductRequest model, int Id, int userId) : IRequest<ApiResponse>;
+    public record UpdateProductStockCommand(ProductRequest2 model, int Id, int userId) : IRequest<ApiResponse>;
     public record DeleteProductCommand(int Id, int userId) : IRequest<ApiResponse>;
     public record GetAllProductQuery() : IRequest<ApiResponse<List<ProductResponse>>>;
     public record GetProductByIdQuery(int Id) : IRequest<ApiResponse<ProductResponse>>;

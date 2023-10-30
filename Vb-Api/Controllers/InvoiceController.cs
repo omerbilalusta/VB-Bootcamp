@@ -28,7 +28,7 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [HttpGet("GetInvoiceById")]
-        public async Task<ApiResponse<InvoiceResponse>> GetInvoiceById([FromRoute] int id)
+        public async Task<ApiResponse<InvoiceResponse>> GetInvoiceById([FromQuery] int id)
         {
             var operation = new GetInvoiceByIdQuery(id);
             var result = await mediator.Send(operation);

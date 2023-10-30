@@ -15,10 +15,20 @@ namespace Vb_DTO
 
     public class PaymentResponse
     {
+        public int Id { get; set; }
         public string PaymentMethod { get; set; }
         public decimal Amount { get; set; }
         public int ReferenceNumber { get; set; }
         public int InvoiceId { get; set; }
         public virtual InvoiceResponse Invoice { get; set; }
+    }
+
+    public class PaymentResponseShort
+    {
+        public int Id { get; set; }
+        public string PaymentMethod { get; set; }
+        public decimal Amount { get; set; }
+        public int ReferenceNumber { get; set; }
+        public int InvoiceId { get; set; }
     }
 }

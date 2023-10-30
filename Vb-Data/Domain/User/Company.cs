@@ -34,7 +34,7 @@ namespace Vb_Data.Domain.User
             builder.Property(x => x.Address).IsRequired().HasMaxLength(100);
             builder.Property(x => x.TaxNumber).IsRequired().HasMaxLength(20);
             builder.Property(x => x.Role).IsRequired().HasMaxLength(10).HasDefaultValue("admin");
-            builder.Property(x => x.Password).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Password).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(50);
 
             builder.HasIndex(x => x.Email).IsUnique();

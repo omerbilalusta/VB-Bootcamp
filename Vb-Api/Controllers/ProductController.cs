@@ -52,6 +52,15 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [HttpPut("/UpdateStock")]
+        public async Task<ApiResponse> UpdateProductStock([FromBody] ProductRequest2 request, int Id)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new UpdateProductStockCommand(request, Id, int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
         [HttpDelete]
         public async Task<ApiResponse> DeleteProduct([FromQuery] int Id)
         {

@@ -22,10 +22,10 @@ namespace Vb_Data.Domain
         public virtual Dealer Dealer { get; set; }
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
-        public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
-        public int OrderRejectId { get; set; }
-        public virtual OrderReject OrderReject { get; set; }
+        //public int InvoiceId { get; set; }
+        //public virtual Invoice Invoice { get; set; }
+        //public int OrderRejectId { get; set; }
+        //public virtual OrderReject OrderReject { get; set; }
     }
 
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
@@ -46,20 +46,20 @@ namespace Vb_Data.Domain
 
             builder.Property(x => x.DealerId).IsRequired();
             builder.Property(x => x.CompanyId).IsRequired();
-            builder.Property(x => x.InvoiceId).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.OrderRejectId).IsRequired().HasDefaultValue(0);
+            //builder.Property(x => x.InvoiceId).IsRequired().HasDefaultValue(0);
+            //builder.Property(x => x.OrderRejectId).IsRequired().HasDefaultValue(0);
 
             builder.HasIndex(x => x.OrderNumber).IsUnique();
 
-            builder.HasOne(x => x.Invoice)
-                .WithOne(x => x.Order)
-                .HasForeignKey<Invoice>()
-                .IsRequired(false);
+            //builder.HasOne(x => x.Invoice)
+            //    .WithOne(x => x.Order)
+            //    .HasForeignKey<Invoice>()
+            //    .IsRequired(false);
 
-            builder.HasOne(x => x.OrderReject)
-                .WithOne(x => x.Order)
-                .HasForeignKey<OrderReject>()
-                .IsRequired(false);
+            //builder.HasOne(x => x.OrderReject)
+            //    .WithMany(x => x.Order)
+            //    .HasForeignKey<OrderReject>()
+            //    .IsRequired(false);
         }
     }
 }

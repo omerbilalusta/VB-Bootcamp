@@ -41,10 +41,10 @@ namespace Vb_Data.Domain
             builder.Property(x => x.OrderId).IsRequired();
             builder.Property(x => x.PaymentId).IsRequired().HasDefaultValue(0);
 
-            builder.HasOne(x => x.Order)
-                .WithOne(x => x.Invoice)
-                .HasForeignKey<Order>()
-                .IsRequired(false);
+            //builder.HasOne(x => x.Order)
+            //    .WithOne(x => x.Invoice)
+            //    .HasForeignKey<Order>()
+            //    .IsRequired(false);
 
             builder.HasMany(x => x.InvoiceDetails)
                 .WithOne(x => x.Invoice)

@@ -14,14 +14,15 @@ namespace Vb_DTO
 
     public class InvoiceResponse
     {
+        public int Id { get; set; }
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
         public bool InvoiceExist { get; set; }
 
         public int OrderId { get; set; }
-        public virtual OrderResponse Order { get; set; }
+        public virtual OrderResponseShort Order { get; set; }
         public int PaymentId { get; set; }
-        public virtual PaymentResponse Payment { get; set; }
+        public virtual PaymentResponseShort Payment { get; set; }
 
         public virtual List<InvoiceDetailResponse> InvoiceDetails { get; set; }
     }

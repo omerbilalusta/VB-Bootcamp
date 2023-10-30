@@ -28,11 +28,11 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("GetOrderById")]
-        public async Task<ApiResponse<OrderResponse>> GetOrderById([FromQuery] int Id)
+        [HttpGet("GetOrderByOrderNumber")]
+        public async Task<ApiResponse<OrderResponse>> GetOrderByOrderNumber([FromQuery] int Id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByIdQuery(Id, int.Parse(userId));
+            var operation = new GetOrderByOrderNumberQuery(Id, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }
@@ -46,8 +46,8 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [HttpGet("GetDeclinedOrdersById")]
-        public async Task<ApiResponse<List<OrderResponse>>> GetDeclinedOrdersById()
+        [HttpGet("GetDeclinedOrders")]
+        public async Task<ApiResponse<List<OrderResponse>>> GetDeclinedOrders()
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new GetDeclinedOrders(int.Parse(userId));
@@ -74,10 +74,10 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [HttpDelete]
-        public async Task<ApiResponse> Delete([FromQuery]int id)
+        public async Task<ApiResponse> Delete([FromQuery]int orderNumber)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new DeleteOrderCommand(id, int.Parse(userId));
+            var operation = new DeleteOrderCommand(orderNumber, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }

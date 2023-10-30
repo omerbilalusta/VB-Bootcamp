@@ -71,7 +71,7 @@ namespace Vb_Data.Repository
 
         public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken, params string[] includes)
         {
-            var query = dbContext.Set<TEntity>().AsQueryable();
+            var query = dbContext.Set<TEntity>().AsQueryable().Where(x=>x.IsActive == true);
             if(includes.Any())
                 query = includes.Aggregate(query, (current, incl) => current.Include(incl));
 

@@ -40,7 +40,7 @@ namespace Vb_Data.Domain
             builder.Property(x => x.Type).IsRequired().HasMaxLength(20);
             builder.Property(x => x.StockQuantity).IsRequired();
             builder.Property(x => x.Price).IsRequired().HasPrecision(10, 2);
-            builder.Property(x => x.TaxRate).IsRequired().HasPrecision(2, 2);
+            builder.Property(x => x.TaxRate).IsRequired().HasPrecision(3, 2);
 
             builder.Property(x => x.CompanyId).IsRequired();
 

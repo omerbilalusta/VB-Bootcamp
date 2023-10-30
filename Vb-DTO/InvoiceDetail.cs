@@ -16,6 +16,7 @@ namespace Vb_DTO
 
     public class InvoiceDetailResponse
     {
+        public int Id { get; set; }
         public int Piece { get; set; }
         public int TotalAmountByProduct { get; set; }
         public int InvoiceId { get; set; }

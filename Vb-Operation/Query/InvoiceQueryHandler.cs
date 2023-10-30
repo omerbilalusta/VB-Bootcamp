@@ -23,7 +23,7 @@ namespace Vb_Operation.Query
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public InvoiceQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, VbDbContext dbContext)
+        public InvoiceQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -31,14 +31,14 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<InvoiceResponse>>> Handle(GetAllInvoicesQuery request, CancellationToken cancellationToken)
         {
-            var list = await unitOfWork.InvoiceRepository.GetAllAsync(cancellationToken);
+            var list = unitOfWork.InvoiceRepository.GetAsQueryable("InvoiceDetails", "Order", "Order.Company", "Order.Dealer", "Payment").Where(x => x.InvoiceExist == true).ToList();
             var mappedList = mapper.Map<List<InvoiceResponse>>(list);
             return new ApiResponse<List<InvoiceResponse>>(mappedList);
         }
 
         public async Task<ApiResponse<InvoiceResponse>> Handle(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = await unitOfWork.InvoiceRepository.GetByIdAsync(request.Id, cancellationToken);
+            var entity = await unitOfWork.InvoiceRepository.GetByIdAsync(request.Id, cancellationToken, "InvoiceDetails", "InvoiceDetails.Product", "Order", "Order.Company", "Order.Dealer", "Payment");
             if (entity is null)
             {
                 return new ApiResponse<InvoiceResponse>("Record not found");
@@ -49,7 +49,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<InvoiceResponse>>> Handle(GetInvoicesByCompanyDealerQuery request, CancellationToken cancellationToken)
         {
-            var list = await unitOfWork.InvoiceRepository.GetAsQueryable("InvoiceDetails", "Order", "Order.Company", "Order.Dealer", "Payment").Where(x => x.Order.CompanyId == request.userId || x.Order.DealerId == request.userId).ToListAsync(cancellationToken);
+            var list = await unitOfWork.InvoiceRepository.GetAsQueryable("InvoiceDetails", "InvoiceDetails.Product", "Order", "Order.Company", "Order.Dealer", "Payment").Where(x => x.InvoiceExist == true && (x.Order.CompanyId == request.userId || x.Order.DealerId == request.userId)).ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<InvoiceResponse>>(list);
             return new ApiResponse<List<InvoiceResponse>>(mappedList);
         }

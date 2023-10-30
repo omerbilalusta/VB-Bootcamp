@@ -29,7 +29,7 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [HttpGet("GetDealerById")]
-        public async Task<ApiResponse<DealerResponse>> GetDealerById([FromRoute] int id)
+        public async Task<ApiResponse<DealerResponse>> GetDealerById([FromQuery] int id)
         {
             var operation = new GetDealerByIdQuery(id);
             var result = await mediator.Send(operation);
@@ -46,7 +46,7 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [HttpPut]
-        public async Task<ApiResponse> Put([FromRoute] int id, [FromBody] DealerRequest request)
+        public async Task<ApiResponse> Put([FromQuery] int id, [FromBody] DealerRequest request)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new UpdateDealerCommand(request, id, int.Parse(userId));
@@ -55,7 +55,7 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [HttpDelete]
-        public async Task<ApiResponse> Delete([FromRoute] int id)
+        public async Task<ApiResponse> Delete([FromQuery] int id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new DeleteDealerCommand(id, int.Parse(userId));

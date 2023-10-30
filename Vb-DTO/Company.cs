@@ -15,6 +15,7 @@ namespace Vb_DTO
 
     public class CompanyResponse
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }
@@ -24,6 +25,7 @@ namespace Vb_DTO
 
     public class CompanyResponseShort
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }

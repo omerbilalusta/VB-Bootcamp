@@ -32,10 +32,10 @@ namespace Vb_Data.Domain
 
             builder.Property(x => x.OrderId).IsRequired();
 
-            builder.HasOne(x => x.Order)
-                .WithOne(x => x.OrderReject)
-                .HasForeignKey<Order>()
-                .IsRequired(true);
+            //builder.HasOne(x => x.Order)
+            //    .WithOne(x => x.OrderReject)
+            //    .HasForeignKey<Order>()
+            //    .IsRequired(true);
         }
     }
 }

@@ -43,13 +43,14 @@ namespace Vb_Operation.Command
             var product = unitOfWork.ProductRepository.GetAsQueryable().Where(x => x.Id == request.model.ProductList.First().Key).FirstOrDefault(); ;
             entity.CompanyId = product.CompanyId;
 
-            entity.OrderNumber = Guid.NewGuid().GetHashCode();
+            Random random = new Random();
+            entity.OrderNumber = random.Next(100000, 999999);
 
             request.model.ProductList.ForEach(x =>
             {
                 var product = unitOfWork.ProductRepository.GetAsQueryable().Where(y => y.Id == x.Key).FirstOrDefault();
                 total += product.Price * x.Value;
-
+                product.StockQuantity -= x.Value;
             });
             entity.Amount = total;
             entity.InsertUserId = request.userId;
@@ -100,10 +101,11 @@ namespace Vb_Operation.Command
 
         public async Task<ApiResponse> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            var entity = unitOfWork.OrderRepository.DeleteAsync(request.Id, request.userId, cancellationToken);
-            if(entity.Result == false)
+            var entity = unitOfWork.OrderRepository.GetAsQueryable().Where(x => x.OrderNumber == request.orderNumber).FirstOrDefault();
+            if(entity == null)
                 return new ApiResponse("Order not found");
-            
+
+            unitOfWork.OrderRepository.Delete(entity, request.userId);
             unitOfWork.CommitAsync(cancellationToken);
             return new ApiResponse();
         }

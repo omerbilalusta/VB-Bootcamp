@@ -32,6 +32,7 @@ namespace Vb_Operation.Command
         {
             var mapped = mapper.Map<Dealer>(request.model);
             var entity = await unitOfWork.DealerRepository.CreateAsync(mapped, request.userId, cancellationToken);
+            entity.Role = "dealer";
             unitOfWork.CommitAsync(cancellationToken);
 
             var response = mapper.Map<DealerResponse>(entity);

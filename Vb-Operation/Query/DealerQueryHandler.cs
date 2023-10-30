@@ -27,14 +27,16 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<DealerResponse>>> Handle(GetAllDealerQuery request, CancellationToken cancellationToken)
         {
-            var list = await unitOfWork.DealerRepository.GetAllAsync(cancellationToken);
+            //var list = await unitOfWork.DealerRepository.GetAllAsync(cancellationToken, "Orders", "Orders.Invoice.InvoiceDetails");
+            var list = await unitOfWork.DealerRepository.GetAllAsync(cancellationToken, "Orders");
             var mappedList = mapper.Map<List<DealerResponse>>(list);
             return new ApiResponse<List<DealerResponse>>(mappedList);
         }
 
         public async Task<ApiResponse<DealerResponse>> Handle(GetDealerByIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = await unitOfWork.DealerRepository.GetByIdAsync(request.id, cancellationToken);
+            //var entity = await unitOfWork.DealerRepository.GetByIdAsync(request.id, cancellationToken, "Orders", "Orders.Invoice.InvoiceDetails");
+            var entity = await unitOfWork.DealerRepository.GetByIdAsync(request.id, cancellationToken, "Orders");
             if (entity is null)
             {
                 return new ApiResponse<DealerResponse>("Record not found");

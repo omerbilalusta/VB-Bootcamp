@@ -31,9 +31,9 @@ namespace Vb_Data.UnitOfWork
 
         }
 
-        public async void CommitAsync(CancellationToken cancellationToken)
+        public void CommitAsync(CancellationToken cancellationToken)
         {
-            await dbContext.SaveChangesAsync(cancellationToken);
+             dbContext.SaveChanges();
         }
 
         public void CommitTransaction() //Transaction işleminin async olmaması gerektiğini düşündüm. Çünkü transaction içerisinde manipüle

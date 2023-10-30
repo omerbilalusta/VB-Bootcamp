@@ -34,7 +34,7 @@ namespace Vb_Data.Domain.User
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Address).IsRequired().HasMaxLength(100);
             builder.Property(x => x.InvoiceAddress).IsRequired().HasMaxLength(100);
-            builder.Property(x => x.Dividend).IsRequired().HasPrecision(10,2);
+            builder.Property(x => x.Dividend).IsRequired().HasPrecision(3,2);
             builder.Property(x => x.OpenAccountLimit).IsRequired().HasPrecision(10, 2).HasDefaultValue(0);
             builder.Property(x => x.Role).IsRequired().HasMaxLength(10).HasDefaultValue("dealer");
             builder.Property(x => x.Password).IsRequired().HasMaxLength(100);

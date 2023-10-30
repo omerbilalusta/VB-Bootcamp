@@ -12,6 +12,7 @@ namespace Vb_Operation.Command
     public class ProductCommandHandler :
         IRequestHandler<CreateProductCommand, ApiResponse<ProductResponse>>,
         IRequestHandler<UpdateProductCommand, ApiResponse>,
+        IRequestHandler<UpdateProductStockCommand, ApiResponse>,
         IRequestHandler<DeleteProductCommand, ApiResponse>
     {
         private readonly IUnitOfWork unitOfWork;
@@ -62,6 +63,21 @@ namespace Vb_Operation.Command
                 return new ApiResponse("Product not found");
 
             unitOfWork.ProductRepository.Delete(entity, request.userId);
+            unitOfWork.CommitAsync(cancellationToken);
+            return new ApiResponse();
+        }
+
+        public async Task<ApiResponse> Handle(UpdateProductStockCommand request, CancellationToken cancellationToken)
+        {
+            var entity = unitOfWork.ProductRepository.GetAsQueryable().FirstOrDefault(x => x.Id == request.Id);
+            if (entity == null)
+                return new ApiResponse("Product not found");
+            
+            entity.StockQuantity = request.model.StockQuantity;
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdateUserId = request.userId;
+
+            unitOfWork.ProductRepository.Update(entity, request.userId);
             unitOfWork.CommitAsync(cancellationToken);
             return new ApiResponse();
         }

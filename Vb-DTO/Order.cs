@@ -21,9 +21,23 @@ namespace Vb_DTO
         public bool CompanyApprove { get; set; }
 
         public int DealerId { get; set; }
-        public virtual DealerResponse Dealer { get; set; }
+        public virtual DealerResponseShort Dealer { get; set; }
         public int CompanyId { get; set; }
-        public virtual CompanyResponse Company { get; set; }
+        public virtual CompanyResponseShort Company { get; set; }
+
+        public virtual List<InvoiceDetailResponse> Product { get; set; }
+    }
+
+    public class OrderResponseShort
+    {
+        public int OrderNumber { get; set; }
+        public string PaymentMethod { get; set; }
+        public decimal Amount { get; set; }
+        public bool PaymentSuccess { get; set; }
+        public bool CompanyApprove { get; set; }
+
+        public int DealerId { get; set; }
+        public int CompanyId { get; set; }
 
         public virtual List<InvoiceDetailResponse> Product { get; set; }
     }

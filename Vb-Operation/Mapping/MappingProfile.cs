@@ -11,16 +11,21 @@ namespace Vb_Operation.Mapping
         {
             CreateMap<CompanyRequest, Company>();
             CreateMap<Company, CompanyResponse>();
-            CreateMap<Company, CompanyResponse2>();
+            CreateMap<Company, CompanyResponseShort>();
 
             CreateMap<ProductRequest, Product>();
             CreateMap<Product, ProductResponse>();
 
             CreateMap<DealerRequest, Dealer>();
             CreateMap<Dealer, DealerResponse>();
+            CreateMap<Dealer, DealerResponseShort>();
 
             CreateMap<InvoiceRequest, Invoice>();
             CreateMap<Invoice, InvoiceResponse>();
+
+            CreateMap<PaymentRequest, Payment>();
+            CreateMap<Payment, PaymentResponse>();
+            CreateMap<Payment, PaymentResponseShort>();
 
             CreateMap<InvoiceDetailRequest, InvoiceDetail>();
             CreateMap<InvoiceDetail, InvoiceDetailResponse>()
@@ -28,6 +33,7 @@ namespace Vb_Operation.Mapping
 
             CreateMap<OrderRequest, Order>();
             CreateMap<Order, OrderResponse>();
+            CreateMap<Order, OrderResponseShort>();
 
         }
     }

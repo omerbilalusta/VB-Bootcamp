@@ -31,7 +31,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<ProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
-            var list = unitOfWork.ProductRepository.GetAsQueryable("Company").ToListAsync(cancellationToken);
+            var list = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).ToListAsync(cancellationToken);
 
             var mappedList = mapper.Map<List<ProductResponse>>(list.Result);
             return new ApiResponse<List<ProductResponse>>(mappedList);
@@ -39,7 +39,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<ProductResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = await unitOfWork.ProductRepository.GetByIdAsync(request.Id, cancellationToken, "Company");
+            var entity = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).FirstOrDefault(x => x.Id == request.Id);
 
             if (entity == null)
                 return new ApiResponse<ProductResponse>("Product not found");
@@ -52,9 +52,9 @@ namespace Vb_Operation.Query
         {
             var predictate = PredicateBuilder.New<Product>(true);
             if (request.Id > 0)
-                predictate.And(x => x.Id == request.Id);
+                predictate.And(x => x.CompanyId == request.Id);
 
-            var list = unitOfWork.ProductRepository.Where(predictate).ToList();
+            var list = unitOfWork.ProductRepository.Where(x => x.IsActive != false).Where(predictate).ToList();
             var mapped = mapper.Map<List<ProductResponse>>(list);
             return new ApiResponse<List<ProductResponse>>(mapped);
         }
