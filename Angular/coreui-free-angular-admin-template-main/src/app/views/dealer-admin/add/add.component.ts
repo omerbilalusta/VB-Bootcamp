@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router'
 import { StorageService } from 'src/app/services/storage.service';
-import { ProductService } from 'src/app/services/product.service';
+import { DealerService } from 'src/app/services/dealer.service';
 
 
 @Component({
@@ -10,39 +10,33 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
-export class AddComponent {
+export class AddComponent{
 
-  productForm = new FormGroup({
+  dealerForm = new FormGroup({
     name: new FormControl(''),
-    description: new FormControl(''),
-    type: new FormControl(''),
-    stockQuantity: new FormControl(''),
-    price: new FormControl(''),
-    taxRate: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    address: new FormControl(''),
+    invoiceaddress: new FormControl(''),
+    dividend: new FormControl(''),
+    openaccountlimit: new FormControl('')
   });
   
   constructor(
-    private prodService:ProductService,
+    private dealerService:DealerService,
     private router:Router,
     private storage:StorageService
-  ) { 
+  ) {}
 
-  }
+
   onSubmit(){
-    const { name, description, type, stockQuantity, price, taxRate } = this.productForm.value
-    this.prodService.add(name, description, type, Number(stockQuantity), Number(price), Number(taxRate)).subscribe({
+    const { name, email, password, address, invoiceaddress, dividend, openaccountlimit } = this.dealerForm.value
+    this.dealerService.add(name, email, password, address, invoiceaddress, Number(dividend), Number(openaccountlimit)).subscribe({
       next: data =>{
         if(data.success == false)
-        {
           console.log('error');
-        }
-        else{
-          this.storage.saveUser(data);
-          if(data.response.role == 'admin')
-            this.router.navigate(['/dashboard']);
-          else
-            this.router.navigate(['/dealer']);
-        }
+        else
+          this.router.navigate(['/adminDealer/list']);
       },
       error: err => {
         console.log(err.error.errors);

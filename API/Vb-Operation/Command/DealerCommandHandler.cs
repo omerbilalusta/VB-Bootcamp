@@ -14,6 +14,7 @@ namespace Vb_Operation.Command
         IRequestHandler<CreateDealerCommand, ApiResponse<DealerResponse>>,
         IRequestHandler<CreateDealerServiceCommand, ApiResponse<DealerResponseShort>>,
         IRequestHandler<UpdateDealerCommand, ApiResponse>,
+        IRequestHandler<UpdateDealerShortCommand, ApiResponse>,
         IRequestHandler<DeleteDealerCommand, ApiResponse>
     {
         private readonly IUnitOfWork unitOfWork;
@@ -80,6 +81,23 @@ namespace Vb_Operation.Command
 
             var response = mapper.Map<DealerResponseShort>(entity);
             return new ApiResponse<DealerResponseShort>(response);
+        }
+
+        public async Task<ApiResponse> Handle(UpdateDealerShortCommand request, CancellationToken cancellationToken)
+        {
+            var entity = await unitOfWork.DealerRepository.GetAsQueryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            if (entity == null)
+                return new ApiResponse("Record not found");
+
+            entity.Dividend = request.model.Dividend;
+            entity.OpenAccountLimit = request.model.OpenAccountLimit;
+            entity.UpdateUserId = request.userId;
+            entity.UpdateDate = DateTime.Now;
+
+            unitOfWork.DealerRepository.Update(entity, request.userId);
+            unitOfWork.CommitAsync(cancellationToken);
+
+            return new ApiResponse();
         }
     }
 }

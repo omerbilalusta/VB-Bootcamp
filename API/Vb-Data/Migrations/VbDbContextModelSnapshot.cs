@@ -114,7 +114,8 @@ namespace Vb_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Invoice");
                 });
@@ -216,6 +217,11 @@ namespace Vb_Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
@@ -235,6 +241,11 @@ namespace Vb_Data.Migrations
 
                     b.Property<int>("InsertUserId")
                         .HasColumnType("int");
+
+                    b.Property<int>("InvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -605,10 +616,8 @@ namespace Vb_Data.Migrations
             modelBuilder.Entity("Vb_Data.Domain.Invoice", b =>
                 {
                     b.HasOne("Vb_Data.Domain.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("Invoice")
+                        .HasForeignKey("Vb_Data.Domain.Invoice", "OrderId");
 
                     b.Navigation("Order");
                 });
@@ -696,6 +705,11 @@ namespace Vb_Data.Migrations
 
                     b.Navigation("Payment")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Vb_Data.Domain.Order", b =>
+                {
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.Product", b =>

@@ -128,8 +128,10 @@ namespace Vb_Data.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentSuccess = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CompanyApprove = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     DealerId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     InsertUserId = table.Column<int>(type: "int", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateUserId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -200,8 +202,7 @@ namespace Vb_Data.Migrations
                         name: "FK_Invoice_Order_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +287,6 @@ namespace Vb_Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
 
             migrationBuilder.InsertData(
                 table: "Company",
@@ -377,6 +377,30 @@ namespace Vb_Data.Migrations
                 columns: new[] { "Id", "Description", "Type", "StockQuantity", "Price", "InsertDate", "InsertUserId", "Name", "TaxRate", "CompanyId", "UpdateDate" },
                 values: new object[] { 13, "Repair of teeth healthy", "Temizlik", 250, 25.00, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Çamaşır Suyu", 0.20, 5, null });
 
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 1, 535353, "Card", "Room 907", 240, false, false, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+
+            migrationBuilder.InsertData(
+                table: "Invoice",
+                columns: new[] { "Id", "Amount", "PaymentMethod", "InvoiceExist", "OrderId", "PaymentId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 1, 240, "Card", false, 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+
+            migrationBuilder.InsertData(
+                table: "Payment",
+                columns: new[] { "Id", "PaymentMethod", "Amount", "ReferenceNumber", "InvoiceId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 1, "Card", 240, 530000, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+
+            migrationBuilder.InsertData(
+                table: "InvoiceDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "InvoiceId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 1, 5, 160, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "InvoiceDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "InvoiceId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 2, 8, 80, 2, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chat_CompanyId",
@@ -403,7 +427,8 @@ namespace Vb_Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Invoice_OrderId",
                 table: "Invoice",
-                column: "OrderId");
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvoiceDetail_InvoiceId",

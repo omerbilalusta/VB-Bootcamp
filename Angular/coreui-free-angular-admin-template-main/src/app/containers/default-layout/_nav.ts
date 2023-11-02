@@ -15,42 +15,36 @@ export const navItems: INavData[] = [
     name: 'Admin'
   },
   {
-    name: 'Admin',
-    url: '/dashboard',
+    name: 'Dealer',
+    url: '/adminDealer',
     iconComponent: { name: 'cil-speedometer' },
     children: [
-      {
-        name: 'Dealer',
-        url: '/adminDealer',
-        children: [
           {
             name: 'Dealers List',
             url: '/adminDealer/list'
           },
           {
-            name: 'Dealer Edit',
-            url: '/adminDealer/edit'
-          },
-          {
             name: 'Dealer Add',
             url: '/adminDealer/add'
           }
-        ]
-      }
-    ]
+      ]
   },
   {
     title: true,
     name: 'Dealer'
   },
   {
-    name: 'Dealer',
-    url: '/dealer',
-    iconComponent: { name: 'cil-speedometer' },
+    name: 'Products',
+    url: '/product/list',
+    iconComponent: { name: 'cil-basket' },
     children: [
       {
         name: 'Products',
-        url: '/dealer/product'
+        url: '/product/list'
+      },
+      {
+        name: 'Order',
+        url: '/order/list'
       }
     ]
   },

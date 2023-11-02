@@ -38,6 +38,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<OrderResponse>> Handle(GetOrderByOrderNumberQuery request, CancellationToken cancellationToken)  //Company'ler sadece kendi urunlerini gorebilsin diye userId'de ayrica kontrol ediliyor.
         {
+            
             var entity = await unitOfWork.OrderRepository.GetAsQueryable("Dealer", "Company", "Company.Products").FirstOrDefaultAsync(x => x.OrderNumber == request.orderNumber && (x.CompanyId == request.userId || x.DealerId == request.userId), cancellationToken);
             if (entity == null)
                 return new ApiResponse<OrderResponse>("Order not found");
@@ -56,7 +57,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByCompanyDealerQuery request, CancellationToken cancellationToken) //sadece company'ler icin kullanilacak metot
         {
-            var list = await unitOfWork.OrderRepository.GetAsQueryable("Dealer","Company","Company.Products").Where(x => x.CompanyId == request.userId || x.DealerId == request.userId).ToListAsync(cancellationToken);
+            var list = await unitOfWork.OrderRepository.GetAsQueryable("Dealer","Company","Company.Products","Invoice", "Invoice.InvoiceDetails", "Invoice.InvoiceDetails.Product").Where(x => x.CompanyId == request.userId || x.DealerId == request.userId).ToListAsync(cancellationToken);
 
             var mapped = mapper.Map<List<OrderResponse>>(list);
             return new ApiResponse<List<OrderResponse>>(mapped);

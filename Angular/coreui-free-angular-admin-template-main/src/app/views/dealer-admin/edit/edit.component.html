@@ -1,1 +1,32 @@
-<p>edit works!</p>
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4">
+              <form [formGroup]="dealerForm" cForm>
+                <h1>Update Dealer</h1>
+                <p class="text-medium-emphasis">Fill the form with details of Dealer</p>
+                <c-input-group class="mb-4">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilLockLocked"></svg>
+                    </span>
+                    <input autoComplete="dividend" formControlName="dividend" cFormControl placeholder="Dividend" type="number"/>
+                </c-input-group>
+                <c-input-group class="mb-4">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilLockLocked"></svg>
+                    </span>
+                    <input autoComplete="openaccountlimit" formControlName="openaccountlimit" cFormControl placeholder="Open Account Limit" type="number"/>
+                </c-input-group>
+                <div class="d-grid">
+                  <button (click)="onSubmit()" cButton color="success">Create Account</button>
+                </div>
+              </form>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+</div>
+  

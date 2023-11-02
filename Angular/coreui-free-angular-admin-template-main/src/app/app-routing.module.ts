@@ -34,6 +34,18 @@ const routes: Routes = [
           import('./views/dealer-admin/dealer-admin.module').then((m) => m.DealerAdminModule)
       },
       {
+        path: 'order',
+        canActivate: [AuthGuardService],
+        loadChildren: () =>
+          import('./views/order/order.module').then((m) => m.OrderModule)
+      },
+      {
+        path: 'product',
+        canActivate: [AuthGuardService],
+        loadChildren: () =>
+          import('./views/product/product.module').then((m) => m.ProductModule)
+      },
+      {
         path: 'dealer',
         canActivate: [AuthGuardService],
         loadChildren: () =>
@@ -129,4 +141,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
+  constructor(private authGuard:AuthGuardService) {}
 }

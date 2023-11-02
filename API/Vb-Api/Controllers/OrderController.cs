@@ -20,6 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllOrders")]
         public async Task<ApiResponse<List<OrderResponse>>> GetAllOrders()
         {
@@ -28,15 +29,17 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("GetOrderByOrderNumber")]
-        public async Task<ApiResponse<OrderResponse>> GetOrderByOrderNumber([FromQuery] int Id)
+        public async Task<ApiResponse<OrderResponse>> GetOrderByOrderNumber([FromQuery] int orderNumber)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByOrderNumberQuery(Id, int.Parse(userId));
+            var operation = new GetOrderByOrderNumberQuery(orderNumber, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetOrdersByCompanyDealer")]
         public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByCompany()
         {
@@ -46,6 +49,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("GetDeclinedOrders")]
         public async Task<ApiResponse<List<OrderResponse>>> GetDeclinedOrders()
         {
@@ -55,6 +59,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "dealer")]
         [HttpPost]
         public async Task<ApiResponse<OrderResponse>> Post([FromBody] OrderRequest request)
         {
@@ -64,6 +69,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpPut]
         public async Task<ApiResponse> Put([FromQuery] int id, [FromBody] OrderRequest request)
         {
@@ -73,11 +79,22 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpDelete]
         public async Task<ApiResponse> Delete([FromQuery]int orderNumber)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new DeleteOrderCommand(orderNumber, int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("companyapprove")]
+        public async Task<ApiResponse> CompanyApprove([FromQuery] int Id, [FromQuery] string? description)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new CompanyApproveCommand(Id, int.Parse(userId), description);
             var result = await mediator.Send(operation);
             return result;
         }

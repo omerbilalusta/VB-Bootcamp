@@ -15,7 +15,7 @@ namespace Vb_Data.Domain
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
         public bool InvoiceExist { get; set; }
-        public string Address { get; set; }
+        //public string Address { get; set; }
 
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
@@ -42,10 +42,10 @@ namespace Vb_Data.Domain
             builder.Property(x => x.OrderId).IsRequired();
             builder.Property(x => x.PaymentId).IsRequired().HasDefaultValue(0);
 
-            //builder.HasOne(x => x.Order)
-            //    .WithOne(x => x.Invoice)
-            //    .HasForeignKey<Order>()
-            //    .IsRequired(false);
+            builder.HasOne(x => x.Order)
+                .WithOne(x => x.Invoice)
+                .HasForeignKey<Order>()
+                .IsRequired(false);
 
             builder.HasMany(x => x.InvoiceDetails)
                 .WithOne(x => x.Invoice)

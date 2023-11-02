@@ -17,14 +17,21 @@ export class ListComponent implements OnInit{
 
   ngOnInit(): void {
     this.load();
-    // this.storage.getUser().response.role == 'admin' ? this.router.navigate(['/dashboard']) : console.log('dealer');
   }
 
   load(){
     this.dealerService.list().subscribe((data) =>
     {
       this.dealers = data.response;
-      console.log(this.dealers);
+    }, (error) =>
+    {
+      console.log(error);
+    })
+  }
+  isDelete(id:number){
+    this.dealerService.delete(id).subscribe((data) =>
+    {
+      window.location.reload();
     }, (error) =>
     {
       console.log(error);

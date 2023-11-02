@@ -29,6 +29,8 @@
                     <td>{{item.address}}</td>
                     <td>{{item.dividend}}</td>
                     <td>{{item.openAccountLimit}}</td>
+                    <td><a routerLink="/adminDealer/edit/{{item.id}}">Edit</a></td>
+                    <td><a (click)="isDelete(item.id)"><button class="btn btn-danger">X</button></a></td>
                   </tr>
                   </tbody>
                 </table>

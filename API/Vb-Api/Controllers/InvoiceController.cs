@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -19,6 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("GetAllInvoices")]
         public async Task<ApiResponse<List<InvoiceResponse>>> GetAllInvoices()
         {
@@ -27,6 +29,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("GetInvoiceById")]
         public async Task<ApiResponse<InvoiceResponse>> GetInvoiceById([FromQuery] int id)
         {
@@ -35,6 +38,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("GetInvoicesByCompanyDealer")]
         public async Task<ApiResponse<List<InvoiceResponse>>> GetInvoicesByCompany()
         {

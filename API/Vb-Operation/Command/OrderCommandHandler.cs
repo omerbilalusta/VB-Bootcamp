@@ -61,13 +61,30 @@ namespace Vb_Operation.Command
 
             Invoice invoice = new Invoice()
             {
-                Address = dealer.Address,
+                //Address = dealer.Address,
                 OrderId = entity.Id,
                 Amount = total,
-                PaymentMethod = request.model.PaymentMethod
+                PaymentMethod = request.model.PaymentMethod,
+                
             };
-            await unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
+            unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
             unitOfWork.CommitAsync(cancellationToken);
+
+            Payment payment = new Payment()
+            {
+                PaymentMethod = entity.PaymentMethod,
+                Amount = entity.Amount,
+                ReferenceNumber = random.Next(100000, 999999),
+                InvoiceId = invoice.Id
+            };
+            unitOfWork.PaymentRepository.CreateAsync(payment, request.userId, cancellationToken);
+            unitOfWork.CommitAsync(cancellationToken);
+
+            var orderCreated = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entity.Id);
+            orderCreated.InvoiceId = invoice.Id;
+
+            var invoiceCreated = unitOfWork.InvoiceRepository.GetAsQueryable().FirstOrDefault(x => x.Id == invoice.Id);
+            invoiceCreated.PaymentId = payment.Id;
 
             request.model.ProductList.ForEach(x =>
             {

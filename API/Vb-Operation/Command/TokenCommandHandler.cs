@@ -55,7 +55,8 @@ namespace Vb_Operation.Command
                 Token = token,
                 ExpireDate = DateTime.Now.AddMinutes(jwtConfig.AccessTokenExpiration),
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                Id = user.Id
             };
 
             return new ApiResponse<TokenResponse>(tokenResponse_dealer);
@@ -100,7 +101,8 @@ namespace Vb_Operation.Command
             {
             new Claim("Id", user.Id.ToString()),
             new Claim("Email", user.Email),
-            new Claim("Role", user.Role)
+            new Claim("Role", user.Role),
+            new Claim(ClaimTypes.Role, user.Role),
         };
 
             return claims;

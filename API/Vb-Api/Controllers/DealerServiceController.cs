@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -19,6 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = "dealer")]
         [HttpPost]
         public async Task<ApiResponse<DealerResponseShort>> Post([FromBody] DealerServiceRequest request)
         {

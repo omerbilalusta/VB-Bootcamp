@@ -20,6 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllDealer")]
         public async Task<ApiResponse<List<DealerResponse>>> GetAllDealer()
         {
@@ -28,6 +29,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetDealerById")]
         public async Task<ApiResponse<DealerResponse>> GetDealerById([FromQuery] int id)
         {
@@ -36,6 +38,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ApiResponse<DealerResponse>> Post([FromBody] DealerRequest request)
         {
@@ -45,6 +48,17 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("dealerUpdate")]
+        public async Task<ApiResponse> PutShort([FromQuery] int id, [FromBody] DealerRequestShort request)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new UpdateDealerShortCommand(request, id, int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ApiResponse> Put([FromQuery] int id, [FromBody] DealerRequest request)
         {
@@ -54,6 +68,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<ApiResponse> Delete([FromQuery] int id)
         {

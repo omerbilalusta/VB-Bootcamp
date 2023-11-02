@@ -1,6 +1,5 @@
 import { NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductComponent } from './product/product.component';
 import { DealerRoutingModule } from './dealer-routing-module';
 import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    ProductComponent,
   ],
   imports: [
     CommonModule,

@@ -16,7 +16,16 @@ export class DealerService {
   list():Observable<any>{
     return this.http.get(AUTH_API + 'Dealer/GetAllDealer', httpOptions);
   }
-  add(params:any):Observable<any>{
-    return this.http.post(AUTH_API + 'Dealer', params, httpOptions);
+  getById(id:number):Observable<any>{
+    return this.http.get(AUTH_API + 'Dealer/GetDealerById?id=' + id, httpOptions);
+  }
+  add(name:any, email:any, password:any, address:any, invoiceaddress:any, dividend:number, openaccountlimit:number):Observable<any>{
+    return this.http.post(AUTH_API + 'Dealer', {name, email, password, address, invoiceaddress, dividend, openaccountlimit}, httpOptions);
+  }
+  updateShort(dividend:number, openaccountlimit:number):Observable<any>{
+    return this.http.put(AUTH_API + 'Dealer/dealerUpdate?id=', {dividend, openaccountlimit}, httpOptions);
+  }
+  delete(id:number):Observable<any>{
+    return this.http.delete(AUTH_API + 'Dealer/?id=' + id, httpOptions);
   }
 }

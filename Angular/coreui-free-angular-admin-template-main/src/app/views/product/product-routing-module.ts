@@ -1,30 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListComponent } from './list/list.component';
-import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
-import { AuthGuardService } from 'src/app/services/auth-guard.service';
+import { AddComponent } from './add/add.component';
 
 const routes: Routes = [
   {
     path: 'list',
     component: ListComponent,
     data: {
-      title: 'Dealers'
+      title: 'Product List'
     }
   },
   {
     path: 'edit/:id',
     component: EditComponent,
     data: {
-      title: 'Dealer Edit'
+      title: 'Product Edit'
     }
   },
   {
     path: 'add',
     component: AddComponent,
     data: {
-      title: 'Dealer Add'
+      title: 'Product Add'
     }
   }
 ];
@@ -33,7 +32,7 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DealerAdminRoutingModule {
+export class ProductRoutingModule {
     
 
 }

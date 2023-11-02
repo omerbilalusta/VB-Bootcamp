@@ -25,7 +25,7 @@ namespace Vb_DTO
         public int CompanyId { get; set; }
         public virtual CompanyResponseShort Company { get; set; }
 
-        public virtual List<InvoiceDetailResponse> Product { get; set; }
+        public virtual List<InvoiceResponse> Product { get; set; }
     }
 
     public class OrderResponseShort

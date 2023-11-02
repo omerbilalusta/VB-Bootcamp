@@ -4,44 +4,56 @@
         <c-col lg="7" md="9" xl="6">
           <c-card class="mx-4">
             <c-card-body class="p-4">
-              <form [formGroup]="productForm" cForm>
-                <h1>Add Product</h1>
-                <p class="text-medium-emphasis">Fill the form with details of product</p>
-                <c-input-group class="mb-3">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilUser"></svg>
-                  </span>
-                  <input autoComplete="name" formControlName="name" cFormControl placeholder="Name" />
-                </c-input-group>
-                <c-input-group class="mb-3">
-                    <span cInputGroupText>
-                      <svg cIcon name="cilUser"></svg>
-                    </span>
-                    <textarea autoComplete="description" formControlName="description" cFormControl placeholder="Description"></textarea>
-                  </c-input-group>
-                <c-input-group class="mb-3">
+              <form [formGroup]="dealerForm" cForm>
+                <h1>Add Dealer</h1>
+                <p class="text-medium-emphasis">Fill the form with details of Dealer</p>
+                <c-input-group class="mb-4">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
-                  <input autoComplete="type" formControlName="type" cFormControl placeholder="Type (Drink, Food, Grocery, Clean etc.)"/>
+                  <input autoComplete="name" formControlName="name" cFormControl placeholder="Name">
                 </c-input-group>
                 <c-input-group class="mb-4">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
-                  <input autoComplete="stockQuantity" formControlName="stockQuantity" cFormControl placeholder="Stock Quantity" type="number">
+                  <input autoComplete="email" formControlName="email" cFormControl placeholder="Email">
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input autoComplete="new-password" formControlName="password" cFormControl placeholder="Password" type="password">
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input autoComplete="current-password" cFormControl placeholder="Repeat-Password" type="password">
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <textarea autoComplete="address" formControlName="address" cFormControl placeholder="Address"></textarea>
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <textarea autoComplete="invoiceaddress" formControlName="invoiceaddress" cFormControl placeholder="Invoice Address"></textarea>
                 </c-input-group>
                 <c-input-group class="mb-4">
                     <span cInputGroupText>
                       <svg cIcon name="cilLockLocked"></svg>
                     </span>
-                    <input autoComplete="price" formControlName="price" cFormControl placeholder="Price" type="number"/>
+                    <input autoComplete="dividend" formControlName="dividend" cFormControl placeholder="Dividend" type="number"/>
                 </c-input-group>
                 <c-input-group class="mb-4">
                     <span cInputGroupText>
                       <svg cIcon name="cilLockLocked"></svg>
                     </span>
-                    <input autoComplete="taxRate" formControlName="taxRate" cFormControl placeholder="Tax Rate (Between 0-1)" type="number"/>
+                    <input autoComplete="openaccountlimit" formControlName="openaccountlimit" cFormControl placeholder="Open Account Limit" type="number"/>
                 </c-input-group>
                 <div class="d-grid">
                   <button (click)="onSubmit()" cButton color="success">Create Account</button>

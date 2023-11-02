@@ -31,7 +31,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<InvoiceResponse>>> Handle(GetAllInvoicesQuery request, CancellationToken cancellationToken)
         {
-            var list = unitOfWork.InvoiceRepository.GetAsQueryable("InvoiceDetails", "Order", "Order.Company", "Order.Dealer", "Payment").Where(x => x.InvoiceExist == true).ToList();
+            var list = unitOfWork.InvoiceRepository.GetAsQueryable("InvoiceDetails", "InvoiceDetails.Product", "Order", "Order.Company", "Order.Dealer", "Payment").Where(x => x.InvoiceExist == true).ToList();
             var mappedList = mapper.Map<List<InvoiceResponse>>(list);
             return new ApiResponse<List<InvoiceResponse>>(mappedList);
         }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Vb_Base.Response;
@@ -17,8 +18,9 @@ namespace Vb_Bootcamp.Controllers
         {
             this.mediator = mediator;
         }
-
+        
         [HttpGet("GetAllProducts")]
+        [Authorize(Roles = "admin,dealer")]
         public async Task<ApiResponse<List<ProductResponse>>> GetAllProducts()
         {
             var operation = new GetAllProductQuery();
@@ -26,7 +28,9 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        
         [HttpGet("GetProdutsById")]
+        [Authorize(Roles = "admin,dealer")]
         public async Task<ApiResponse<ProductResponse>> GetProdutsById([FromQuery] int Id)
         {
             var operation = new GetProductByIdQuery(Id);
@@ -34,6 +38,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ApiResponse<ProductResponse>> CreateProduct([FromBody] ProductRequest request)
         {
@@ -43,6 +48,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ApiResponse> UpdateProduct([FromBody] ProductRequest request, int Id)
         {
@@ -52,6 +58,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("/UpdateStock")]
         public async Task<ApiResponse> UpdateProductStock([FromBody] ProductRequest2 request, int Id)
         {
@@ -61,6 +68,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<ApiResponse> DeleteProduct([FromQuery] int Id)
         {
@@ -70,6 +78,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
+        [Authorize(Roles = "admin,dealer")]
         [HttpGet("filter")]
         public async Task<ApiResponse<List<ProductResponse>>> GetProductByFilter([FromQuery] int? Id)
         {

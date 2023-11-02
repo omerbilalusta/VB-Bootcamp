@@ -31,6 +31,8 @@
                     <td>{{item.stockQuantity}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.company.name}}</td>
+                    <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="isDelete(item.id)"><button class="btn btn-danger">Delete</button></a></td>
+                    <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td>
                   </tr>
                   </tbody>
                 </table>

@@ -37,7 +37,7 @@ export class LoginComponent {
           if(data.response.role == 'admin')
             this.router.navigate(['/dashboard']);
           else
-            this.router.navigate(['/dealer']);
+            this.router.navigate(['/product/list']);
         }
       },
       error: err => {

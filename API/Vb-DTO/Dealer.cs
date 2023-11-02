@@ -16,6 +16,11 @@ namespace Vb_DTO
         public decimal Dividend { get; set; }
         public decimal OpenAccountLimit { get; set; }
     }
+    public class DealerRequestShort
+    {
+        public decimal Dividend { get; set; }
+        public decimal OpenAccountLimit { get; set; }
+    }
     public class DealerServiceRequest
     {
         public string Name { get; set; }
