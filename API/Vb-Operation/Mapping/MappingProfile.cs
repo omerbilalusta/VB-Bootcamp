@@ -30,7 +30,8 @@ namespace Vb_Operation.Mapping
 
             CreateMap<InvoiceDetailRequest, InvoiceDetail>();
             CreateMap<InvoiceDetail, InvoiceDetailResponse>()
-                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name));
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(dest => dest.OrderNumber, opt => opt.MapFrom(src => src.Invoice.Order.OrderNumber));
 
             CreateMap<OrderRequest, Order>();
             CreateMap<Order, OrderResponse>();

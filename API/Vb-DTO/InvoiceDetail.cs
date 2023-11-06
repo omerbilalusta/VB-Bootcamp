@@ -21,5 +21,6 @@ namespace Vb_DTO
         public int TotalAmountByProduct { get; set; }
         public int InvoiceId { get; set; }
         public string ProductName { get; set; }
+        public int OrderNumber { get; set; }
     }
 }

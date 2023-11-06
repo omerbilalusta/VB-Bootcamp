@@ -36,4 +36,8 @@ export class ProductService {
       name, description, type, stockQuantity, price, taxRate
     }, httpOptions);
   }
+
+  getAllCompanies():Observable<any>{
+    return this.http.get(AUTH_API + 'Company/GetAllCompanies', httpOptions);
+  }
 }

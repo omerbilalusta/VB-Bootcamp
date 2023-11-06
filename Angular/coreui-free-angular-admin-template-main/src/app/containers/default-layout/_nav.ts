@@ -26,6 +26,10 @@ export const navItems: INavData[] = [
           {
             name: 'Dealer Add',
             url: '/adminDealer/add'
+          },
+          {
+            name: 'Order List',
+            url: '/order/list'
           }
       ]
   },
@@ -44,7 +48,17 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Order',
-        url: '/order/list'
+        url: '/order/list',
+        children: [
+          {
+            name: 'Create Order',
+            url: '/order/add'
+          },
+          {
+            name: 'Order List',
+            url: '/order/list'
+          }
+        ]
       }
     ]
   },

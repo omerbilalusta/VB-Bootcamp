@@ -1,1 +1,55 @@
-<p>add works!</p>
+<c-card class="mb-4">
+    <c-card-header ngPreserveWhitespaces>
+        <strong>Angular Input group</strong> <small>Wrapping</small>
+     </c-card-header>
+     <c-card-body>
+        <c-card class="mb-4" *ngIf="!loading">
+            <div class="row">
+                <div class="col-6">
+                    <select aria-label="Default select example" cSelect [(ngModel)]="selectedValue">
+                        <option *ngFor="let item of companies" value="{{item.id}}">{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <select aria-label="Default select example" cSelect [(ngModel)]="selectedValuePayment">
+                        <option value="Card" selected>Card</option>
+                        <option value="EFT">EFT</option>
+                        <option value="Open Account">Open Account</option>
+                    </select>
+                </div>
+            </div>
+            <c-card-body>
+              <p class="text-medium-emphasis small">
+                You can buy one company's products at each order. Because each company has their own rights on orders.
+              </p>
+                <table cTable>
+                  <thead>
+                  <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Descprition</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">StockQuantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Company Name</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let item of getProducts()">
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.stockQuantity}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.company.name}}</td>
+                    <td><a (click)="addToCart(item.id)"><button class="btn btn-green">Add</button></a></td>
+                    <!-- <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td> -->
+                  </tr>
+                  </tbody>
+                </table>
+            </c-card-body>
+          </c-card>
+     </c-card-body>
+</c-card>

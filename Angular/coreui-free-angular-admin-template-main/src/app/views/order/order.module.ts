@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { AddComponent } from './add/add.component';
 import { ListComponent } from './list/list.component';
 import { OrderRoutingModule } from './order-routing-module';
-import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { ButtonModule, CardModule, FormModule, GridModule, PopoverModule, TableModule } from '@coreui/angular';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconModule } from '@coreui/icons-angular';
 import { StorageService } from 'src/app/services/storage.service';
 import { OrderService } from 'src/app/services/order.service';
@@ -25,9 +25,11 @@ import { OrderService } from 'src/app/services/order.service';
     HttpClientModule,
     ButtonModule,
     FormModule,
+    FormsModule,
     ReactiveFormsModule,
     GridModule,
-    IconModule
+    IconModule,
+    PopoverModule
   ],
   providers:[
     StorageService,

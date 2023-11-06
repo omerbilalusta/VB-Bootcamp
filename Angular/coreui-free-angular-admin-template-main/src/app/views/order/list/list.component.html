@@ -22,15 +22,30 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let item of order">
+                  <tr *ngFor="let item of orders">
                     <th scope="row">{{item.orderNumber}}</th>
                     <td>{{item.paymentMethod}}</td>
                     <td>{{item.amount}}</td>
                     <td>{{item.dealer.name}}</td>
                     <td>{{item.company.name}}</td>
-                    <td *ngFor="let product of item">{{product.productName}}</td>
-                    <!-- <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="isDelete(item.id)"><button class="btn btn-danger">Delete</button></a></td>
-                    <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td> -->
+
+                    <button [cPopover]="popoverHtml"
+                            cPopoverPlacement="top"
+                            [cPopoverTrigger]="'click'"
+                            [cPopoverVisible]="visible"
+                            cButton
+                            class="m-1"
+                            color="success">
+                        Products
+                        <ng-template #popoverHtml>
+                        <h3 class="popover-header">
+                            Ordered products
+                        </h3>
+                        <div class="popover-body" *ngFor="let product of invoiceDetails">
+                            <td *ngIf="product.orderNumber == item.orderNumber">{{product.productName}}, Piece:{{product.piece}}</td>
+                        </div>
+                        </ng-template>
+                    </button>
                   </tr>
                   </tbody>
                 </table>

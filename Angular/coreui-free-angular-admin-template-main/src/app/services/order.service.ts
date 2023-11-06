@@ -30,7 +30,7 @@ export class OrderService {
   }
 
   //Create
-  createOrder(){
+  createOrder(paymentMethod:any):Observable<any>{
     return this.http.post(AUTH_API + 'Order', {} ,httpOptions);
   }
 
@@ -48,7 +48,7 @@ export class OrderService {
   }
 
   //InvoiceDetails
-  // getInvoiceDetails(id:number):Observable<any>{
-  //   return this.http.get(AUTH_API + 'Order/GetInvoiceDetails?Id=' + id, httpOptions);
-  // }
+  getInvoiceDetails():Observable<any>{
+    return this.http.get(AUTH_API + 'InvoiceDetail', httpOptions);
+  }
 }
