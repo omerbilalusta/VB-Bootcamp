@@ -45,22 +45,28 @@ export const navItems: INavData[] = [
       {
         name: 'Products',
         url: '/product/list'
-      },
-      {
-        name: 'Order',
-        url: '/order/list',
-        children: [
-          {
-            name: 'Create Order',
-            url: '/order/add'
-          },
-          {
-            name: 'Order List',
-            url: '/order/list'
-          }
-        ]
       }
     ]
+  },
+  {
+    name: 'Order',
+    url: '/order/list',
+    iconComponent: { name: 'cil-calculator' },
+    children: [
+      {
+        name: 'Create Order',
+        url: '/order/add'
+      },
+      {
+        name: 'Order List',
+        url: '/order/list-dealer'
+      }
+    ]
+  },
+  {
+    name: 'Payment',
+    url: '/payment/pay:orderId',
+    iconComponent: { name: 'cil-basket' }
   },
   {
     title: true,

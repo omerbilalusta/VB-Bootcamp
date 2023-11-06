@@ -23,7 +23,8 @@ namespace Vb_Bootcamp.Controllers
         [Authorize(Roles = "admin,dealer")]
         public async Task<ApiResponse<List<ProductResponse>>> GetAllProducts()
         {
-            var operation = new GetAllProductQuery();
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new GetAllProductQuery(int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }
@@ -82,7 +83,8 @@ namespace Vb_Bootcamp.Controllers
         [HttpGet("filter")]
         public async Task<ApiResponse<List<ProductResponse>>> GetProductByFilter([FromQuery] int? Id)
         {
-            var operation = new GetProductByFilterQuery(Id);
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new GetProductByFilterQuery(int.Parse(userId), Id);
             var result = await mediator.Send(operation);
             return result;
         }

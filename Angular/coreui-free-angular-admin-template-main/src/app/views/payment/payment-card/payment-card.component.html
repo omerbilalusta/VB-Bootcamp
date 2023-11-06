@@ -1,0 +1,45 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4">
+              <form [formGroup]="cardForm" cForm>
+                <h1>Pay with Card</h1>
+                <p class="text-medium-emphasis">Fill the form with details of your card</p>
+                <h4>Payment Amount: {{order.amount}} ₺</h4>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input autoComplete="cardnumber" formControlName="cardnumber" cFormControl placeholder="Card Number" type="number"/>
+                </c-input-group>
+                <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="cvv" formControlName="cvv" cFormControl placeholder="CVV" type="number">
+                  </c-input-group>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input autoComplete="expirationdate" formControlName="expirationdate" cFormControl placeholder="Expire Date" type="date"/>
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input autoComplete="cardholdername" formControlName="cardholdername" cFormControl placeholder="Cardholder Name">
+                </c-input-group>
+                <div class="d-grid">
+                  <button (click)="pay()" cButton color="success">Pay</button>
+                </div>
+              </form>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+</div>
+  

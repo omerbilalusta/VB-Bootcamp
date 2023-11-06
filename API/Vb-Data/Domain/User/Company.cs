@@ -14,6 +14,7 @@ namespace Vb_Data.Domain.User
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }
+        public string IBAN { get; set; }
 
         public virtual List<Product> Products { get; set; }
         public virtual List<Order> Orders { get; set; }
@@ -33,6 +34,7 @@ namespace Vb_Data.Domain.User
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Address).IsRequired().HasMaxLength(100);
             builder.Property(x => x.TaxNumber).IsRequired().HasMaxLength(20);
+            builder.Property(x => x.IBAN).IsRequired().HasMaxLength(26).HasDefaultValue("TR000000000000000000000000");
             builder.Property(x => x.Role).IsRequired().HasMaxLength(10).HasDefaultValue("admin");
             builder.Property(x => x.Password).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(50);

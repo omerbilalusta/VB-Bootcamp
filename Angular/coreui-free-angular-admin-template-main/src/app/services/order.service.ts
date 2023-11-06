@@ -17,12 +17,16 @@ export class OrderService {
   listAll():Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetAllOrder', httpOptions);
   }
-  listByOrderNumber(orderNumber:number):Observable<any>{
+  getByOrderNumber(orderNumber:number):Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetOrderByOrderNumber?orderNumber=' + orderNumber, httpOptions);
   }
 
-  listByCompanyDealer():Observable<any>{
-    return this.http.get(AUTH_API + 'Order/GetOrdersByCompanyDealer', httpOptions);
+  listByCompany():Observable<any>{
+    return this.http.get(AUTH_API + 'Order/GetOrdersByCompany', httpOptions);
+  }
+
+  listByDealer():Observable<any>{
+    return this.http.get(AUTH_API + 'Order/GetOrdersByDealer', httpOptions);
   }
 
   listDeclined():Observable<any>{
@@ -30,8 +34,10 @@ export class OrderService {
   }
 
   //Create
-  createOrder(paymentMethod:any):Observable<any>{
-    return this.http.post(AUTH_API + 'Order', {} ,httpOptions);
+  createOrder(paymentMethod:any, productList:{ [key: string]: number; }):Observable<any>{
+    console.log(paymentMethod);
+    console.log(productList);
+    return this.http.post(AUTH_API + 'Order', {paymentMethod, productList} ,httpOptions);
   }
 
   //Delete
@@ -40,15 +46,23 @@ export class OrderService {
   }
 
   //Approve-Decline
-  approveOrder(id:number){
-    return this.http.put(AUTH_API + 'Order/companyapprove?Id='+ id, httpOptions);
+  approveOrder(orderNumber:number){
+    return this.http.put(AUTH_API + 'Order/companyapprove?orderNumber='+ orderNumber, httpOptions);
   }
-  declineOrder(id:number, description:any){
-    return this.http.put(AUTH_API + 'Order/companyapprove?Id='+ id + '&description=' + description, httpOptions);
+  declineOrder(orderNumber:number, description:any){
+    return this.http.put(AUTH_API + 'Order/companyapprove?orderNumber='+ orderNumber + '&description=' + description, httpOptions);
   }
 
   //InvoiceDetails
   getInvoiceDetails():Observable<any>{
     return this.http.get(AUTH_API + 'InvoiceDetail', httpOptions);
+  }
+
+  //Pay
+  pay(orderNumber:number){
+    return this.http.put(AUTH_API + 'Order/Pay?orderNumber='+ orderNumber, httpOptions);
+  }
+  payWithOpenAccount(orderNumber:number){
+    return this.http.put(AUTH_API + 'Order/PayOpenAccount?orderNumber='+ orderNumber, httpOptions);
   }
 }

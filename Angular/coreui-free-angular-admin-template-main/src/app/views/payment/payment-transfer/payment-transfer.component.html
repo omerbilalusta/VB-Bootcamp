@@ -1,0 +1,17 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+        <c-row class="justify-content-center">
+            <c-col lg="7" md="9" xl="6">
+              <c-card class="mx-4">
+                <c-card-body class="p-4">
+                    <h3>Payment Methed: Transer</h3>
+                    <p>Amount: {{order.amount}} ₺</p>
+                    <p>Account Holder: {{order.company.name}}</p>
+                    <p>IBAN of the Account: {{order.company.iban}}</p>
+                    <p class="text-muted">Ödemenizi yaptıktan sonra siparişiniz onaylanacaktır.</p>
+                </c-card-body>
+            </c-card>
+          </c-col>
+        </c-row>
+    </c-container>
+</div>

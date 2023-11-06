@@ -31,13 +31,13 @@ export class EditComponent implements OnInit{
     this.load();
   }
 
-  load(){ // Load fonksiyonu ile amaç, bir kullanıcı başka bir company'e ait ürünü düzenlemeye çalışırsa onu engellemek. Eğer böyle bir koşul gerçekleşmediyse formu doldurmak.
+  load(){
     this.productService.getById(this.productId).subscribe(
       (data) => {        
-        if(this.user.id != data.response.company.id && this.user.role == 'admin')    
+        if(this.user.id != data.response.company.id && this.user.role == 'admin') // Buradaki amaç, bir kullanıcı başka bir company'e ait ürünü düzenlemeye çalışırsa onu engellemek.
           this.router.navigate(['/product/list']);
 
-        this.productForm.controls['name'].setValue(data.response.name);
+        this.productForm.controls['name'].setValue(data.response.name);           //Kontroldeki koşul gerçekleşmediyse formu dolduruluyor ve sayfa yükleniyor.
         this.productForm.controls['description'].setValue(data.response.description);
         this.productForm.controls['type'].setValue(data.response.type);
         this.productForm.controls['stockQuantity'].setValue(data.response.stockQuantity);

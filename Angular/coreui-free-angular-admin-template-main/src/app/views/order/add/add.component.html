@@ -15,6 +15,7 @@
                         <option value="Card" selected>Card</option>
                         <option value="EFT">EFT</option>
                         <option value="Open Account">Open Account</option>
+                        <option value="Transfer">Transfer</option>
                     </select>
                 </div>
             </div>
@@ -44,12 +45,13 @@
                     <td>{{item.stockQuantity}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.company.name}}</td>
-                    <td><a (click)="addToCart(item.id)"><button class="btn btn-green">Add</button></a></td>
+                    <td><a (click)="addToCart(item.id,1)"><button class="btn btn-green">Add</button></a></td>
                     <!-- <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td> -->
                   </tr>
                   </tbody>
                 </table>
             </c-card-body>
+            <button class="btn btn-primary" (click)="confirmCart()">Create Order</button>
           </c-card>
      </c-card-body>
 </c-card>

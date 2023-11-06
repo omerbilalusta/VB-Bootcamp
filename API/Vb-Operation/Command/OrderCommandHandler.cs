@@ -18,7 +18,8 @@ namespace Vb_Operation.Command
         IRequestHandler<CreateOrderCommand, ApiResponse<OrderResponse>>,
         IRequestHandler<UpdateOrderCommand, ApiResponse>,
         IRequestHandler<DeleteOrderCommand, ApiResponse>,
-        IRequestHandler<CompanyApproveCommand, ApiResponse>
+        IRequestHandler<CompanyApproveCommand, ApiResponse>,
+        IRequestHandler<DealerPaymentCommand, ApiResponse>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -61,7 +62,7 @@ namespace Vb_Operation.Command
 
             Invoice invoice = new Invoice()
             {
-                //Address = dealer.Address,
+                Address = dealer.Address,
                 OrderId = entity.Id,
                 Amount = total,
                 PaymentMethod = request.model.PaymentMethod,
@@ -70,13 +71,13 @@ namespace Vb_Operation.Command
             unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
             unitOfWork.CommitAsync(cancellationToken);
 
-            Payment payment = new Payment()
-            {
-                PaymentMethod = entity.PaymentMethod,
-                Amount = entity.Amount,
-                ReferenceNumber = random.Next(100000, 999999),
-                InvoiceId = invoice.Id
-            };
+            Payment payment = new Payment()                         //Invoice tablosunda her invoice için bir payment datası ile ilişki olmalı.
+            {                                                       //Bu yüzden invoice data'sı oluşturulurken payment data'sıda aynı anda oluşturulur.
+                PaymentMethod = entity.PaymentMethod,               //Kullanıcı ödeme yaptığında Order tablosunda "paymentSucces" alanı ilgili order nesnesi
+                Amount = entity.Amount,                             //için güncellenir. 
+                ReferenceNumber = random.Next(100000, 999999),      //Kullanıcı sipariş oluştururken aynı anda invoice, payment, invoiceDetails(sipariş edilen
+                InvoiceId = invoice.Id                              //product'ların listesini tutabilmek için) nesnelerinin oluşturulması veri tabanı kurgusunun
+            };                                                      //zayıf olduğunun göstergesi olabilir.
             unitOfWork.PaymentRepository.CreateAsync(payment, request.userId, cancellationToken);
             unitOfWork.CommitAsync(cancellationToken);
 
@@ -91,7 +92,7 @@ namespace Vb_Operation.Command
                 var product = unitOfWork.ProductRepository.GetAsQueryable().Where(y => y.Id == x.Key).FirstOrDefault();
                 InvoiceDetail invoiceDetail = new InvoiceDetail()
                 {
-                    InvoiceId = invoice.Id,
+                    InvoiceId = invoice.Id,                             //Siparişi oluşturulan productları tutmak için invoiceDetail tablosu oluşturuldu.
                     ProductId = x.Key,
                     Piece = x.Value,
                     TotalAmountByProduct = product.Price * x.Value
@@ -131,9 +132,9 @@ namespace Vb_Operation.Command
 
         public async Task<ApiResponse> Handle(CompanyApproveCommand request, CancellationToken cancellationToken)
         {
-            var entity = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.Id == request.Id && x.CompanyId == request.userId); //Red edecegi order o company'ye ait olmalı, ayrica bununda kontrolu yapiliyor.
+            var entity = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.OrderNumber == request.orderNumber && x.CompanyId == request.userId); //Red edecegi order o company'ye ait olmalı, ayrica bununda kontrolu yapiliyor.
             if (entity == null)
-                return new ApiResponse("Something went wrong");
+                return new ApiResponse("Order not found");
             
             
             if(request.descpription != null)
@@ -152,6 +153,18 @@ namespace Vb_Operation.Command
             entity.CompanyApprove = true;                   //Eger cilenttan bir description donerse bu demek olurki company siparisi iptal etmek istiyor. 
             unitOfWork.CommitAsync(cancellationToken);      //Buna bagli olarak bir orderReject nesnesi olusturulur ve order ile baglanir. 
             return new ApiResponse();                       //Aksi takdirde order'in CompanyApprove field'i true olarak guncellenir
+        }
+
+        public async Task<ApiResponse> Handle(DealerPaymentCommand request, CancellationToken cancellationToken)
+        {
+            var entity = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.OrderNumber == request.orderNumber && x.CompanyId == request.userId); //Red edecegi order o company'ye ait olmalı, ayrica bununda kontrolu yapiliyor.
+            if (entity == null)
+                return new ApiResponse("Order not found");
+
+            entity.PaymentSuccess = true;
+            unitOfWork.OrderRepository.Update(entity, request.userId);
+            unitOfWork.CommitAsync(cancellationToken);
+            return new ApiResponse();
         }
     }
 }

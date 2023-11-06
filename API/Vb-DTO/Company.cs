@@ -11,6 +11,7 @@ namespace Vb_DTO
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }
+        public string IBAN { get; set; }
     }
 
     public class CompanyResponse
@@ -19,6 +20,7 @@ namespace Vb_DTO
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }
+        public string IBAN { get; set; }
 
         public virtual List<ProductResponse> Products { get; set; }
     }
@@ -29,5 +31,6 @@ namespace Vb_DTO
         public string Name { get; set; }
         public string Address { get; set; }
         public int TaxNumber { get; set; }
+        public string IBAN { get; set; }
     }
 }

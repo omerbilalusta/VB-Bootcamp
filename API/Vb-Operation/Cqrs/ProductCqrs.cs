@@ -13,8 +13,8 @@ namespace Vb_Operation.Cqrs
     public record UpdateProductCommand(ProductRequest model, int Id, int userId) : IRequest<ApiResponse>;
     public record UpdateProductStockCommand(ProductRequest2 model, int Id, int userId) : IRequest<ApiResponse>;
     public record DeleteProductCommand(int Id, int userId) : IRequest<ApiResponse>;
-    public record GetAllProductQuery() : IRequest<ApiResponse<List<ProductResponse>>>;
+    public record GetAllProductQuery(int userId) : IRequest<ApiResponse<List<ProductResponse>>>;
     public record GetProductByIdQuery(int Id) : IRequest<ApiResponse<ProductResponse>>;
-    public record GetProductByFilterQuery(int? Id) : IRequest<ApiResponse<List<ProductResponse>>>;
+    public record GetProductByFilterQuery(int userId, int? Id) : IRequest<ApiResponse<List<ProductResponse>>>;
 
 }

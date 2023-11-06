@@ -72,6 +72,11 @@ namespace Vb_Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
@@ -457,6 +462,13 @@ namespace Vb_Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IBAN")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(26)
+                        .HasColumnType("nvarchar(26)")
+                        .HasDefaultValue("TR000000000000000000000000");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");

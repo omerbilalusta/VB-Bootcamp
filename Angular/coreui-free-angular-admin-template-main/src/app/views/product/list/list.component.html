@@ -33,7 +33,7 @@
                     <td>{{item.company.name}}</td>
                     <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="isDelete(item.id)"><button class="btn btn-danger">Delete</button></a></td>
                     <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td>
-                  </tr>
+                  </tr>     <!--Eğer bu sayfa company türünde bir kullanıcı tarafından açıldıysa ve ürünün sahibi admin ise silme ve düzenleme butonları görünür-->
                   </tbody>
                 </table>
             </c-card-body>

@@ -12,7 +12,7 @@ using Vb_Data.Context;
 namespace Vb_Data.Migrations
 {
     [DbContext(typeof(VbDbContext))]
-    [Migration("20231102191208_Initial")]
+    [Migration("20231106173056_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -74,6 +74,11 @@ namespace Vb_Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -460,6 +465,13 @@ namespace Vb_Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IBAN")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(26)
+                        .HasColumnType("nvarchar(26)")
+                        .HasDefaultValue("TR000000000000000000000000");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");

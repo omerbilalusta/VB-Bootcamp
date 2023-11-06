@@ -16,7 +16,8 @@ namespace Vb_Operation.Query
     public class OrderQueryHandler :
         IRequestHandler<GetAllOrdersQuery, ApiResponse<List<OrderResponse>>>,
         IRequestHandler<GetOrderByOrderNumberQuery, ApiResponse<OrderResponse>>,
-        IRequestHandler<GetOrderByCompanyDealerQuery, ApiResponse<List<OrderResponse>>>,
+        IRequestHandler<GetOrderByCompanyQuery, ApiResponse<List<OrderResponse>>>,
+        IRequestHandler<GetOrderByDealerQuery, ApiResponse<List<OrderResponse>>>,
         IRequestHandler<GetDeclinedOrders, ApiResponse<List<OrderResponse>>>
     {
         private readonly IUnitOfWork unitOfWork;
@@ -55,9 +56,17 @@ namespace Vb_Operation.Query
             return new ApiResponse<List<OrderResponse>>(mapped);
         }
 
-        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByCompanyDealerQuery request, CancellationToken cancellationToken) //sadece company'ler icin kullanilacak metot
+        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByCompanyQuery request, CancellationToken cancellationToken) //sadece company'ler icin kullanilacak metot
         {
-            var list = await unitOfWork.OrderRepository.GetAsQueryable("Dealer","Company","Company.Products","Invoice", "Invoice.InvoiceDetails", "Invoice.InvoiceDetails.Product").Where(x => x.CompanyId == request.userId || x.DealerId == request.userId).ToListAsync(cancellationToken);
+            var list = await unitOfWork.OrderRepository.GetAsQueryable("Dealer","Company","Company.Products","Invoice", "Invoice.InvoiceDetails", "Invoice.InvoiceDetails.Product").Where(x => x.CompanyId == request.userId).ToListAsync(cancellationToken);
+
+            var mapped = mapper.Map<List<OrderResponse>>(list);
+            return new ApiResponse<List<OrderResponse>>(mapped);
+        }
+
+        public async Task<ApiResponse<List<OrderResponse>>> Handle(GetOrderByDealerQuery request, CancellationToken cancellationToken) //sadece dealer'lar icin kullanilacak metot
+        {
+            var list = await unitOfWork.OrderRepository.GetAsQueryable("Dealer", "Company", "Company.Products", "Invoice", "Invoice.InvoiceDetails", "Invoice.InvoiceDetails.Product").Where(x => x.DealerId == request.userId).ToListAsync(cancellationToken);
 
             var mapped = mapper.Map<List<OrderResponse>>(list);
             return new ApiResponse<List<OrderResponse>>(mapped);

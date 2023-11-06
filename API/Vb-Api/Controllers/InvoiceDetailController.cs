@@ -19,7 +19,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles ="admin, dealer")]
         [HttpGet]
         public async Task<ApiResponse<List<InvoiceDetailResponse>>> GetAllInvoiceDetails()
         {

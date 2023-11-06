@@ -34,6 +34,12 @@ const routes: Routes = [
           import('./views/dealer-admin/dealer-admin.module').then((m) => m.DealerAdminModule)
       },
       {
+        path: 'payment',
+        canActivate: [AuthGuardService],
+        loadChildren: () =>
+          import('./views/payment/payment.module').then((m) => m.PaymentModule)
+      },
+      {
         path: 'order',
         canActivate: [AuthGuardService],
         loadChildren: () =>

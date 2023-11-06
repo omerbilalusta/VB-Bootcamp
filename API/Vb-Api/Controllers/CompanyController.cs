@@ -19,11 +19,20 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, dealer")]
         [HttpGet("GetAllCompanies")]
         public async Task<ApiResponse<List<CompanyResponse>>> GetAllCompanies()
         {
             var operation = new GetAllCompanyQuery();
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "admin, dealer")]
+        [HttpGet("GetCompanyById")]
+        public async Task<ApiResponse<CompanyResponse>> GetCompanyById([FromQuery] int Id)
+        {
+            var operation = new GetCompanyByIdQuery(Id);
             var result = await mediator.Send(operation);
             return result;
         }

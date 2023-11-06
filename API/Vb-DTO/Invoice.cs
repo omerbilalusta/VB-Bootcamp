@@ -10,6 +10,7 @@ namespace Vb_DTO
     {
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
+        public string Address { get; set; }
     }
 
     public class InvoiceResponse

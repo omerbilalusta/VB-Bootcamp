@@ -25,7 +25,7 @@ export class ListComponent {
   }
   
   load(){
-    this.orderService.listByCompanyDealer().subscribe((data) =>
+    this.orderService.listByCompany().subscribe((data) =>
     {
       this.orders = data.response;
       console.log(this.orders);
@@ -38,6 +38,29 @@ export class ListComponent {
     {
       this.invoiceDetails = data.response;
       console.log(this.invoiceDetails);
+    },  (error) =>
+    {
+      console.log(error);
+    });
+  }
+
+  decline(id:number){
+    console.log(id + " declined");
+    this.orderService.declineOrder(id, "Declined by Company").subscribe((data) =>
+    {
+      console.log('Order declined successfully');
+      window.location.reload();
+    },  (error) =>
+    {
+      console.log(error);
+    });
+  }
+  approve(id:number){
+    console.log(id + " approved");
+    this.orderService.approveOrder(id).subscribe((data) =>
+    {
+      console.log('Order approved successfully');
+      window.location.reload();
     },  (error) =>
     {
       console.log(error);

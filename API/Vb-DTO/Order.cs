@@ -19,6 +19,7 @@ namespace Vb_DTO
         public decimal Amount { get; set; }
         public bool PaymentSuccess { get; set; }
         public bool CompanyApprove { get; set; }
+        public bool IsActive { get; set; }
 
         public int DealerId { get; set; }
         public virtual DealerResponseShort Dealer { get; set; }

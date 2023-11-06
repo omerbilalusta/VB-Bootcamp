@@ -13,7 +13,8 @@ using Vb_Operation.Cqrs;
 namespace Vb_Operation.Query
 {
     public class CompanyQueryHandler :
-        IRequestHandler<GetAllCompanyQuery, ApiResponse<List<CompanyResponse>>>
+        IRequestHandler<GetAllCompanyQuery, ApiResponse<List<CompanyResponse>>>, 
+        IRequestHandler<GetCompanyByIdQuery, ApiResponse<CompanyResponse>>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -29,6 +30,13 @@ namespace Vb_Operation.Query
             var list = unitOfWork.CompanyRepository.GetAsQueryable().ToList();
             var mappedList = mapper.Map<List<CompanyResponse>>(list);
             return new ApiResponse<List<CompanyResponse>>(mappedList);
+        }
+
+        public async Task<ApiResponse<CompanyResponse>> Handle(GetCompanyByIdQuery request, CancellationToken cancellationToken)
+        {
+            var entity = unitOfWork.CompanyRepository.GetAsQueryable().Where(x => x.Id == request.Id).FirstOrDefault();
+            var mappedList = mapper.Map<CompanyResponse>(entity);
+            return new ApiResponse<CompanyResponse>(mappedList);
         }
     }
 }

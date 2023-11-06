@@ -15,7 +15,7 @@ namespace Vb_Data.Domain
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
         public bool InvoiceExist { get; set; }
-        //public string Address { get; set; }
+        public string Address { get; set; }
 
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
@@ -36,8 +36,9 @@ namespace Vb_Data.Domain
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.Address).IsRequired().HasMaxLength(150);
             builder.Property(x => x.InvoiceExist).IsRequired().HasDefaultValue(false);
-            builder.Property(x => x.PaymentMethod).IsRequired().HasMaxLength(10);
+            builder.Property(x => x.PaymentMethod).IsRequired().HasMaxLength(50);
 
             builder.Property(x => x.OrderId).IsRequired();
             builder.Property(x => x.PaymentId).IsRequired().HasDefaultValue(0);

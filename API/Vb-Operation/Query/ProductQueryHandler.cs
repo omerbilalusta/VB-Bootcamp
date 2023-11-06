@@ -31,9 +31,20 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<List<ProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
-            var list = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).ToListAsync(cancellationToken);
+            var list = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).ToList();
+            var user = unitOfWork.DealerRepository.GetAsQueryable().Where(x => x.IsActive != false && x.Id == request.userId).FirstOrDefault();
 
-            var mappedList = mapper.Map<List<ProductResponse>>(list.Result);
+            if(user != null)
+            {
+                list.ForEach(x =>
+                {
+                    x.Price *= x.TaxRate;
+                    x.Price *= user.Dividend;
+                });
+            }
+                
+
+            var mappedList = mapper.Map<List<ProductResponse>>(list);
             return new ApiResponse<List<ProductResponse>>(mappedList);
         }
 
@@ -55,6 +66,16 @@ namespace Vb_Operation.Query
                 predictate.And(x => x.CompanyId == request.Id);
 
             var list = unitOfWork.ProductRepository.Where(x => x.IsActive != false).Where(predictate).ToList();
+            var user = unitOfWork.DealerRepository.GetAsQueryable().Where(x => x.IsActive != false && x.Id == request.userId).FirstOrDefault();
+
+            if (user != null)       //Urunleri listelemeye çalışan kullanıcı eğer bir dealer ise listelemeye 
+            {                       //çalıştığı ürünlere kendisine uygulanan kar marjı uygulanmış fiyatları görür.
+                list.ForEach(x =>
+                {
+                    x.Price *= x.TaxRate;
+                    x.Price *= user.Dividend;
+                });
+            }
             var mapped = mapper.Map<List<ProductResponse>>(list);
             return new ApiResponse<List<ProductResponse>>(mapped);
         }

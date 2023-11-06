@@ -10,4 +10,5 @@ using Vb_DTO;
 namespace Vb_Operation.Cqrs
 {
     public record GetAllCompanyQuery() : IRequest<ApiResponse<List<CompanyResponse>>>;
+    public record GetCompanyByIdQuery(int Id) : IRequest<ApiResponse<CompanyResponse>>;
 }

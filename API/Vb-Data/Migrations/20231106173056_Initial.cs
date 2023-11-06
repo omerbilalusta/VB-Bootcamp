@@ -20,6 +20,7 @@ namespace Vb_Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     TaxNumber = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    IBAN = table.Column<string>(type: "nvarchar(26)", maxLength: 26, nullable: false, defaultValue: "TR000000000000000000000000"),
                     InsertUserId = table.Column<int>(type: "int", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateUserId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -185,8 +186,9 @@ namespace Vb_Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     InvoiceExist = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     InsertUserId = table.Column<int>(type: "int", nullable: false),
@@ -289,9 +291,9 @@ namespace Vb_Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Company",
-                columns: new[] { "Id", "Address", "Email", "InsertDate", "InsertUserId", "Name", "Password", "TaxNumber", "UpdateDate" },
-                values: new object[] { 1, "Suite 46", "testCompany@mail.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Leda Wernham", "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824", 817553976, null });
+               table: "Company",
+               columns: new[] { "Id", "Address", "Email", "InsertDate", "InsertUserId", "Name", "Password", "TaxNumber", "UpdateDate" },
+               values: new object[] { 1, "Suite 46", "testCompany@mail.com", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Leda Wernham", "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824", 817553976, null });
             migrationBuilder.InsertData(
                 table: "Company",
                 columns: new[] { "Id", "Address", "Email", "InsertDate", "InsertUserId", "Name", "Password", "TaxNumber", "UpdateDate" },
@@ -384,8 +386,8 @@ namespace Vb_Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Invoice",
-                columns: new[] { "Id", "Amount", "PaymentMethod", "InvoiceExist", "OrderId", "PaymentId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 1, 240, "Card", false, 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                columns: new[] { "Id", "Amount", "PaymentMethod", "InvoiceExist", "Address", "OrderId", "PaymentId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 1, 240, "Card", false, "Room 907", 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
             migrationBuilder.InsertData(
                 table: "Payment",

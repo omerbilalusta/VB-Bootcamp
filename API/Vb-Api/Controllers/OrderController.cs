@@ -40,11 +40,21 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("GetOrdersByCompanyDealer")]
+        [HttpGet("GetOrdersByCompany")]
         public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByCompany()
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByCompanyDealerQuery(int.Parse(userId));
+            var operation = new GetOrderByCompanyQuery(int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "dealer")]
+        [HttpGet("GetOrdersByDealer")]
+        public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByDealer()
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new GetOrderByDealerQuery(int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }
@@ -91,10 +101,30 @@ namespace Vb_Bootcamp.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut("companyapprove")]
-        public async Task<ApiResponse> CompanyApprove([FromQuery] int Id, [FromQuery] string? description)
+        public async Task<ApiResponse> CompanyApprove([FromQuery] int orderNumber, [FromQuery] string? description)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new CompanyApproveCommand(Id, int.Parse(userId), description);
+            var operation = new CompanyApproveCommand(orderNumber, int.Parse(userId), description);
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "dealer")]
+        [HttpPut("Pay")]
+        public async Task<ApiResponse> Pay([FromQuery] int orderNumber)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new DealerPaymentCommand(orderNumber, int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "dealer")]
+        [HttpPut("PayOpenAccount")]
+        public async Task<ApiResponse> PayOpenAccount([FromQuery] int orderNumber)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new PayWithOpenAccountCommand(orderNumber, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }

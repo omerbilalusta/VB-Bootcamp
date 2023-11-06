@@ -8,13 +8,6 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./add.component.scss']
 })
 
-// interface IDictionary {
-//   [key: string]: number;
-// }
-
-// const dictionary = new Map<string, string>();
-
-// dictionary.set('key1', 'value1');
 export class AddComponent implements OnInit{
 
   products: any[] = [];
@@ -22,9 +15,7 @@ export class AddComponent implements OnInit{
   selectedValue: string = "0";
   selectedValuePayment: string = "0";
   loading = true;
-  cart: number[] = [];
-  // dictionary: IDictionary = {};
-  dictionaryy = new Map<string, number>();
+  cart: { [key: string]: number; } = {};
   
   constructor(private productService:ProductService, private orderService:OrderService) {}
 
@@ -54,18 +45,16 @@ export class AddComponent implements OnInit{
   getProducts(){
     return this.products.filter(x => x.companyId == Number(this.selectedValue));
   }
-  addToCart(id:number){
-    // if(this.cart[0][0] != undefined){
-    //   this.cart[id][1] += 1;
-    //   console.log(this.cart);
-    //   return;
-    // }
-    this.cart.push(this.products.find(x => x.id == id).id);
+  addToCart(id:number,count:number){
+    if(this.cart[id.toString()] != undefined)
+      this.cart[id.toString()] += count;
+    else
+      this.cart[id.toString()] = count;
     console.log(this.cart);
   }
 
   confirmCart(){
-    this.orderService.createOrder(this.selectedValuePayment).subscribe({
+    this.orderService.createOrder(this.selectedValuePayment, this.cart).subscribe({
       next: data =>{
         if(data.response == false)
           console.log('error');
@@ -77,11 +66,5 @@ export class AddComponent implements OnInit{
         console.log(err.error.errors);
       }
     })
-  }
-
-  asd(){
-    this.cart.forEach(item => {
-      
-    });
   }
 }
