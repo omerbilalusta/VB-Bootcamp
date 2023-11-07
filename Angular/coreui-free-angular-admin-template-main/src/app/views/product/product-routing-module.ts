@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { AddComponent } from './add/add.component';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: EditComponent,
+    canActivate: [AuthGuardService],
     data: {
       title: 'Product Edit'
     }
@@ -22,6 +24,7 @@ const routes: Routes = [
   {
     path: 'add',
     component: AddComponent,
+    canActivate: [AuthGuardService],
     data: {
       title: 'Product Add'
     }

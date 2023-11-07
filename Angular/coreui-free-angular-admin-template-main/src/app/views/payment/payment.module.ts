@@ -7,9 +7,10 @@ import { PaymentCardComponent } from './payment-card/payment-card.component';
 import { PaymentEFTComponent } from './payment-eft/payment-eft.component';
 import { PaymentOpenaccountComponent } from './payment-openaccount/payment-openaccount.component';
 import { PaymentTransferComponent } from './payment-transfer/payment-transfer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IconModule } from '@coreui/icons-angular';
+import { EditMethodComponent } from './edit-method/edit-method.component';
 
 
 
@@ -19,7 +20,8 @@ import { IconModule } from '@coreui/icons-angular';
     PaymentCardComponent,
     PaymentEFTComponent,
     PaymentOpenaccountComponent,
-    PaymentTransferComponent
+    PaymentTransferComponent,
+    EditMethodComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { IconModule } from '@coreui/icons-angular';
     TableModule,
     TooltipModule,
     FormModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     IconModule

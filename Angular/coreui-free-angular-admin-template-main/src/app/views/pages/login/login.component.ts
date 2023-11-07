@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service'
 import { Router } from '@angular/router'
 import { StorageService } from 'src/app/services/storage.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class LoginComponent {
   constructor(
     private authService:AuthService,
     private router:Router,
-    private storage:StorageService
+    private storage:StorageService,
+    private toastr: ToastrService
   ) { 
 
   }
@@ -30,7 +32,7 @@ export class LoginComponent {
       next: data =>{
         if(data.success == false)
         {
-          console.log('error');
+          this.toastr.error('Check your mail and password.'  , 'Error');
         }
         else{
           this.storage.saveUser(data);
@@ -41,7 +43,8 @@ export class LoginComponent {
         }
       },
       error: err => {
-        console.log('error 500')
+        console.log(err.error)
+        this.toastr.error('Check your mail and password.\n' + err.error.title  , 'Error');
       }
     })
   }

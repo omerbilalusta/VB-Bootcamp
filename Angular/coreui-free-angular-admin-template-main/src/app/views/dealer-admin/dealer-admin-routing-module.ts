@@ -9,6 +9,7 @@ const routes: Routes = [
   {
     path: 'list',
     component: ListComponent,
+    canActivate: [AuthGuardService],
     data: {
       title: 'Dealers'
     }
@@ -16,6 +17,7 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: EditComponent,
+    canActivate: [AuthGuardService],
     data: {
       title: 'Dealer Edit'
     }
@@ -23,6 +25,7 @@ const routes: Routes = [
   {
     path: 'add',
     component: AddComponent,
+    canActivate: [AuthGuardService],
     data: {
       title: 'Dealer Add'
     }

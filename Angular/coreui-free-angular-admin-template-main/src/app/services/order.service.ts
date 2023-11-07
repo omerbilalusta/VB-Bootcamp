@@ -45,12 +45,22 @@ export class OrderService {
     return this.http.delete(AUTH_API + 'Order?orderNumber='+ ordernumber, httpOptions);
   }
 
+  //Update Payment Method
+  updatePaymentMethod(orderNumber:number, paymentMethod:string):Observable<any>{
+    return this.http.put(AUTH_API + 'Order/UpdatePaymentMethod?orderNumber=' + orderNumber + '&paymentMethod=' + paymentMethod, httpOptions);
+  }
+
   //Approve-Decline
   approveOrder(orderNumber:number){
     return this.http.put(AUTH_API + 'Order/companyapprove?orderNumber='+ orderNumber, httpOptions);
   }
   declineOrder(orderNumber:number, description:any){
     return this.http.put(AUTH_API + 'Order/companyapprove?orderNumber='+ orderNumber + '&description=' + description, httpOptions);
+  }
+
+  //Confirm Payment
+  confirmPayment(orderNumber:number){
+    return this.http.put(AUTH_API + 'Order/Pay?orderNumber='+ orderNumber, httpOptions);
   }
 
   //InvoiceDetails

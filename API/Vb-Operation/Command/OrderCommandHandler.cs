@@ -16,7 +16,8 @@ namespace Vb_Operation.Command
 {
     public class OrderCommandHandler :
         IRequestHandler<CreateOrderCommand, ApiResponse<OrderResponse>>,
-        IRequestHandler<UpdateOrderCommand, ApiResponse>,
+        IRequestHandler<UpdateOrderCommand, ApiResponse>, 
+        IRequestHandler<UpdatePaymentMethodCommand, ApiResponse>,
         IRequestHandler<DeleteOrderCommand, ApiResponse>,
         IRequestHandler<CompanyApproveCommand, ApiResponse>,
         IRequestHandler<DealerPaymentCommand, ApiResponse>
@@ -50,7 +51,7 @@ namespace Vb_Operation.Command
             request.model.ProductList.ForEach(x =>
             {
                 var product = unitOfWork.ProductRepository.GetAsQueryable().Where(y => y.Id == x.Key).FirstOrDefault();
-                total += product.Price * x.Value;
+                total += ((product.Price * product.TaxRate * dealer.Dividend) + product.Price) * x.Value;
                 product.StockQuantity -= x.Value;
             });
             entity.Amount = total;
@@ -157,12 +158,34 @@ namespace Vb_Operation.Command
 
         public async Task<ApiResponse> Handle(DealerPaymentCommand request, CancellationToken cancellationToken)
         {
-            var entity = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.OrderNumber == request.orderNumber && x.CompanyId == request.userId); //Red edecegi order o company'ye ait olmalı, ayrica bununda kontrolu yapiliyor.
-            if (entity == null)
+            var entityOrder = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.OrderNumber == request.orderNumber);
+            if (entityOrder == null)
                 return new ApiResponse("Order not found");
 
-            entity.PaymentSuccess = true;
-            unitOfWork.OrderRepository.Update(entity, request.userId);
+            var entityInvoice = unitOfWork.InvoiceRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entityOrder.InvoiceId);
+            if (entityInvoice == null)
+                return new ApiResponse("Invoice not found");
+
+            entityOrder.PaymentSuccess = true;
+            entityInvoice.InvoiceExist = true;
+            unitOfWork.OrderRepository.Update(entityOrder, request.userId);
+            unitOfWork.InvoiceRepository.Update(entityInvoice, request.userId);
+            unitOfWork.CommitAsync(cancellationToken);
+            return new ApiResponse();
+        }
+
+        public async Task<ApiResponse> Handle(UpdatePaymentMethodCommand request, CancellationToken cancellationToken)
+        {
+            var entityOrder = unitOfWork.OrderRepository.GetAsQueryable("Invoice").FirstOrDefault(x => x.OrderNumber == request.orderNumber && x.DealerId == request.userId);
+            if (entityOrder == null)
+                return new ApiResponse("Order not found");
+
+            var entityPayment = unitOfWork.PaymentRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entityOrder.Invoice.PaymentId);
+            if (entityPayment == null)
+                return new ApiResponse("Payment not found");
+
+            entityOrder.PaymentMethod = request.paymentMethod;
+            entityPayment.PaymentMethod = request.paymentMethod;
             unitOfWork.CommitAsync(cancellationToken);
             return new ApiResponse();
         }

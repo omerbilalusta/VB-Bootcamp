@@ -22,8 +22,8 @@ export class DealerService {
   add(name:any, email:any, password:any, address:any, invoiceaddress:any, dividend:number, openaccountlimit:number):Observable<any>{
     return this.http.post(AUTH_API + 'Dealer', {name, email, password, address, invoiceaddress, dividend, openaccountlimit}, httpOptions);
   }
-  updateShort(dividend:number, openaccountlimit:number):Observable<any>{
-    return this.http.put(AUTH_API + 'Dealer/dealerUpdate?id=', {dividend, openaccountlimit}, httpOptions);
+  updateShort(dealerId:number, dividend:number, openaccountlimit:number):Observable<any>{
+    return this.http.put(AUTH_API + 'Dealer/dealerUpdate?id=' + dealerId, {dividend, openaccountlimit}, httpOptions);
   }
   delete(id:number):Observable<any>{
     return this.http.delete(AUTH_API + 'Dealer/?id=' + id, httpOptions);

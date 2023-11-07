@@ -5,11 +5,14 @@ import { PaymentCardComponent } from './payment-card/payment-card.component';
 import { PaymentTransferComponent } from './payment-transfer/payment-transfer.component';
 import { PaymentOpenaccountComponent } from './payment-openaccount/payment-openaccount.component';
 import { PaymentEFTComponent } from './payment-eft/payment-eft.component';
+import { EditMethodComponent } from './edit-method/edit-method.component';
+import { AuthGuardDealerService } from 'src/app/services/auth-guard-dealer.service';
 
 const routes: Routes = [
   {
     path: '',
     component: CreateComponent,
+    canActivate: [AuthGuardDealerService],
     data: {
       title: 'Payment'
     }
@@ -17,6 +20,7 @@ const routes: Routes = [
   {
     path: 'card/:id',
     component: PaymentCardComponent,
+    canActivate: [AuthGuardDealerService],
     data: {
       title: 'Pay with Card'
     },
@@ -24,6 +28,7 @@ const routes: Routes = [
   {
     path: 'EFT/:id',
     component: PaymentEFTComponent,
+    canActivate: [AuthGuardDealerService],
     data: {
       title: 'Pay with EFT'
     },
@@ -31,6 +36,7 @@ const routes: Routes = [
   {
     path: 'openaccount/:id',
     component: PaymentOpenaccountComponent,
+    canActivate: [AuthGuardDealerService],
     data: {
       title: 'Pay with Open Account'
     },
@@ -38,9 +44,18 @@ const routes: Routes = [
   {
     path: 'transfer/:id',
     component: PaymentTransferComponent,
+    canActivate: [AuthGuardDealerService],
     data: {
       title: 'Pay with Transfer'
     }
+  },
+  {
+    path: 'editmethod/:id',
+    component: EditMethodComponent,
+    canActivate: [AuthGuardDealerService],
+    data: {
+      title: 'Edit Payment Method'
+    },
   }
 ];
 

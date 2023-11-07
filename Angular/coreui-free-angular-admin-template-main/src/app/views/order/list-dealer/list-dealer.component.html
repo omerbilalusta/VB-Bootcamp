@@ -1,13 +1,12 @@
 <c-card class="mb-4">
   <c-card-header ngPreserveWhitespaces>
-      <strong>Angular Input group</strong> <small>Wrapping</small>
+      <strong>Order List</strong>
    </c-card-header>
    <c-card-body>
       <c-card class="mb-4">
           <c-card-body>
             <p class="text-medium-emphasis small">
-              Using the most basic table CoreUI, here&#39;s how <code>cTable</code>-based
-              tables look in CoreUI.
+              You can see your orders, which is declined or approved. And also you can pay for them.
             </p>
               <table cTable>
                 <thead>
@@ -44,8 +43,10 @@
                     </ng-template>
                   </button>
                   <td>
-                    <button *ngIf="item.isActive == false || item.paymentSuccess == true" disabled class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
-                    <button *ngIf="item.isActive == true && item.paymentSuccess == false" class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
+                    <button  [disabled]="item.isActive == false || item.paymentSuccess == true" class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-warning text-white" (click)="changePaymentMethod(item.orderNumber)">Change Payment Method</button>
                   </td>
                 </tr>
                 </tbody>

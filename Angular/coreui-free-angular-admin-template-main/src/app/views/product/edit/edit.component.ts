@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -25,7 +26,7 @@ export class EditComponent implements OnInit{
   });
 
 
-  constructor(private storageService:StorageService, private productService:ProductService, private router:Router, private authService:AuthService){}
+  constructor(private storageService:StorageService, private productService:ProductService, private router:Router, private authService:AuthService, private toastr:ToastrService){}
   
   ngOnInit(): void {
     this.load();
@@ -33,20 +34,26 @@ export class EditComponent implements OnInit{
 
   load(){
     this.productService.getById(this.productId).subscribe(
-      (data) => {        
-        if(this.user.id != data.response.company.id && this.user.role == 'admin') // Buradaki amaç, bir kullanıcı başka bir company'e ait ürünü düzenlemeye çalışırsa onu engellemek.
+      (data) => {  
+        if(data.success == false)
+        {
+          this.router.navigate(['/product/list']);
+          this.toastr.error("Product not found"  , 'Error');
+        }
+        else{
+          if(this.user.id != data.response.company.id && this.user.role == 'admin') // Buradaki amaç, bir kullanıcı başka bir company'e ait ürünü düzenlemeye çalışırsa onu engellemek.
           this.router.navigate(['/product/list']);
 
-        this.productForm.controls['name'].setValue(data.response.name);           //Kontroldeki koşul gerçekleşmediyse formu dolduruluyor ve sayfa yükleniyor.
-        this.productForm.controls['description'].setValue(data.response.description);
-        this.productForm.controls['type'].setValue(data.response.type);
-        this.productForm.controls['stockQuantity'].setValue(data.response.stockQuantity);
-        this.productForm.controls['price'].setValue(data.response.price);
-        this.productForm.controls['taxRate'].setValue(data.response.taxRate);
-        
+          this.productForm.controls['name'].setValue(data.response.name);           //Kontroldeki koşul gerçekleşmediyse formu dolduruluyor ve sayfa yükleniyor.
+          this.productForm.controls['description'].setValue(data.response.description);
+          this.productForm.controls['type'].setValue(data.response.type);
+          this.productForm.controls['stockQuantity'].setValue(data.response.stockQuantity);
+          this.productForm.controls['price'].setValue(data.response.price);
+          this.productForm.controls['taxRate'].setValue(data.response.taxRate);
+        }
       },
       (error) => {
-        console.log(error);
+        this.toastr.error("Product not found"  , 'Error');
       }
     );
   }
@@ -59,9 +66,28 @@ export class EditComponent implements OnInit{
           console.log('error');
         else
           this.router.navigate(['/product/list']);
+          this.toastr.success("Product updated successfully"  , 'Success');
       },
       error: err => {
-        console.log(err.error.errors);
+        if (err.error.errors.Description) {
+          this.toastr.error(err.error.errors.Description  , 'Error');
+        }
+        if (err.error.errors.Price) {
+          this.toastr.error(err.error.errors.Price  , 'Error');
+        }
+        if (err.error.errors.StockQuantity) {
+          this.toastr.error(err.error.errors.StockQuantity  , 'Error');
+        }
+        if (err.error.errors.Name) {
+          this.toastr.error(err.error.errors.Name  , 'Error');
+        }
+        if (err.error.errors.TaxRate) {
+          this.toastr.error(err.error.errors.TaxRate  , 'Error');
+        }
+        if (err.error.errors.Type) {
+          this.toastr.error(err.error.errors.Type  , 'Error');
+        }
+        console.log(err.error)
       }
     })
   }

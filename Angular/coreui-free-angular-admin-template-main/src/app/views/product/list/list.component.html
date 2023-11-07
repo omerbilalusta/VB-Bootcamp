@@ -1,13 +1,12 @@
 <c-card class="mb-4">
     <c-card-header ngPreserveWhitespaces>
-        <strong>Angular Input group</strong> <small>Wrapping</small>
+        <strong>Product List</strong>
      </c-card-header>
      <c-card-body>
         <c-card class="mb-4">
             <c-card-body>
               <p class="text-medium-emphasis small">
-                Using the most basic table CoreUI, here&#39;s how <code>cTable</code>-based
-                tables look in CoreUI.
+                Products can be seen here by all users.
               </p>
                 <table cTable>
                   <thead>
@@ -29,11 +28,14 @@
                     <td>{{item.description}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.stockQuantity}}</td>
-                    <td>{{item.price}}</td>
+                    <td>{{item.price}} ₺</td>
                     <td>{{item.company.name}}</td>
                     <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="isDelete(item.id)"><button class="btn btn-danger">Delete</button></a></td>
                     <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td>
-                  </tr>     <!--Eğer bu sayfa company türünde bir kullanıcı tarafından açıldıysa ve ürünün sahibi admin ise silme ve düzenleme butonları görünür-->
+                  </tr>     <!--Eğer bu sayfa company türünde bir kullanıcı tarafından açıldıysa kendisine ait olan ürünlerin silme ve düzenleme butonları görünür.
+                                Bir company başka company'e ait product'ı güncelleyemesin diye server side'da onlem alındı.
+                                Bunu deneyen kullanıcılar productlist sayfasına geri yönlendiriliyor. Olurda bir şekilde
+                                güncellemeye çalışırlarsa yine updateProduct endpointi için server side'da önlem alındı.-->
                   </tbody>
                 </table>
             </c-card-body>

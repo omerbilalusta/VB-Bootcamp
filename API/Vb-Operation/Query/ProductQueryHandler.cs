@@ -32,14 +32,12 @@ namespace Vb_Operation.Query
         public async Task<ApiResponse<List<ProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
             var list = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).ToList();
-            var user = unitOfWork.DealerRepository.GetAsQueryable().Where(x => x.IsActive != false && x.Id == request.userId).FirstOrDefault();
-
-            if(user != null)
+            if (request.userRole == "dealer")
             {
+                var user = unitOfWork.DealerRepository.GetAsQueryable().Where(x => x.IsActive != false && x.Id == request.userId).FirstOrDefault();
                 list.ForEach(x =>
                 {
-                    x.Price *= x.TaxRate;
-                    x.Price *= user.Dividend;
+                    x.Price += x.Price * user.Dividend * x.TaxRate;
                 });
             }
                 
@@ -50,7 +48,7 @@ namespace Vb_Operation.Query
 
         public async Task<ApiResponse<ProductResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).FirstOrDefault(x => x.Id == request.Id);
+            var entity = unitOfWork.ProductRepository.GetAsQueryable("Company").Where(x => x.IsActive != false).FirstOrDefault(x => x.Id == request.Id && x.CompanyId == request.userId);
 
             if (entity == null)
                 return new ApiResponse<ProductResponse>("Product not found");

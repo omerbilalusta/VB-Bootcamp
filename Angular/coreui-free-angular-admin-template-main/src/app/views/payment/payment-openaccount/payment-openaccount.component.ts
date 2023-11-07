@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -13,7 +14,7 @@ export class PaymentOpenaccountComponent {
   order:any;                                                    //yapıp burayı değiştireceğim.
   user:any = this.storageService.getUser();
 
-  constructor(private router:Router, private orderService:OrderService, private storageService:StorageService) {  }
+  constructor(private router:Router, private orderService:OrderService, private storageService:StorageService, private toastr:ToastrService) {  }
 
   ngOnInit(): void {
     this.load();
@@ -36,8 +37,14 @@ export class PaymentOpenaccountComponent {
     {
       if(data.success == false){
         console.log(data.message);
+        this.router.navigate(['/order/list-dealer']);
+        this.toastr.error(data.message  , 'Error');
       }
-      this.router.navigate(['/order/list-dealer']);
+      else{
+        this.router.navigate(['/order/list-dealer']);
+        this.toastr.success("Payment succeed"  , 'Success');
+      }
+      
     },  (error) =>
     {
       console.log(error);

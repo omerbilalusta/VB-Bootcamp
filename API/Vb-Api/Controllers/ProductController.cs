@@ -24,7 +24,8 @@ namespace Vb_Bootcamp.Controllers
         public async Task<ApiResponse<List<ProductResponse>>> GetAllProducts()
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetAllProductQuery(int.Parse(userId));
+            var userRole = (User.Identity as ClaimsIdentity).FindFirst("Role").Value;
+            var operation = new GetAllProductQuery(int.Parse(userId), userRole);
             var result = await mediator.Send(operation);
             return result;
         }
@@ -34,7 +35,8 @@ namespace Vb_Bootcamp.Controllers
         [Authorize(Roles = "admin,dealer")]
         public async Task<ApiResponse<ProductResponse>> GetProdutsById([FromQuery] int Id)
         {
-            var operation = new GetProductByIdQuery(Id);
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new GetProductByIdQuery(Id, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }

@@ -109,7 +109,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "dealer")]
+        [Authorize(Roles = "admin, dealer")]
         [HttpPut("Pay")]
         public async Task<ApiResponse> Pay([FromQuery] int orderNumber)
         {
@@ -125,6 +125,16 @@ namespace Vb_Bootcamp.Controllers
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new PayWithOpenAccountCommand(orderNumber, int.Parse(userId));
+            var result = await mediator.Send(operation);
+            return result;
+        }
+
+        [Authorize(Roles = "dealer")]
+        [HttpPut("UpdatePaymentMethod")]
+        public async Task<ApiResponse> UpdatePaymentMethod([FromQuery] int orderNumber, [FromQuery] string paymentMethod)
+        {
+            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
+            var operation = new UpdatePaymentMethodCommand(orderNumber, paymentMethod, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }

@@ -45,8 +45,12 @@ export class AuthService {
     return user;
   }
 
+  getRole(){
+    let role = this.storage.getUser().response.role;
+    return role;
+  }
+
   fetchExample():Observable<any>{
-    // console.log('fetch');
     return this.http.get(AUTH_API + 'Token/tokenTest',httpOptions);
   }
 }

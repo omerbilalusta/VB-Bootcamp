@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -13,15 +14,10 @@ export class ListDealerComponent {
   invoiceDetails: any[] = [];
   user:any = this.storageService.getUser().response;
 
-  visible = false;
-
-  constructor(private orderService:OrderService, private router:Router,private storageService:StorageService) {}
+  constructor(private orderService:OrderService, private router:Router,private storageService:StorageService, private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.load();
-    setTimeout(() => {
-      this.visible = !this.visible;
-    }, 3000);
   }
   
   load(){
@@ -32,6 +28,7 @@ export class ListDealerComponent {
     }, (error) =>
     {
       console.log(error);
+      this.toastr.error('Error');
     });
 
     this.orderService.getInvoiceDetails().subscribe((data) =>
@@ -40,7 +37,8 @@ export class ListDealerComponent {
       console.log(this.invoiceDetails);
     },  (error) =>
     {
-      console.log(error);this.router.navigate(['/dashboard']);
+      console.log(error);
+      this.toastr.error('Error');
     });
   }
 
@@ -53,5 +51,9 @@ export class ListDealerComponent {
       this.router.navigate(['/payment/openaccount/', orderNumber]);
     else if(paymentMethod == "Transfer")
       this.router.navigate(['/payment/transfer/', orderNumber]);
+  }
+
+  changePaymentMethod(orderNumber:number){
+    this.router.navigate(['/payment/editmethod/', orderNumber]);
   }
 }

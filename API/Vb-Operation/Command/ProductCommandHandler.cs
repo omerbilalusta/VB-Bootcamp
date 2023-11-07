@@ -38,7 +38,7 @@ namespace Vb_Operation.Command
 
         public async Task<ApiResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var entity = await unitOfWork.ProductRepository.GetAsQueryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var entity = await unitOfWork.ProductRepository.GetAsQueryable().FirstOrDefaultAsync(x => x.Id == request.Id && x.CompanyId == request.userId, cancellationToken);
             if (entity == null)
                 return new ApiResponse("Product not found");
 

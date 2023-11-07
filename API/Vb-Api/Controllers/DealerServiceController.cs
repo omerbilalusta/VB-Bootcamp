@@ -20,7 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [Authorize(Roles = "dealer")]
+        
         [HttpPost]
         public async Task<ApiResponse<DealerResponseShort>> Post([FromBody] DealerServiceRequest request)
         {

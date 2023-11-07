@@ -12,11 +12,20 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
+    name: 'Products'
+  },
+  {
+    name: 'Products',
+    url: '/product/list',
+    iconComponent: { name: 'cil-speedometer' }
+  },
+  {
+    title: true,
     name: 'Admin'
   },
   {
     name: 'Dealer',
-    url: '/adminDealer',
+    url: '/admin-dealer',
     iconComponent: { name: 'cil-speedometer' },
     children: [
           {
@@ -26,10 +35,21 @@ export const navItems: INavData[] = [
           {
             name: 'Dealer Add',
             url: '/adminDealer/add'
+          }
+      ]
+  },
+  {
+    name: 'Order-Product',
+    url: '/admin-order',
+    iconComponent: { name: 'cil-speedometer' },
+    children: [
+          {
+            name: 'Admin-Order List',
+            url: '/order/list'
           },
           {
-            name: 'Order List',
-            url: '/order/list'
+            name: 'Product Add',
+            url: '/product/add'
           }
       ]
   },
@@ -38,19 +58,8 @@ export const navItems: INavData[] = [
     name: 'Dealer'
   },
   {
-    name: 'Products',
-    url: '/product/list',
-    iconComponent: { name: 'cil-basket' },
-    children: [
-      {
-        name: 'Products',
-        url: '/product/list'
-      }
-    ]
-  },
-  {
     name: 'Order',
-    url: '/order/list',
+    url: '/dealer-order',
     iconComponent: { name: 'cil-calculator' },
     children: [
       {
@@ -58,15 +67,10 @@ export const navItems: INavData[] = [
         url: '/order/add'
       },
       {
-        name: 'Order List',
+        name: 'Dealer-Order List',
         url: '/order/list-dealer'
       }
     ]
-  },
-  {
-    name: 'Payment',
-    url: '/payment/pay:orderId',
-    iconComponent: { name: 'cil-basket' }
   },
   {
     title: true,

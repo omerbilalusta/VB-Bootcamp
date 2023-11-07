@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router'
 import { StorageService } from 'src/app/services/storage.service';
 import { ProductService } from 'src/app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class AddComponent {
   constructor(
     private prodService:ProductService,
     private router:Router,
-    private storage:StorageService
+    private storage:StorageService,
+    private toastr:ToastrService
   ) { 
 
   }
@@ -38,11 +40,29 @@ export class AddComponent {
         }
         else{
           this.router.navigate(['/product/list']);
+          this.toastr.success("Product added successfully"  , 'Success');
         }
       },
       error: err => {
-        console.log(err.error.errors);
-        console.log(typeof err.error.errors);
+        if (err.error.errors.Description) {
+          this.toastr.error(err.error.errors.Description  , 'Error');
+        }
+        if (err.error.errors.Price) {
+          this.toastr.error(err.error.errors.Price  , 'Error');
+        }
+        if (err.error.errors.StockQuantity) {
+          this.toastr.error(err.error.errors.StockQuantity  , 'Error');
+        }
+        if (err.error.errors.Name) {
+          this.toastr.error(err.error.errors.Name  , 'Error');
+        }
+        if (err.error.errors.TaxRate) {
+          this.toastr.error(err.error.errors.TaxRate  , 'Error');
+        }
+        if (err.error.errors.Type) {
+          this.toastr.error(err.error.errors.Type  , 'Error');
+        }
+        console.log(err.error)
       }
     })
   }

@@ -74,9 +74,7 @@ namespace Vb_Operation.Command
             var mapped = mapper.Map<Dealer>(request.model);
             var entity = await unitOfWork.DealerRepository.CreateAsync(mapped, request.userId, cancellationToken);
             entity.Password = Sha256.Create(request.model.Password);
-            entity.Dividend = 0;
             entity.OpenAccountLimit = 0;
-            entity.Role = "dealer";
             unitOfWork.CommitAsync(cancellationToken);
 
             var response = mapper.Map<DealerResponseShort>(entity);

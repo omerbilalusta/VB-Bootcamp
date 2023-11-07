@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService {
+export class AuthGuardDealerService {
 
   constructor(private auth:AuthService,private router:Router, private toastr:ToastrService) { }
 
@@ -18,7 +17,7 @@ export class AuthGuardService {
   checkUserLogin(): boolean {
     if (this.auth.isLoggin()) {
       const userRole = this.auth.getRole();
-      if (userRole && userRole === "dealer") {
+      if (userRole && userRole === "admin") {
         this.toastr.error('You are not authorized to access this page');
         return false;
       }

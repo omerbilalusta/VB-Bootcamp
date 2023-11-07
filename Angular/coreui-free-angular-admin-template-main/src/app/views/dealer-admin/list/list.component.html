@@ -1,13 +1,12 @@
 <c-card class="mb-4">
     <c-card-header ngPreserveWhitespaces>
-        <strong>Angular Input group</strong> <small>Wrapping</small>
+        <strong>Dealer List</strong>
      </c-card-header>
      <c-card-body>
         <c-card class="mb-4">
             <c-card-body>
               <p class="text-medium-emphasis small">
-                Using the most basic table CoreUI, here&#39;s how <code>cTable</code>-based
-                tables look in CoreUI.
+                Companies can see dealers who registered in system. They can edit or delete dealers.
               </p>
                 <table cTable>
                   <thead>
@@ -29,7 +28,7 @@
                     <td>{{item.address}}</td>
                     <td>{{item.dividend}}</td>
                     <td>{{item.openAccountLimit}}</td>
-                    <td><a routerLink="/adminDealer/edit/{{item.id}}">Edit</a></td>
+                    <td><a routerLink="/adminDealer/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td>
                     <td><a (click)="isDelete(item.id)"><button class="btn btn-danger">X</button></a></td>
                   </tr>
                   </tbody>

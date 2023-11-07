@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-list',
@@ -14,10 +16,25 @@ export class ListComponent implements OnInit{
   products: any[] = [];
   user:any = this.storageService.getUser().response;
 
-  constructor(private productService:ProductService, private router:Router,private storageService:StorageService) {}
+  constructor(
+    private productService:ProductService,
+    private authService:AuthService,
+    private router:Router,
+    private storageService:StorageService,
+    private toastr: ToastrService
+    ) {}
 
   ngOnInit(): void {
     this.load();
+    this.authService.fetchExample().subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err:any) => {
+        this.router.navigate(['/login']);
+        this.toastr.error("Token expired. Login again."  , 'Error');
+      }
+    });
   }
   
   load(){

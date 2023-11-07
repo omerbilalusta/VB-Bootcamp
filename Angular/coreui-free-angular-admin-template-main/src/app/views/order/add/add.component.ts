@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -17,7 +18,7 @@ export class AddComponent implements OnInit{
   loading = true;
   cart: { [key: string]: number; } = {};
   
-  constructor(private productService:ProductService, private orderService:OrderService) {}
+  constructor(private productService:ProductService, private orderService:OrderService, private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.load();
@@ -32,6 +33,7 @@ export class AddComponent implements OnInit{
     }, (error) =>
     {
       console.log(error);
+      this.toastr.error('Error');
     });
     this.productService.getAllCompanies().subscribe((data) =>
     {
@@ -39,6 +41,7 @@ export class AddComponent implements OnInit{
     }, (error) =>
     {
       console.log(error);
+      this.toastr.error('Error');
     })
   }
   
@@ -57,13 +60,15 @@ export class AddComponent implements OnInit{
     this.orderService.createOrder(this.selectedValuePayment, this.cart).subscribe({
       next: data =>{
         if(data.response == false)
-          console.log('error');
+          this.toastr.error('Error');
         else
           console.log(data);
           window.location.reload();
+          this.toastr.success("Order succeed"  , 'Success');
       },
       error: err => {
         console.log(err.error.errors);
+        this.toastr.error(err.error.title  , 'Error');
       }
     })
   }

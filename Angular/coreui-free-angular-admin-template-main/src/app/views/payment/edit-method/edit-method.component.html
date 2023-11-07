@@ -1,0 +1,30 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4">
+              <form [formGroup]="paymentForm" cForm>
+                <h4>Change Payment Method</h4>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <select aria-label="Default select example" formControlName="select" cSelect [(ngModel)]="selectedValuePayment">
+                    <option value="Card" selected>Card</option>
+                    <option value="EFT">EFT</option>
+                    <option value="Open Account">Open Account</option>
+                    <option value="Transfer">Transfer</option>
+                  </select>
+                </c-input-group>
+                <div class="d-grid">
+                  <button (click)="onSubmit()" cButton color="success">Update</button>
+                </div>
+              </form>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+</div>
+  

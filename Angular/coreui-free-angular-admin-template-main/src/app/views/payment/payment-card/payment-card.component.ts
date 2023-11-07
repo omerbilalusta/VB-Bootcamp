@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class PaymentCardComponent {
   orderNumber:number = Number(this.router.url.split('/')[3]);   //orderNumber'ı öğrenmek için amatörce bir yol oldu, zaman olursa gerekli araştırmayı tekrar 
   order:any;                                                    //yapıp burayı değiştireceğim.
 
-  constructor(private router:Router, private orderService:OrderService) {  }
+  constructor(private router:Router, private orderService:OrderService, private toastr:ToastrService) {  }
 
   ngOnInit(): void {
     this.load();
@@ -43,6 +44,7 @@ export class PaymentCardComponent {
     {
       console.log('Order paid successfully');
       this.router.navigate(['/order/list-dealer']);
+      this.toastr.success("Payment succeed"  , 'Success');
     },  (error) =>
     {
       console.log(error);

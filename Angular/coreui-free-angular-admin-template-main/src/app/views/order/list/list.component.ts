@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -15,7 +15,7 @@ export class ListComponent {
 
   visible = false;
 
-  constructor(private orderService:OrderService, private router:Router,private storageService:StorageService) {}
+  constructor(private orderService:OrderService,private storageService:StorageService, private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.load();
@@ -45,22 +45,34 @@ export class ListComponent {
   }
 
   decline(id:number){
-    console.log(id + " declined");
+    console.log(id + " order declined");
     this.orderService.declineOrder(id, "Declined by Company").subscribe((data) =>
     {
-      console.log('Order declined successfully');
       window.location.reload();
+      this.toastr.success('Order declined successfully');
     },  (error) =>
     {
       console.log(error);
     });
   }
   approve(id:number){
-    console.log(id + " approved");
+    console.log(id + " order approved");
     this.orderService.approveOrder(id).subscribe((data) =>
     {
-      console.log('Order approved successfully');
       window.location.reload();
+      this.toastr.success('Order approved successfully');
+    },  (error) =>
+    {
+      console.log(error);
+    });
+  }
+
+  confirmPayment(id:number){
+    console.log(id + " payment confirmed");
+    this.orderService.confirmPayment(id).subscribe((data) =>
+    {
+      window.location.reload();
+      this.toastr.success('Payment confirmed successfully');
     },  (error) =>
     {
       console.log(error);
