@@ -13,14 +13,23 @@ export class ProductService {
 
   constructor(private http:HttpClient) { }
 
-  list():Observable<any>{
+  listAdmin():Observable<any>{
     return this.http.get(AUTH_API + 'Product/GetAllProducts', httpOptions);
   }
-  getById(id:number):Observable<any>{
+  listService():Observable<any>{
+    return this.http.get(AUTH_API + 'ProductService/GetAllProducts', httpOptions);
+  }
+  getByIdAdmin(id:number):Observable<any>{
     return this.http.get(AUTH_API + 'Product/GetProdutsById?Id=' + id, httpOptions);
   }
-  getByCompanyFilter(id:number):Observable<any>{
+  getByIdService(id:number):Observable<any>{
+    return this.http.get(AUTH_API + 'ProductService/GetProdutsById?Id=' + id, httpOptions);
+  }
+  getByCompanyFilterAdmin(id:number):Observable<any>{
     return this.http.get(AUTH_API + 'Product/filter?Id=' + id, httpOptions);
+  }
+  getByCompanyFilterService(id:number):Observable<any>{
+    return this.http.get(AUTH_API + 'ProductService/filter?Id=' + id, httpOptions);
   }
   add(name:any, description:any, type:any, stockQuantity:number, price:number, taxRate:number):Observable<any>{
     return this.http.post(AUTH_API + 'Product', {
@@ -37,7 +46,11 @@ export class ProductService {
     }, httpOptions);
   }
 
-  getAllCompanies():Observable<any>{
+  getAllCompaniesAdmin():Observable<any>{
     return this.http.get(AUTH_API + 'Company/GetAllCompanies', httpOptions);
+  }
+
+  getAllCompaniesService():Observable<any>{
+    return this.http.get(AUTH_API + 'CompanyService/GetAllCompanies', httpOptions);
   }
 }

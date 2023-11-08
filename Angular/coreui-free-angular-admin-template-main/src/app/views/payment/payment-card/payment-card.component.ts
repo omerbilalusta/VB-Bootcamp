@@ -28,7 +28,7 @@ export class PaymentCardComponent {
   }
 
   load(){
-    this.orderService.getByOrderNumber(this.orderNumber).subscribe({
+    this.orderService.getByOrderNumberService(this.orderNumber).subscribe({
       next: data => {
         this.order = data.response;
         console.log(this.order);
@@ -40,7 +40,7 @@ export class PaymentCardComponent {
   }
 
   pay(){
-    this.orderService.pay(this.orderNumber).subscribe((data) =>
+    this.orderService.payService(this.orderNumber).subscribe((data) =>
     {
       console.log('Order paid successfully');
       this.router.navigate(['/order/list-dealer']);

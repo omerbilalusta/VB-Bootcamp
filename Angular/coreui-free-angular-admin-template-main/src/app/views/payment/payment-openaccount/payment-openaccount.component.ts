@@ -21,7 +21,7 @@ export class PaymentOpenaccountComponent {
   }
 
   load(){
-    this.orderService.getByOrderNumber(this.orderNumber).subscribe({
+    this.orderService.getByOrderNumberService(this.orderNumber).subscribe({
       next: data => {
         this.order = data.response;
         console.log(this.order);
@@ -33,7 +33,7 @@ export class PaymentOpenaccountComponent {
   }
 
   pay(orderNumber:number){
-    this.orderService.payWithOpenAccount(this.orderNumber).subscribe((data:any) =>
+    this.orderService.payWithOpenAccountService(this.orderNumber).subscribe((data:any) =>
     {
       if(data.success == false){
         console.log(data.message);

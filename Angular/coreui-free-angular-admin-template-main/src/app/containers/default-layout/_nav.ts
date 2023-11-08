@@ -73,6 +73,11 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    name: 'Invoices',
+    url: '/invoice/list',
+    iconComponent: { name: 'cil-chart' }
+  },
+  {
     title: true,
     name: 'Theme'
   },

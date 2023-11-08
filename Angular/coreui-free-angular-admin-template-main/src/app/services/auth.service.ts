@@ -18,7 +18,7 @@ export class AuthService {
     private storage:StorageService
   ) { }
 
-  register(name:any,email:any,password:any,address:any,invoiceaddress:any):Observable<any>{
+  registerService(name:any,email:any,password:any,address:any,invoiceaddress:any):Observable<any>{
     return this.http.post(AUTH_API + 'DealerService',{
       name,
       email,

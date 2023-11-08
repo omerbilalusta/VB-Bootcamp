@@ -27,6 +27,5 @@ export class CreateComponent implements OnInit{
         console.log(err);
       }
     })
-    this.orderService.getByOrderNumber
   }
 }

@@ -6,7 +6,7 @@ import { EditComponent } from './edit/edit.component';
 import { ProductRoutingModule } from './product-routing-module';
 import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { IconModule } from '@coreui/icons-angular';
 
@@ -25,6 +25,7 @@ import { IconModule } from '@coreui/icons-angular';
     HttpClientModule,
     ButtonModule,
     FormModule,
+    FormsModule,
     ReactiveFormsModule,
     GridModule,
     IconModule

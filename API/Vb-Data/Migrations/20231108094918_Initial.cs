@@ -379,15 +379,19 @@ namespace Vb_Data.Migrations
                 columns: new[] { "Id", "Description", "Type", "StockQuantity", "Price", "InsertDate", "InsertUserId", "Name", "TaxRate", "CompanyId", "UpdateDate" },
                 values: new object[] { 13, "Repair of teeth healthy", "Temizlik", 250, 25.00, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Çamaşır Suyu", 0.20, 5, null });
 
-            migrationBuilder.InsertData(
+             migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 1, 535353, "Card", "Room 907", 240, false, false, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 1, 535353, "Card", "Room 907", 240, true, true, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+	        migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 2, 343434, "OpenAccount", "Room 907", 320, false, false, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
             migrationBuilder.InsertData(
                 table: "Invoice",
                 columns: new[] { "Id", "Amount", "PaymentMethod", "InvoiceExist", "Address", "OrderId", "PaymentId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 1, 240, "Card", false, "Room 907", 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 1, 240, "Card", true, "Room 907", 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
             migrationBuilder.InsertData(
                 table: "Payment",
@@ -402,6 +406,10 @@ namespace Vb_Data.Migrations
                 table: "OrderDetail",
                 columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
                 values: new object[] { 2, 8, 80, 2, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+	        migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 3, 2, 240, 13, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
 
             migrationBuilder.CreateIndex(

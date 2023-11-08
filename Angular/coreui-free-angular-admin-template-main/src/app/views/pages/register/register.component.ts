@@ -26,14 +26,13 @@ export class RegisterComponent {
   constructor(
     private authService:AuthService,
     private router:Router,
-    private storage:StorageService,
     private toastr: ToastrService
   ) { 
 
   }
   onSubmit(){
     const { name,email,password,address,invoiceaddress } = this.registerForm.value
-    this.authService.register(name,email,password,address,invoiceaddress).subscribe({
+    this.authService.registerService(name,email,password,address,invoiceaddress).subscribe({
       next: data =>{
         if(data.success == false)
         {

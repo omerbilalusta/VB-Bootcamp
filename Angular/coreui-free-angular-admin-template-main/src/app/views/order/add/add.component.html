@@ -46,9 +46,9 @@
                     <td>{{item.description}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.stockQuantity}}</td>
-                    <td>{{item.price}}</td>
+                    <td>{{item.price}} ₺</td>
                     <td>{{item.company.name}}</td>
-                    <td><a (click)="addToCart(item.id,1)"><button class="btn btn-green">Add</button></a></td>
+                    <td><a (click)="addToCart(item.id,1)"><button class="btn btn-primary">Add</button></a></td>
                     <!-- <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td> -->
                   </tr>
                   </tbody>

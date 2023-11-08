@@ -37,7 +37,7 @@ export class AddComponent{
       this.toastr.error("Passwords doesn't match ", 'Error');
     }
     else{
-      this.dealerService.add(name, email, password, address, invoiceaddress, Number(dividend), Number(openaccountlimit)).subscribe({
+      this.dealerService.addAdmin(name, email, password, address, invoiceaddress, Number(dividend), Number(openaccountlimit)).subscribe({
         next: data =>{
           if(data.success == false)
             console.log('error');

@@ -33,7 +33,7 @@ export class EditComponent implements OnInit{
   }
 
   load(){
-    this.productService.getById(this.productId).subscribe(
+    this.productService.getByIdAdmin(this.productId).subscribe(
       (data) => {  
         if(data.success == false)
         {

@@ -19,7 +19,7 @@ export class PaymentEFTComponent {
   }
 
   load(){
-    this.orderService.getByOrderNumber(this.orderNumber).subscribe({
+    this.orderService.getByOrderNumberService(this.orderNumber).subscribe({
       next: data => {
         this.order = data.response;
       },

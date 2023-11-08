@@ -26,7 +26,7 @@ export class AddComponent implements OnInit{
   }
   
   load(){
-    this.productService.list().subscribe((data) =>
+    this.productService.listService().subscribe((data) =>
     {
       this.products = data.response;
       this.loading = false;
@@ -35,7 +35,7 @@ export class AddComponent implements OnInit{
       console.log(error);
       this.toastr.error('Error');
     });
-    this.productService.getAllCompanies().subscribe((data) =>
+    this.productService.getAllCompaniesService().subscribe((data) =>
     {
       this.companies = data.response;
     }, (error) =>
@@ -58,7 +58,7 @@ export class AddComponent implements OnInit{
 
   confirmCart(){
     if(this.selectedValuePayment != "0"){
-      this.orderService.createOrder(this.selectedValuePayment, this.cart).subscribe({
+      this.orderService.createOrderService(this.selectedValuePayment, this.cart).subscribe({
         next: data =>{
           if(data.response == false)
             this.toastr.error('Error');

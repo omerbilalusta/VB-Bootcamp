@@ -50,12 +50,10 @@
                       <p *ngIf="!item.isActive && !item.companyApprove">X</p>
                     </td>
                     <button cButton color="white">
-                      <button *ngIf="item.companyApprove == true || item.isActive == false" disabled="true" class="btn btn-success text-white" (click)="approve(item.orderNumber)">Approve</button>
-                      <button *ngIf="item.companyApprove == false && item.isActive == true" class="btn btn-success text-white" (click)="approve(item.orderNumber)">Approve</button>
+                      <button [disabled]="item.companyApprove == true || item.isActive == false" class="btn btn-success text-white" (click)="approve(item.orderNumber)">Approve</button>
                     </button>
                     <button cButton color="white">
-                      <button *ngIf="item.isActive == true && item.companyApprove == false"  class="btn btn-danger text-white" (click)="decline(item.orderNumber)">Decline</button>
-                      <button *ngIf="item.isActive == false || item.companyApprove == true " disabled="true" class="btn btn-danger text-white" (click)="decline(item.orderNumber)">Decline </button>
+                      <button [disabled]="item.isActive == false || item.companyApprove == true " class="btn btn-danger text-white" (click)="decline(item.orderNumber)">Decline </button>
                     </button>
                   </tr>
                   </tbody>

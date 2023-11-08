@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vb_Base.Model;
 using Vb_Data.Domain;
 using Vb_Data.Domain.User;
 using Vb_Data.Repository;
@@ -23,5 +24,6 @@ namespace Vb_Data.UnitOfWork
         IGenericRepository<OrderReject> OrderRejectRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }
+        IGenericRepository<DapperModel> DapperRepository { get; }
     }
 }

@@ -8,9 +8,9 @@ using Vb_DTO;
 
 namespace Vb_Operation.Validation
 {
-    public class InvoiceDetailValidator : AbstractValidator<OrderDetailRequest>
+    public class OrderDetailValidator : AbstractValidator<OrderDetailRequest>
     {
-        public InvoiceDetailValidator()
+        public OrderDetailValidator()
         {
             RuleFor(x => x.Piece).NotEmpty().WithMessage("Piece can not be empty").GreaterThanOrEqualTo(0);
             RuleFor(x => x.TotalAmountByProduct).NotEmpty().WithMessage("TotalAmountByProduct can not be empty").GreaterThanOrEqualTo(0);

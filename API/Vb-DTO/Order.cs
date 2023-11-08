@@ -19,6 +19,7 @@ namespace Vb_DTO
         public decimal Amount { get; set; }
         public bool PaymentSuccess { get; set; }
         public bool CompanyApprove { get; set; }
+        public string Address { get; set; }
         public bool IsActive { get; set; }
 
         public int DealerId { get; set; }
@@ -36,6 +37,7 @@ namespace Vb_DTO
         public decimal Amount { get; set; }
         public bool PaymentSuccess { get; set; }
         public bool CompanyApprove { get; set; }
+        public string Address { get; set; }
 
         public int DealerId { get; set; }
         public int CompanyId { get; set; }

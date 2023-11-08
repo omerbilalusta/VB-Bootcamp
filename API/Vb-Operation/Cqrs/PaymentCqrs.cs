@@ -10,6 +10,7 @@ using Vb_DTO;
 namespace Vb_Operation.Cqrs
 {
     public record PayWithOpenAccountCommand(int orderNumber, int userId) : IRequest<ApiResponse>;
+    public record DealerPaymentCommand(int orderNumber, int userId) : IRequest<ApiResponse>;
     public record GetAllPaymentsQuery() : IRequest<ApiResponse<List<PaymentResponse>>>;
     public record GetPaymentByCompanyDealerQuery(int userId) : IRequest<ApiResponse<List<PaymentResponse>>>;
     public record GetPaymentByIdQuery(int Id, int userId) : IRequest<ApiResponse<PaymentResponse>>;

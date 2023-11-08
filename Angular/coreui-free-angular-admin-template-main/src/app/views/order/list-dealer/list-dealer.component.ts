@@ -22,7 +22,7 @@ export class ListDealerComponent {
   }
   
   load(){
-    this.orderService.listByDealer().subscribe((data) =>
+    this.orderService.listByDealerService().subscribe((data) =>
     {
       this.orders = data.response.filter((order:any) => order.isActive == true);
       console.log(this.orders);
@@ -32,7 +32,7 @@ export class ListDealerComponent {
       this.toastr.error('Error');
     });
 
-    this.orderService.listDeclined().subscribe((data) =>
+    this.orderService.listDeclinedService().subscribe((data) =>
     {
       this.declinedOrders = data.response;
       console.log(this.declinedOrders);
@@ -69,7 +69,7 @@ export class ListDealerComponent {
   }
 
   delete(orderNumber:number){
-    this.orderService.deleteOrder(orderNumber).subscribe((data) =>
+    this.orderService.deleteOrderService(orderNumber).subscribe((data) =>
     {
       this.load();
       this.toastr.success('Order Deleted');

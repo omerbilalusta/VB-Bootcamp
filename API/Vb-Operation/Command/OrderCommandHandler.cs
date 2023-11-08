@@ -22,8 +22,7 @@ namespace Vb_Operation.Command
         IRequestHandler<UpdateOrderCommand, ApiResponse>, 
         IRequestHandler<UpdatePaymentMethodCommand, ApiResponse>,
         IRequestHandler<DeleteOrderCommand, ApiResponse>,
-        IRequestHandler<CompanyApproveCommand, ApiResponse>,
-        IRequestHandler<DealerPaymentCommand, ApiResponse>
+        IRequestHandler<CompanyApproveCommand, ApiResponse>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -95,7 +94,6 @@ namespace Vb_Operation.Command
             unitOfWork.OrderDetailRepository.CreateRangeAsync(listOrderDetail, request.userId, cancellationToken);
         }
 
-
         public async Task<ApiResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var entity = await unitOfWork.OrderRepository.GetByIdAsync(request.Id, cancellationToken);
@@ -145,69 +143,13 @@ namespace Vb_Operation.Command
             return new ApiResponse();                       
         }
 
-        public async Task<ApiResponse> Handle(DealerPaymentCommand request, CancellationToken cancellationToken)
-        {
-            var entityOrder = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.OrderNumber == request.orderNumber);
-            if (entityOrder == null)
-                return new ApiResponse("Order not found");
-
-            var entityInvoice = CreateInvoice(entityOrder, request, cancellationToken);
-
-            entityOrder.InvoiceId = entityInvoice.Id;
-            entityOrder.PaymentSuccess = true;                                          //Kullanıcı ödeme yaptığında Order tablosunda "paymentSucces" alanı ilgili order nesnesi için güncellenir.
-            unitOfWork.OrderRepository.Update(entityOrder, request.userId);
-            unitOfWork.CommitAsync(cancellationToken);
-            return new ApiResponse();
-        }
-
-        private Invoice CreateInvoice(Order order, DealerPaymentCommand request, CancellationToken cancellationToken)
-        {
-            Invoice invoice = new Invoice()
-            {
-                Address = order.Address,
-                OrderId = order.Id,
-                Amount = order.Amount,
-                PaymentMethod = order.PaymentMethod,
-                InvoiceExist = true,
-
-            };
-            unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
-            unitOfWork.CommitAsync(cancellationToken);                                              //Bu commit'in sebebi oluşturulacak payment datası içinde InvoiceId olmalı ve Invoice nesnesi commit edildiğinde ID'si oluşur. Bu yüzden commit edildi.
-            CreatePayment(invoice, request, cancellationToken);                                     //Invoice tablosunda her invoice için bir payment datası ile ilişki olmalı.
-            return invoice;                                                                         //Bu yüzden invoice data'sı oluşturulurken payment data'sıda aynı anda oluşturulur.
-        }
-
-        private void CreatePayment(Invoice invoice, DealerPaymentCommand request, CancellationToken cancellationToken)
-        {
-            Random random = new Random();
-
-            Payment payment = new Payment()                         
-            {                                                       
-                PaymentMethod = invoice.PaymentMethod,              
-                Amount = invoice.Amount,                             
-                ReferenceNumber = random.Next(100000, 999999),      
-                InvoiceId = invoice.Id                              
-            };                                                      
-            unitOfWork.PaymentRepository.CreateAsync(payment, request.userId, cancellationToken);
-            unitOfWork.CommitAsync(cancellationToken);
-
-            invoice.PaymentId = payment.Id;
-            unitOfWork.InvoiceRepository.Update(invoice, request.userId);
-            unitOfWork.CommitAsync(cancellationToken);
-        }
-
         public async Task<ApiResponse> Handle(UpdatePaymentMethodCommand request, CancellationToken cancellationToken)
         {
             var entityOrder = unitOfWork.OrderRepository.GetAsQueryable("Invoice").FirstOrDefault(x => x.OrderNumber == request.orderNumber && x.DealerId == request.userId);
             if (entityOrder == null)
                 return new ApiResponse("Order not found");
 
-            var entityPayment = unitOfWork.PaymentRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entityOrder.Invoice.PaymentId);
-            if (entityPayment == null)
-                return new ApiResponse("Payment not found");
-
             entityOrder.PaymentMethod = request.paymentMethod;
-            entityPayment.PaymentMethod = request.paymentMethod;
             unitOfWork.CommitAsync(cancellationToken);
             return new ApiResponse();
         }

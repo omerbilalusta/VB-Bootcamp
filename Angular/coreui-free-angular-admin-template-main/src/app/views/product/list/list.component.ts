@@ -38,13 +38,26 @@ export class ListComponent implements OnInit{
   }
   
   load(){
-    this.productService.list().subscribe((data) =>
+    if(this.user.role == 'admin')
     {
-      this.products = data.response;
-    }, (error) =>
+      this.productService.listAdmin().subscribe((data) =>
+      {
+        this.products = data.response;
+      }, (error) =>
+      {
+        console.log(error);
+      })
+    }
+    else
     {
-      console.log(error);
-    })
+      this.productService.listService().subscribe((data) =>
+      {
+        this.products = data.response;
+      }, (error) =>
+      {
+        console.log(error);
+      })
+    }
   }
 
   isDelete(id:number){

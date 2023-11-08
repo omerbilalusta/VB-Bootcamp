@@ -27,6 +27,16 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
+        path: 'report',
+        loadChildren: () =>
+          import('./views/report/report.module').then((m) => m.ReportModule)
+      },
+      {
+        path: 'invoice',
+        loadChildren: () =>
+          import('./views/invoice/invoice.module').then((m) => m.InvoiceModule)
+      },
+      {
         path: 'adminDealer',
         loadChildren: () =>
           import('./views/dealer-admin/dealer-admin.module').then((m) => m.DealerAdminModule)

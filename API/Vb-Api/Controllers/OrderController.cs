@@ -29,7 +29,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetOrderByOrderNumber")]
         public async Task<ApiResponse<OrderResponse>> GetOrderByOrderNumber([FromQuery] int orderNumber)
         {
@@ -49,17 +49,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "dealer")]
-        [HttpGet("GetOrdersByDealer")]
-        public async Task<ApiResponse<List<OrderResponse>>> GetOrdersByDealer()
-        {
-            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new GetOrderByDealerQuery(int.Parse(userId));
-            var result = await mediator.Send(operation);
-            return result;
-        }
-
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetDeclinedOrders")]
         public async Task<ApiResponse<List<OrderResponse>>> GetDeclinedOrders()
         {
@@ -69,17 +59,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "dealer")]
-        [HttpPost]
-        public async Task<ApiResponse<OrderResponse>> Post([FromBody] OrderRequest request)
-        {
-            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new CreateOrderCommand(request, int.Parse(userId));
-            var result = await mediator.Send(operation);
-            return result;
-        }
-
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ApiResponse> Put([FromQuery] int id, [FromBody] OrderRequest request)
         {
@@ -89,7 +69,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<ApiResponse> Delete([FromQuery]int orderNumber)
         {
@@ -109,32 +89,12 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin, dealer")]
+        [Authorize(Roles = "admin")]
         [HttpPut("Pay")]
         public async Task<ApiResponse> Pay([FromQuery] int orderNumber)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
             var operation = new DealerPaymentCommand(orderNumber, int.Parse(userId));
-            var result = await mediator.Send(operation);
-            return result;
-        }
-
-        [Authorize(Roles = "dealer")]
-        [HttpPut("PayOpenAccount")]
-        public async Task<ApiResponse> PayOpenAccount([FromQuery] int orderNumber)
-        {
-            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new PayWithOpenAccountCommand(orderNumber, int.Parse(userId));
-            var result = await mediator.Send(operation);
-            return result;
-        }
-
-        [Authorize(Roles = "dealer")]
-        [HttpPut("UpdatePaymentMethod")]
-        public async Task<ApiResponse> UpdatePaymentMethod([FromQuery] int orderNumber, [FromQuery] string paymentMethod)
-        {
-            var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
-            var operation = new UpdatePaymentMethodCommand(orderNumber, paymentMethod, int.Parse(userId));
             var result = await mediator.Send(operation);
             return result;
         }

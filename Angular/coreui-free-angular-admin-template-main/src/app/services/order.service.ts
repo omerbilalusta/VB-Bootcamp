@@ -17,37 +17,48 @@ export class OrderService {
   listAll():Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetAllOrder', httpOptions);
   }
-  getByOrderNumber(orderNumber:number):Observable<any>{
+  getByOrderNumberAdmin(orderNumber:number):Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetOrderByOrderNumber?orderNumber=' + orderNumber, httpOptions);
+  }
+
+  getByOrderNumberService(orderNumber:number):Observable<any>{
+    return this.http.get(AUTH_API + 'OrderService/GetOrderByOrderNumber?orderNumber=' + orderNumber, httpOptions);
   }
 
   listByCompany():Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetOrdersByCompany', httpOptions);
   }
 
-  listByDealer():Observable<any>{
-    return this.http.get(AUTH_API + 'Order/GetOrdersByDealer', httpOptions);
+  listByDealerService():Observable<any>{
+    return this.http.get(AUTH_API + 'OrderService/GetOrdersByDealer', httpOptions);
   }
 
-  listDeclined():Observable<any>{
+  listDeclinedAdmin():Observable<any>{
     return this.http.get(AUTH_API + 'Order/GetDeclinedOrders', httpOptions);
   }
 
+  listDeclinedService():Observable<any>{
+    return this.http.get(AUTH_API + 'OrderService/GetDeclinedOrders', httpOptions);
+  }
+
   //Create
-  createOrder(paymentMethod:any, productList:{ [key: string]: number; }):Observable<any>{
+  createOrderService(paymentMethod:any, productList:{ [key: string]: number; }):Observable<any>{
     console.log(paymentMethod);
     console.log(productList);
-    return this.http.post(AUTH_API + 'Order', {paymentMethod, productList} ,httpOptions);
+    return this.http.post(AUTH_API + 'OrderService', {paymentMethod, productList} ,httpOptions);
   }
 
   //Delete
-  deleteOrder(ordernumber:number){
+  deleteOrderAdmin(ordernumber:number){
     return this.http.delete(AUTH_API + 'Order?orderNumber='+ ordernumber, httpOptions);
+  }
+  deleteOrderService(ordernumber:number){
+    return this.http.delete(AUTH_API + 'OrderService?orderNumber='+ ordernumber, httpOptions);
   }
 
   //Update Payment Method
-  updatePaymentMethod(orderNumber:number, paymentMethod:string):Observable<any>{
-    return this.http.put(AUTH_API + 'Order/UpdatePaymentMethod?orderNumber=' + orderNumber + '&paymentMethod=' + paymentMethod, httpOptions);
+  updatePaymentMethodService(orderNumber:number, paymentMethod:string):Observable<any>{
+    return this.http.put(AUTH_API + 'OrderService/UpdatePaymentMethod?orderNumber=' + orderNumber + '&paymentMethod=' + paymentMethod, httpOptions);
   }
 
   //Approve-Decline
@@ -69,10 +80,10 @@ export class OrderService {
   }
 
   //Pay
-  pay(orderNumber:number){
-    return this.http.put(AUTH_API + 'Order/Pay?orderNumber='+ orderNumber, httpOptions);
+  payService(orderNumber:number){
+    return this.http.put(AUTH_API + 'OrderService/Pay?orderNumber='+ orderNumber, httpOptions);
   }
-  payWithOpenAccount(orderNumber:number){
-    return this.http.put(AUTH_API + 'Order/PayOpenAccount?orderNumber='+ orderNumber, httpOptions);
+  payWithOpenAccountService(orderNumber:number){
+    return this.http.put(AUTH_API + 'OrderService/PayOpenAccount?orderNumber='+ orderNumber, httpOptions);
   }
 }

@@ -6,7 +6,7 @@
       <c-card class="mb-4">
           <c-card-body>
             <p class="text-medium-emphasis small">
-              You can see your orders, which is declined or approved. And also you can pay for them.
+              You can see your orders, which is declined or approved. And also you can pay for them if company approved your order.
             </p>
               <table cTable>
                 <thead>
@@ -17,6 +17,7 @@
                   <th scope="col" class="text-center">Payment</th>
                   <th scope="col">Company Name</th>
                   <th scope="col" class="text-center">Declined</th>
+                  <th scope="col" class="text-center">Company Approve</th>
                   <th scope="col">Products</th>
                 </tr>
                 </thead>
@@ -34,6 +35,10 @@
                       <p *ngIf="item.isActive">X</p>
                       <p *ngIf="!item.isActive">✓</p>
                   </td>
+                  <td class="text-center">
+                    <p *ngIf="!item.companyApprove">X</p>
+                    <p *ngIf="item.companyApprove">✓</p>
+                </td>
                   <button cButton [cTooltip]="tooltipContent" cTooltipPlacement="left"
                           class="me-1" color="white"><button class="btn btn-primary">List</button>
                     <ng-template #tooltipContent >
@@ -43,13 +48,13 @@
                     </ng-template>
                   </button>
                   <td>
-                    <button  [disabled]="item.isActive == false || item.paymentSuccess == true" class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
+                    <button  [disabled]="item.paymentSuccess == true || item.companyApprove == false" class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
                   </td>
                   <td>
-                    <button class="btn btn-danger text-white" (click)="delete(item.orderNumber)">Delete</button>
+                    <button [disabled]="item.companyApprove == true" class="btn btn-danger text-white" (click)="delete(item.orderNumber)">Delete</button>
                   </td>
                   <td>
-                    <button class="btn btn-warning text-white" (click)="changePaymentMethod(item.orderNumber)">Change Payment Method</button>
+                    <button [disabled]="item.paymentSuccess == true || item.companyApprove == true" class="btn btn-warning text-white" (click)="changePaymentMethod(item.orderNumber)">Payment Method</button>
                   </td>
                 </tr>
                 </tbody>

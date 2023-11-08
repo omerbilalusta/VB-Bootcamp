@@ -20,7 +20,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllInvoices")]
         public async Task<ApiResponse<List<InvoiceResponse>>> GetAllInvoices()
         {
@@ -29,7 +29,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetInvoiceById")]
         public async Task<ApiResponse<InvoiceResponse>> GetInvoiceById([FromQuery] int id)
         {
@@ -38,7 +38,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin,dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetInvoicesByCompanyDealer")]
         public async Task<ApiResponse<List<InvoiceResponse>>> GetInvoicesByCompany()
         {

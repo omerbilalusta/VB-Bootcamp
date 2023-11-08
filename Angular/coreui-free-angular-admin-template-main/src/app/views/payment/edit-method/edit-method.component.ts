@@ -30,7 +30,7 @@ export class EditMethodComponent {
   }
 
   load(){
-    this.orderService.getByOrderNumber(this.orderNumber).subscribe((data) =>
+    this.orderService.getByOrderNumberService(this.orderNumber).subscribe((data) =>
     {
       this.paymentForm.controls['select'].setValue(data.response.paymentMethod);
     }, (error) =>
@@ -40,7 +40,7 @@ export class EditMethodComponent {
   }
 
   onSubmit(){
-    this.orderService.updatePaymentMethod(this.orderNumber, this.selectedValuePayment).subscribe({
+    this.orderService.updatePaymentMethodService(this.orderNumber, this.selectedValuePayment).subscribe({
       next: (data:any) =>{
         if(data.success == false)
         {

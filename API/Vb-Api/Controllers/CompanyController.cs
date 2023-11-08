@@ -19,7 +19,7 @@ namespace Vb_Bootcamp.Controllers
             this.mediator = mediator;
         }
 
-        [Authorize(Roles = "admin, dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllCompanies")]
         public async Task<ApiResponse<List<CompanyResponse>>> GetAllCompanies()
         {
@@ -28,7 +28,7 @@ namespace Vb_Bootcamp.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin, dealer")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetCompanyById")]
         public async Task<ApiResponse<CompanyResponse>> GetCompanyById([FromQuery] int Id)
         {
