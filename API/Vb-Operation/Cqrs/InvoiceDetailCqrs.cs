@@ -9,5 +9,5 @@ using Vb_DTO;
 
 namespace Vb_Operation.Cqrs
 {
-    public record GetAllInvoiceDetailQuery() : IRequest<ApiResponse<List<InvoiceDetailResponse>>>;
+    public record GetAllOrderDetailQuery() : IRequest<ApiResponse<List<OrderDetailResponse>>>;
 }

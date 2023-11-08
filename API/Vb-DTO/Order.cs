@@ -40,6 +40,6 @@ namespace Vb_DTO
         public int DealerId { get; set; }
         public int CompanyId { get; set; }
 
-        public virtual List<InvoiceDetailResponse> Product { get; set; }
+        public virtual List<OrderDetailResponse> Product { get; set; }
     }
 }

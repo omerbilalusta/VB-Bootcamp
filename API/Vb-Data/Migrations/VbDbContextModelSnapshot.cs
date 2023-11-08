@@ -106,8 +106,8 @@ namespace Vb_Data.Migrations
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -123,54 +123,6 @@ namespace Vb_Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Invoice");
-                });
-
-            modelBuilder.Entity("Vb_Data.Domain.InvoiceDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("InsertDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InsertUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<int>("Piece")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmountByProduct")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UpdateUserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("InvoiceDetail");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.Message", b =>
@@ -288,6 +240,54 @@ namespace Vb_Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Vb_Data.Domain.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InsertUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Piece")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmountByProduct")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UpdateUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.OrderReject", b =>
@@ -634,21 +634,6 @@ namespace Vb_Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Vb_Data.Domain.InvoiceDetail", b =>
-                {
-                    b.HasOne("Vb_Data.Domain.Invoice", "Invoice")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoiceId");
-
-                    b.HasOne("Vb_Data.Domain.Product", "Product")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Invoice");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Vb_Data.Domain.Message", b =>
                 {
                     b.HasOne("Vb_Data.Domain.Chat", "Chat")
@@ -673,6 +658,21 @@ namespace Vb_Data.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Dealer");
+                });
+
+            modelBuilder.Entity("Vb_Data.Domain.OrderDetail", b =>
+                {
+                    b.HasOne("Vb_Data.Domain.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Vb_Data.Domain.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.OrderReject", b =>
@@ -713,8 +713,6 @@ namespace Vb_Data.Migrations
 
             modelBuilder.Entity("Vb_Data.Domain.Invoice", b =>
                 {
-                    b.Navigation("InvoiceDetails");
-
                     b.Navigation("Payment")
                         .IsRequired();
                 });
@@ -722,11 +720,13 @@ namespace Vb_Data.Migrations
             modelBuilder.Entity("Vb_Data.Domain.Order", b =>
                 {
                     b.Navigation("Invoice");
+
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.Product", b =>
                 {
-                    b.Navigation("InvoiceDetails");
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Vb_Data.Domain.User.Company", b =>

@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using LinqKit;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Vb_Base.Response;
 using Vb_Data.Domain;
+using Vb_Data.Domain.User;
 using Vb_Data.UnitOfWork;
 using Vb_DTO;
 using Vb_Operation.Cqrs;
@@ -33,79 +36,65 @@ namespace Vb_Operation.Command
 
         public async Task<ApiResponse<OrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            List<InvoiceDetail> listInvoiceDetail = new List<InvoiceDetail>();
-            
+            Random random = new Random();
+            decimal total = 0;
 
             var mapped = mapper.Map<Order>(request.model);
             var entity = await unitOfWork.OrderRepository.CreateAsync(mapped, request.userId, cancellationToken);
+
             var dealer = unitOfWork.DealerRepository.GetAsQueryable().Where(x => x.Id == request.userId).FirstOrDefault();
-            decimal total = 0;
-            entity.DealerId = request.userId;
 
-            var product = unitOfWork.ProductRepository.GetAsQueryable().Where(x => x.Id == request.model.ProductList.First().Key).FirstOrDefault(); ;
-            entity.CompanyId = product.CompanyId;
-
-            Random random = new Random();
-            entity.OrderNumber = random.Next(100000, 999999);
-
-            request.model.ProductList.ForEach(x =>
-            {
-                var product = unitOfWork.ProductRepository.GetAsQueryable().Where(y => y.Id == x.Key).FirstOrDefault();
-                total += ((product.Price * product.TaxRate * dealer.Dividend) + product.Price) * x.Value;
-                product.StockQuantity -= x.Value;
+            var products = unitOfWork.ProductRepository.GetAsQueryable().ToList();
+            request.model.ProductList.ForEach(x =>          //Her bir ürün için dealer'a atanmış kar marjı ve her ürüne atanmış vergi oranı ile ürünlerin fiyatlarını hesapladık
+            {                                               //ve bu toplamı order nesnesinin Amount field'ına yerleştirdik. Ayrıca satınlan ürünleri stoktan düşmek için product nesnesinide satın alınan ürün adedini düşerek güncelledik.
+                var product = products.Where(y => y.Id == x.Key).FirstOrDefault();
+                if (product != null)
+                {
+                    total += ((product.Price * product.TaxRate * dealer.Dividend) + product.Price) * x.Value;
+                    product.StockQuantity -= x.Value;
+                }
             });
+
+            var product = products.FirstOrDefault(x => x.Id == request.model.ProductList.FirstOrDefault().Key);        //cilent tarafından gelen product listesinden herhangi birini, veritabanından gelen product
+                                                                                                                       //listesinden bulup o product'ın sahibi olan company'nin ID'sini order'ın companyId field'ına veriyoruz.
+            entity.DealerId = request.userId;                                                                          //Buradaki amaç iş kuralı olarak belirlediğim, sipariş sahibi bir company olabilir olmasından dolayıdır.
+            entity.CompanyId = product.CompanyId;                                                                      //Çünkü company'ler order'ları approve veya decline etme yetkisine sahip, approve veya decline olacak order'lar için
+            entity.OrderNumber = random.Next(100000, 999999);                                                          //söz sahibi tek bir company olmasının daha uygun olacağını düşündüğümdendir.
             entity.Amount = total;
             entity.Address = dealer.Address;
             entity.InsertUserId = request.userId;
             entity.InsertDate = DateTime.Now;
 
-            unitOfWork.CommitAsync(cancellationToken);
-
-            Invoice invoice = new Invoice()
-            {
-                Address = dealer.Address,
-                OrderId = entity.Id,
-                Amount = total,
-                PaymentMethod = request.model.PaymentMethod,
-                
-            };
-            unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
-            unitOfWork.CommitAsync(cancellationToken);
-
-            Payment payment = new Payment()                         //Invoice tablosunda her invoice için bir payment datası ile ilişki olmalı.
-            {                                                       //Bu yüzden invoice data'sı oluşturulurken payment data'sıda aynı anda oluşturulur.
-                PaymentMethod = entity.PaymentMethod,               //Kullanıcı ödeme yaptığında Order tablosunda "paymentSucces" alanı ilgili order nesnesi
-                Amount = entity.Amount,                             //için güncellenir. 
-                ReferenceNumber = random.Next(100000, 999999),      //Kullanıcı sipariş oluştururken aynı anda invoice, payment, invoiceDetails(sipariş edilen
-                InvoiceId = invoice.Id                              //product'ların listesini tutabilmek için) nesnelerinin oluşturulması veri tabanı kurgusunun
-            };                                                      //zayıf olduğunun göstergesi olabilir.
-            unitOfWork.PaymentRepository.CreateAsync(payment, request.userId, cancellationToken);
-            unitOfWork.CommitAsync(cancellationToken);
-
-            var orderCreated = unitOfWork.OrderRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entity.Id);
-            orderCreated.InvoiceId = invoice.Id;
-
-            var invoiceCreated = unitOfWork.InvoiceRepository.GetAsQueryable().FirstOrDefault(x => x.Id == invoice.Id);
-            invoiceCreated.PaymentId = payment.Id;
-
-            request.model.ProductList.ForEach(x =>
-            {
-                var product = unitOfWork.ProductRepository.GetAsQueryable().Where(y => y.Id == x.Key).FirstOrDefault();
-                InvoiceDetail invoiceDetail = new InvoiceDetail()
-                {
-                    InvoiceId = invoice.Id,                             //Siparişi oluşturulan productları tutmak için invoiceDetail tablosu oluşturuldu.
-                    ProductId = x.Key,
-                    Piece = x.Value,
-                    TotalAmountByProduct = product.Price * x.Value
-                };
-                listInvoiceDetail.Add(invoiceDetail);
-            });
-            unitOfWork.InvoiceDetailRepository.CreateRangeAsync(listInvoiceDetail, request.userId, cancellationToken);
-            unitOfWork.CommitAsync(cancellationToken);
+            unitOfWork.CommitAsync(cancellationToken);              //Burada comit kullanılmasının nedeni order'a bağlı ürün listesini tutmak üzere  oluşturduğumuz ikinci tabloda 
+                                                                    //order'ın ID'sini kullanmak içindir. Commit işlemi gerçekleşmeden nesnenin ID'si oluşmamaktadır.
+            CreateOrderDetail(entity, products, dealer, request, cancellationToken);  //Order içerisindeki product'ların ayrıca bir tabloda tutulmaası gerktiği için o tablo için ayrıca bir
+            unitOfWork.CommitAsync(cancellationToken);                        //fonksiyon yazarak bu işlemlerin Order Create edilirken yapılmasını sağladık.
 
             var response = mapper.Map<OrderResponse>(entity);
             return new ApiResponse<OrderResponse>(response);
         }
+
+        private void CreateOrderDetail (Order entity, List<Product> products, Dealer dealer, CreateOrderCommand request, CancellationToken cancellationToken)
+        {
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            request.model.ProductList.ForEach(x =>
+            {
+                var product = products.Where(y => y.Id == x.Key).FirstOrDefault();
+                if (product != null)
+                {
+                    OrderDetail orderDetail = new OrderDetail()
+                    {
+                        OrderId = entity.Id,                             //Siparişi oluşturulan productları tutmak için orderDetail tablosu oluşturuldu.
+                        ProductId = x.Key,
+                        Piece = x.Value,
+                        TotalAmountByProduct = ((product.Price * product.TaxRate * dealer.Dividend) + product.Price) * x.Value
+                    };
+                    listOrderDetail.Add(orderDetail);
+                }
+            });
+            unitOfWork.OrderDetailRepository.CreateRangeAsync(listOrderDetail, request.userId, cancellationToken);
+        }
+
 
         public async Task<ApiResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
@@ -138,9 +127,9 @@ namespace Vb_Operation.Command
                 return new ApiResponse("Order not found");
             
             
-            if(request.descpription != null)
-            {
-                unitOfWork.OrderRepository.Delete(entity, request.userId);
+            if(request.descpription != null)                                //Eger cilenttan bir description donerse bu demek olurki company siparisi iptal etmek istiyor. 
+            {                                                               //Buna bagli olarak bir orderReject nesnesi olusturulur ve order ile baglanir. 
+                unitOfWork.OrderRepository.Delete(entity, request.userId);  //Order red ediliyorsa aynı anda order'da silinir.
                 OrderReject orderReject = new OrderReject()
                 {
                     Description = request.descpription,
@@ -151,9 +140,9 @@ namespace Vb_Operation.Command
                 return new ApiResponse();
             }
 
-            entity.CompanyApprove = true;                   //Eger cilenttan bir description donerse bu demek olurki company siparisi iptal etmek istiyor. 
-            unitOfWork.CommitAsync(cancellationToken);      //Buna bagli olarak bir orderReject nesnesi olusturulur ve order ile baglanir. 
-            return new ApiResponse();                       //Aksi takdirde order'in CompanyApprove field'i true olarak guncellenir
+            entity.CompanyApprove = true;                   
+            unitOfWork.CommitAsync(cancellationToken);                    //Description gönderilmediyse order'in CompanyApprove field'i true olarak guncellenir OrderReject nesnesi oluşturulmaz.
+            return new ApiResponse();                       
         }
 
         public async Task<ApiResponse> Handle(DealerPaymentCommand request, CancellationToken cancellationToken)
@@ -162,16 +151,49 @@ namespace Vb_Operation.Command
             if (entityOrder == null)
                 return new ApiResponse("Order not found");
 
-            var entityInvoice = unitOfWork.InvoiceRepository.GetAsQueryable().FirstOrDefault(x => x.Id == entityOrder.InvoiceId);
-            if (entityInvoice == null)
-                return new ApiResponse("Invoice not found");
+            var entityInvoice = CreateInvoice(entityOrder, request, cancellationToken);
 
-            entityOrder.PaymentSuccess = true;
-            entityInvoice.InvoiceExist = true;
+            entityOrder.InvoiceId = entityInvoice.Id;
+            entityOrder.PaymentSuccess = true;                                          //Kullanıcı ödeme yaptığında Order tablosunda "paymentSucces" alanı ilgili order nesnesi için güncellenir.
             unitOfWork.OrderRepository.Update(entityOrder, request.userId);
-            unitOfWork.InvoiceRepository.Update(entityInvoice, request.userId);
             unitOfWork.CommitAsync(cancellationToken);
             return new ApiResponse();
+        }
+
+        private Invoice CreateInvoice(Order order, DealerPaymentCommand request, CancellationToken cancellationToken)
+        {
+            Invoice invoice = new Invoice()
+            {
+                Address = order.Address,
+                OrderId = order.Id,
+                Amount = order.Amount,
+                PaymentMethod = order.PaymentMethod,
+                InvoiceExist = true,
+
+            };
+            unitOfWork.InvoiceRepository.CreateAsync(invoice, request.userId, cancellationToken);
+            unitOfWork.CommitAsync(cancellationToken);                                              //Bu commit'in sebebi oluşturulacak payment datası içinde InvoiceId olmalı ve Invoice nesnesi commit edildiğinde ID'si oluşur. Bu yüzden commit edildi.
+            CreatePayment(invoice, request, cancellationToken);                                     //Invoice tablosunda her invoice için bir payment datası ile ilişki olmalı.
+            return invoice;                                                                         //Bu yüzden invoice data'sı oluşturulurken payment data'sıda aynı anda oluşturulur.
+        }
+
+        private void CreatePayment(Invoice invoice, DealerPaymentCommand request, CancellationToken cancellationToken)
+        {
+            Random random = new Random();
+
+            Payment payment = new Payment()                         
+            {                                                       
+                PaymentMethod = invoice.PaymentMethod,              
+                Amount = invoice.Amount,                             
+                ReferenceNumber = random.Next(100000, 999999),      
+                InvoiceId = invoice.Id                              
+            };                                                      
+            unitOfWork.PaymentRepository.CreateAsync(payment, request.userId, cancellationToken);
+            unitOfWork.CommitAsync(cancellationToken);
+
+            invoice.PaymentId = payment.Id;
+            unitOfWork.InvoiceRepository.Update(invoice, request.userId);
+            unitOfWork.CommitAsync(cancellationToken);
         }
 
         public async Task<ApiResponse> Handle(UpdatePaymentMethodCommand request, CancellationToken cancellationToken)

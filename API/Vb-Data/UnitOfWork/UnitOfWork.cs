@@ -22,7 +22,7 @@ namespace Vb_Data.UnitOfWork
             DealerRepository = new GenericRepository<Dealer>(dbContext);
             ChatRepository = new GenericRepository<Chat>(dbContext);
             InvoiceRepository = new GenericRepository<Invoice>(dbContext);
-            InvoiceDetailRepository = new GenericRepository<InvoiceDetail>(dbContext);
+            OrderDetailRepository = new GenericRepository<OrderDetail>(dbContext);
             MessageRepository = new GenericRepository<Message>(dbContext);
             OrderRepository = new GenericRepository<Order>(dbContext);
             OrderRejectRepository = new GenericRepository<OrderReject>(dbContext);
@@ -58,7 +58,7 @@ namespace Vb_Data.UnitOfWork
         public IGenericRepository<Dealer> DealerRepository { get; private set; }
         public IGenericRepository<Chat> ChatRepository { get; private set; }
         public IGenericRepository<Invoice> InvoiceRepository { get; private set; }
-        public IGenericRepository<InvoiceDetail> InvoiceDetailRepository { get; private set; }
+        public IGenericRepository<OrderDetail> OrderDetailRepository { get; private set; }
         public IGenericRepository<Message> MessageRepository { get; private set; }
         public IGenericRepository<Order> OrderRepository { get; private set; }
         public IGenericRepository<OrderReject> OrderRejectRepository { get; private set; }

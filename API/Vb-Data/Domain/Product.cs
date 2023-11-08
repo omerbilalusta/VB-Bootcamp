@@ -22,7 +22,7 @@ namespace Vb_Data.Domain
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
-        public virtual List<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
@@ -44,7 +44,7 @@ namespace Vb_Data.Domain
 
             builder.Property(x => x.CompanyId).IsRequired();
 
-            builder.HasMany(x => x.InvoiceDetails)
+            builder.HasMany(x => x.OrderDetails)
                 .WithOne(x => x.Product)
                 .HasForeignKey(x => x.ProductId)
                 .IsRequired(false);

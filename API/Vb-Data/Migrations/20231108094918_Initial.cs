@@ -208,6 +208,37 @@ namespace Vb_Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Piece = table.Column<int>(type: "int", nullable: false),
+                    TotalAmountByProduct = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    InsertUserId = table.Column<int>(type: "int", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateUserId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetail_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderDetail_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderReject",
                 columns: table => new
                 {
@@ -230,37 +261,6 @@ namespace Vb_Data.Migrations
                         principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InvoiceDetail",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Piece = table.Column<int>(type: "int", nullable: false),
-                    TotalAmountByProduct = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    InsertUserId = table.Column<int>(type: "int", nullable: false),
-                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InvoiceDetail", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InvoiceDetail_Invoice_InvoiceId",
-                        column: x => x.InvoiceId,
-                        principalTable: "Invoice",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_InvoiceDetail_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -395,12 +395,12 @@ namespace Vb_Data.Migrations
                 values: new object[] { 1, "Card", 240, 530000, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
             migrationBuilder.InsertData(
-                table: "InvoiceDetail",
-                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "InvoiceId", "InsertDate", "InsertUserId", "UpdateDate" },
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
                 values: new object[] { 1, 5, 160, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
             migrationBuilder.InsertData(
-                table: "InvoiceDetail",
-                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "InvoiceId", "InsertDate", "InsertUserId", "UpdateDate" },
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
                 values: new object[] { 2, 8, 80, 2, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
 
@@ -433,16 +433,6 @@ namespace Vb_Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDetail_InvoiceId",
-                table: "InvoiceDetail",
-                column: "InvoiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDetail_ProductId",
-                table: "InvoiceDetail",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Message_ChatId",
                 table: "Message",
                 column: "ChatId");
@@ -462,6 +452,16 @@ namespace Vb_Data.Migrations
                 table: "Order",
                 column: "OrderNumber",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetail_OrderId",
+                table: "OrderDetail",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetail_ProductId",
+                table: "OrderDetail",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderReject_OrderId",
@@ -484,10 +484,10 @@ namespace Vb_Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InvoiceDetail");
+                name: "Message");
 
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "OrderDetail");
 
             migrationBuilder.DropTable(
                 name: "OrderReject");
@@ -496,10 +496,10 @@ namespace Vb_Data.Migrations
                 name: "Payment");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Chat");
 
             migrationBuilder.DropTable(
-                name: "Chat");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Invoice");

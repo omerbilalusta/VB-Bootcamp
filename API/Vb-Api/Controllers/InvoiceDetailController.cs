@@ -10,20 +10,20 @@ namespace Vb_Bootcamp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InvoiceDetailController : ControllerBase
+    public class OrderDetailController : ControllerBase
     {
         private IMediator mediator;
 
-        public InvoiceDetailController(IMediator mediator)
+        public OrderDetailController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
         [Authorize(Roles ="admin, dealer")]
         [HttpGet]
-        public async Task<ApiResponse<List<InvoiceDetailResponse>>> GetAllInvoiceDetails()
+        public async Task<ApiResponse<List<OrderDetailResponse>>> GetAllOrderDetails()
         {
-            var operation = new GetAllInvoiceDetailQuery();
+            var operation = new GetAllOrderDetailQuery();
             var result = await mediator.Send(operation);
             return result;
         }

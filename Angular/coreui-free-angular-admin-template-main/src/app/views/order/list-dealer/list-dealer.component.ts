@@ -11,6 +11,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class ListDealerComponent {
   orders: any[] = [];
+  declinedOrders: any[] = [];
   invoiceDetails: any[] = [];
   user:any = this.storageService.getUser().response;
 
@@ -23,8 +24,18 @@ export class ListDealerComponent {
   load(){
     this.orderService.listByDealer().subscribe((data) =>
     {
-      this.orders = data.response;
+      this.orders = data.response.filter((order:any) => order.isActive == true);
       console.log(this.orders);
+    }, (error) =>
+    {
+      console.log(error);
+      this.toastr.error('Error');
+    });
+
+    this.orderService.listDeclined().subscribe((data) =>
+    {
+      this.declinedOrders = data.response;
+      console.log(this.declinedOrders);
     }, (error) =>
     {
       console.log(error);
@@ -55,5 +66,17 @@ export class ListDealerComponent {
 
   changePaymentMethod(orderNumber:number){
     this.router.navigate(['/payment/editmethod/', orderNumber]);
+  }
+
+  delete(orderNumber:number){
+    this.orderService.deleteOrder(orderNumber).subscribe((data) =>
+    {
+      this.load();
+      this.toastr.success('Order Deleted');
+    }, (error) =>
+    {
+      console.log(error);
+      this.toastr.error('Error');
+    });
   }
 }

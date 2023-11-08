@@ -46,6 +46,9 @@
                     <button  [disabled]="item.isActive == false || item.paymentSuccess == true" class="btn btn-warning text-white" (click)="pay(item.orderNumber, item.paymentMethod)">Pay</button>
                   </td>
                   <td>
+                    <button class="btn btn-danger text-white" (click)="delete(item.orderNumber)">Delete</button>
+                  </td>
+                  <td>
                     <button class="btn btn-warning text-white" (click)="changePaymentMethod(item.orderNumber)">Change Payment Method</button>
                   </td>
                 </tr>
@@ -55,3 +58,62 @@
         </c-card>
    </c-card-body>
 </c-card>
+
+<c-card class="mb-4">
+  <c-card-header ngPreserveWhitespaces>
+      <strong>Declined Orders List</strong>
+   </c-card-header>
+   <c-card-body>
+      <c-card class="mb-4">
+          <c-card-body>
+            <p class="text-medium-emphasis small">
+              You can see your declined orders.
+            </p>
+              <table cTable>
+                <thead>
+                  <tr>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col" class="text-center">Payment</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col" class="text-center">Declined</th>
+                    <th scope="col">Products</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="declinedOrders.length > 0">
+                  <tr *ngFor="let item of declinedOrders">
+                    <th scope="row">{{item.orderNumber}}</th>
+                    <td>{{item.paymentMethod}}</td>
+                    <td>{{item.amount}}</td>
+                    <td class="text-center">
+                        <p *ngIf="item.paymentSuccess">✓</p>
+                        <p *ngIf="!item.paymentSuccess">X</p>
+                    </td>
+                    <td>{{item.company.name}}</td>
+                    <td class="text-center">
+                        <p *ngIf="item.isActive">X</p>
+                        <p *ngIf="!item.isActive">✓</p>
+                    </td>
+                    <button cButton [cTooltip]="tooltipContent" cTooltipPlacement="left"
+                            class="me-1" color="white"><button class="btn btn-primary">List</button>
+                      <ng-template #tooltipContent >
+                        <div *ngFor="let product of invoiceDetails">
+                          <p *ngIf="product.orderNumber == item.orderNumber">{{product.productName}}, Piece:{{product.piece}}</p>
+                        </div>
+                      </ng-template>
+                    </button>
+                  </tr>
+                </tbody> 
+
+                <tbody *ngIf="declinedOrders.length == 0">
+                  <tr>
+                    <td colspan="7" class="text-center">There is no declined order.</td>
+                  </tr>
+                </tbody>
+              </table>
+          </c-card-body>
+        </c-card>
+   </c-card-body>
+</c-card>
+

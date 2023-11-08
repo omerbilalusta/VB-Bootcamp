@@ -25,6 +25,6 @@ namespace Vb_DTO
         public int PaymentId { get; set; }
         public virtual PaymentResponseShort Payment { get; set; }
 
-        public virtual List<InvoiceDetailResponse> InvoiceDetails { get; set; }
+        public virtual List<OrderDetailResponse> OrderDetails { get; set; }
     }
 }

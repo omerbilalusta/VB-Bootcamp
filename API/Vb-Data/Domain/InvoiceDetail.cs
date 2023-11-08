@@ -10,20 +10,20 @@ using Vb_Data.Domain.User;
 
 namespace Vb_Data.Domain
 {
-    public class InvoiceDetail : BaseModel
+    public class OrderDetail : BaseModel
     {
         public int Piece { get; set; }
         public decimal TotalAmountByProduct { get; set; }
 
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-        public int InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
     }
 
-    public class InvoiceDetailConfiguration : IEntityTypeConfiguration<InvoiceDetail>
+    public class InvoiceDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
     {
-        public void Configure(EntityTypeBuilder<InvoiceDetail> builder)
+        public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
             builder.Property(x => x.InsertUserId).IsRequired();
             builder.Property(x => x.UpdateUserId).IsRequired().HasDefaultValue(0);
@@ -34,7 +34,7 @@ namespace Vb_Data.Domain
             builder.Property(x => x.Piece).IsRequired();
             builder.Property(x => x.TotalAmountByProduct).IsRequired();
             builder.Property(x => x.ProductId).IsRequired();
-            builder.Property(x => x.InvoiceId).IsRequired();
+            builder.Property(x => x.OrderId).IsRequired();
         }
     }
 }

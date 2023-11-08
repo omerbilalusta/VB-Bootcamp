@@ -65,7 +65,7 @@ export class OrderService {
 
   //InvoiceDetails
   getInvoiceDetails():Observable<any>{
-    return this.http.get(AUTH_API + 'InvoiceDetail', httpOptions);
+    return this.http.get(AUTH_API + 'OrderDetail', httpOptions);
   }
 
   //Pay

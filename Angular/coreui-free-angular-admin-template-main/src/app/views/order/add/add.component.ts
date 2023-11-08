@@ -57,19 +57,26 @@ export class AddComponent implements OnInit{
   }
 
   confirmCart(){
-    this.orderService.createOrder(this.selectedValuePayment, this.cart).subscribe({
-      next: data =>{
-        if(data.response == false)
-          this.toastr.error('Error');
-        else
-          console.log(data);
-          window.location.reload();
-          this.toastr.success("Order succeed"  , 'Success');
-      },
-      error: err => {
-        console.log(err.error.errors);
-        this.toastr.error(err.error.title  , 'Error');
-      }
-    })
+    if(this.selectedValuePayment != "0"){
+      this.orderService.createOrder(this.selectedValuePayment, this.cart).subscribe({
+        next: data =>{
+          if(data.response == false)
+            this.toastr.error('Error');
+          else
+            console.log(data);
+            window.location.reload();
+            this.toastr.success("Order succeed"  , 'Success');
+        },
+        error: err => {
+          console.log(err.error.errors);
+          this.toastr.error(err.error.title  , 'Error');
+        }
+      });
+    }
+    else
+    {
+      this.toastr.error('Please select payment method', 'Error');
+      return;
+    }
   }
 }

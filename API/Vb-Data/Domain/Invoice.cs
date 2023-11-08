@@ -22,7 +22,6 @@ namespace Vb_Data.Domain
         public int PaymentId { get; set; }
         public virtual Payment Payment { get; set; }
 
-        public virtual List<InvoiceDetail> InvoiceDetails { get; set; }
     }
 
     public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
@@ -46,11 +45,6 @@ namespace Vb_Data.Domain
             builder.HasOne(x => x.Order)
                 .WithOne(x => x.Invoice)
                 .HasForeignKey<Order>()
-                .IsRequired(false);
-
-            builder.HasMany(x => x.InvoiceDetails)
-                .WithOne(x => x.Invoice)
-                .HasForeignKey(x => x.InvoiceId)
                 .IsRequired(false);
 
             builder.HasOne(x => x.Payment)

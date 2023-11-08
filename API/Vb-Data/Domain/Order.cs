@@ -27,6 +27,8 @@ namespace Vb_Data.Domain
         public virtual Invoice Invoice { get; set; }
         //public int OrderRejectId { get; set; }
         //public virtual OrderReject OrderReject { get; set; }
+
+        public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
@@ -56,6 +58,11 @@ namespace Vb_Data.Domain
             builder.HasOne(x => x.Invoice)
                 .WithOne(x => x.Order)
                 .HasForeignKey<Invoice>()
+                .IsRequired(false);
+
+            builder.HasMany(x => x.OrderDetails)
+                .WithOne(x => x.Order)
+                .HasForeignKey(x => x.OrderId)
                 .IsRequired(false);
 
             //builder.HasOne(x => x.OrderReject)

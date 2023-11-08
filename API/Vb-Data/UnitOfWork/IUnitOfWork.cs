@@ -17,7 +17,7 @@ namespace Vb_Data.UnitOfWork
         IGenericRepository<Dealer> DealerRepository { get; }
         IGenericRepository<Chat> ChatRepository { get; }
         IGenericRepository<Invoice> InvoiceRepository { get; }
-        IGenericRepository<InvoiceDetail> InvoiceDetailRepository { get; }
+        IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Message> MessageRepository { get; }
         IGenericRepository<Order> OrderRepository { get; }
         IGenericRepository<OrderReject> OrderRejectRepository { get; }
