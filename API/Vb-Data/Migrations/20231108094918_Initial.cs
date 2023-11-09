@@ -382,11 +382,31 @@ namespace Vb_Data.Migrations
              migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 1, 535353, "Card", "Room 907", 240, true, true, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 1, 535353, "Card", "Room 907", 240, true, true, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 	        migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 2, 343434, "OpenAccount", "Room 907", 320, false, false, 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 2, 343434, "OpenAccount", "Room 907", 320, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 3, 504228, "EFT", "Room 907", 18, false, false, 1, 3, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 4, 301737, "Transfer", "Room 907", 3, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 5, 854764, "OpenAccount", "Room 907", 2, false, false, 1, 3, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 6, 775386, "Card", "Room 907", 10, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 7, 842137, "Card", "Room 907", 75, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
             migrationBuilder.InsertData(
                 table: "Invoice",
@@ -410,6 +430,34 @@ namespace Vb_Data.Migrations
                 table: "OrderDetail",
                 columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
                 values: new object[] { 3, 2, 240, 13, 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 4, 2, 13, 5, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 5, 2, 5, 3, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 6, 3, 3, 9, 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 7, 10, 250, 13, 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 8, 2, 2, 6, 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 9, 4, 10, 3, 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "Id", "Piece", "TotalAmountByProduct", "ProductId", "OrderId", "InsertDate", "InsertUserId", "UpdateDate" },
+                values: new object[] { 10, 3, 75, 4, 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
 
 
             migrationBuilder.CreateIndex(

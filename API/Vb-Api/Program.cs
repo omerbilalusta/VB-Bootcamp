@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using Vb_Base.Token;
+using Vb_Bootcamp.Middlewares;
+using Vb_Bootcamp.Services;
 using Vb_Data.Context;
 using Vb_Data.UnitOfWork;
 using Vb_Operation.Cqrs;
@@ -31,6 +33,8 @@ builder.Services.AddCors(options =>
 
 string connection = builder.Configuration.GetConnectionString("MsSqlConnection");
 builder.Services.AddDbContext<VbDbContext>(opts => opts.UseSqlServer(connection));
+
+builder.Services.AddSingleton<ILoggerService, ConsoleLogger>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddMediatR(typeof(CreateTokenCommandDealer).GetTypeInfo().Assembly);
@@ -105,6 +109,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomExceptionMiddleware();
 
 app.UseHttpsRedirection();
 
