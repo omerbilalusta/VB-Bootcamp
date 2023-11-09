@@ -39,19 +39,19 @@ export const navItems: INavData[] = [
       ]
   },
   {
-    name: 'Order-Product',
-    url: '/admin-order',
-    iconComponent: { name: 'cil-speedometer' },
-    children: [
-          {
-            name: 'Admin-Order List',
-            url: '/order/list'
-          },
-          {
-            name: 'Product Add',
-            url: '/product/add'
-          }
-      ]
+    name: 'Order List',
+    url: '/order/list',
+    iconComponent: { name: 'cil-pencil' }
+  },
+  {
+    name: 'Product Add',
+    url: '/product/add',
+    iconComponent: { name: 'cil-check' }
+  },
+  {
+    name: 'Report',
+    url: '/report/bydate',
+    iconComponent: { name: 'cil-chart-pie' }
   },
   {
     title: true,
@@ -60,14 +60,14 @@ export const navItems: INavData[] = [
   {
     name: 'Order',
     url: '/dealer-order',
-    iconComponent: { name: 'cil-calculator' },
+    iconComponent: { name: 'cil-basket' },
     children: [
       {
         name: 'Create Order',
         url: '/order/add'
       },
       {
-        name: 'Dealer-Order List',
+        name: 'Order List',
         url: '/order/list-dealer'
       }
     ]

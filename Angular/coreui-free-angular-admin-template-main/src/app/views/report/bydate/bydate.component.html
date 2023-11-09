@@ -11,22 +11,42 @@
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
-                  <input autoComplete="dateFrom" formControlName="dateFrom" cFormControl placeholder="DateFrom" type="datetime-local">
+                  <input autoComplete="dateFrom" formControlName="dateFrom" cFormControl placeholder="DateFrom" type="date">
                 </c-input-group>
                 <c-input-group class="mb-4">
                     <span cInputGroupText>
                       <svg cIcon name="cilLockLocked"></svg>
                     </span>
-                    <input autoComplete="dateTo" formControlName="dateTo" cFormControl placeholder="DateTo" type="datetime-local">
+                    <input autoComplete="dateTo" formControlName="dateTo" cFormControl placeholder="DateTo" type="date">
                   </c-input-group>
                 <div class="d-grid">
                   <button (click)="onSubmit()" cButton color="success">Create Report</button>
                 </div>
               </form>
+              <p *ngIf="report == undefined" class="mt-4 mb-2">There is no report</p>
+                <div class="bd-example bd-example-type" *ngIf="report != undefined">
+                    <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Top Dealer who buys most: </strong>{{report.dealerNameWhoBuysMost}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Top Selling Product: </strong>{{report.mostSellingProductName}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Most Used Payment Method: </strong>{{report.mostUsedPaymentMethod}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Earning: </strong>{{report.totalAmount}} ₺</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
             </c-card-body>
           </c-card>
         </c-col>
       </c-row>
     </c-container>
 </div>
+
   

@@ -1,12 +1,15 @@
-﻿using Dapper;
+﻿using Azure;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 using Vb_Base.Model;
 using Vb_Data.Context;
 using Vb_Data.Domain;
+using Vb_Data.Domain.Report;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Vb_Data.Repository
@@ -117,31 +120,6 @@ namespace Vb_Data.Repository
 
             return query.ToList();
         }
-
-        public IEnumerable<dynamic> DapperQuery(DateTime DateFrom, DateTime DateTo)
-        {
-            using (SqlConnection con = new SqlConnection("Server=(localdb)\\mssqllocaldb; Database=Vb-DB;Trusted_Connection=false;TrustServerCertificate=True;"))
-            {
-                con.Open();
-                var query = "SELECT [o].Amount, [o].DealerId, [o].CompanyId, [p].Id, [p].Name  FROM [Order] AS [o]" +
-                    " LEFT JOIN [Product] AS [p] ON [c].[Id] = [p].[CompanyId]" +
-                    " WHERE [o].InsertDate BETWEEN @dateFrom AND @dateTo";
-
-                var dateFrom = new SqlParameter("@dateFrom", SqlDbType.DateTime);
-                var dateTo = new SqlParameter("@dateTo", SqlDbType.DateTime);
-                dateFrom.Value = DateFrom;
-                dateTo.Value = DateTo;
-
-                var parameters = new List<SqlParameter>();
-                parameters.Add(dateFrom);
-                parameters.Add(dateTo);
-
-                var products = con.Query(query, parameters).ToList();
-                //var result = con.Query(query);
-
-                con.Close();
-                return products;
-            }
-        }
     }
 }
+ 

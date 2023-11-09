@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core'
-import { HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpEvent } from '@angular/common/http'
+import { HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpEvent, HttpErrorResponse } from '@angular/common/http'
 import { StorageService} from '../services/storage.service'
-import { Observable } from 'rxjs'
+import { Observable, catchError, finalize, throwError  } from 'rxjs'
+import { LoaderService } from '../services/loader.service';
 
 @Injectable()
 
 export class TokenInterceptor implements HttpInterceptor{
-    constructor(private storage: StorageService){
+    constructor(private storage: StorageService,private loaderService:LoaderService){
         
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        this.loaderService.requestStarted();
         req = req.clone({
             setHeaders: {
                 Authorization: 'Bearer ' +this.storage.getToken()
             }
         });
-        return next.handle(req)
+        return next.handle(req).pipe(
+            catchError((error:HttpErrorResponse) => {
+                return throwError(error);
+            }),finalize(()=>{
+                this.loaderService.requestFinished();
+            })
+        )
     }
 }
 

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Vb_Base.Model;
+using Vb_Data.Domain.Report;
 
 namespace Vb_Data.Repository
 {
@@ -21,6 +22,5 @@ namespace Vb_Data.Repository
         void DeleteHardAsync(TEntity entity, CancellationToken cancellationToken);
         IQueryable<TEntity> GetAsQueryable(params string[] includes);
         IEnumerable<TEntity> Where(Expression<Func<TEntity, bool>> expression, params string[] includes);
-        IEnumerable<dynamic> DapperQuery(DateTime DateFrom, DateTime DateTo);
     }
 }

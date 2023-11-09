@@ -12,7 +12,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ListComponent implements OnInit{
   
-  
+  public liveDemoVisible = false;
+  productId_delete:number = 0;
+
   products: any[] = [];
   user:any = this.storageService.getUser().response;
 
@@ -60,18 +62,29 @@ export class ListComponent implements OnInit{
     }
   }
 
-  isDelete(id:number){
-    this.productService.delete(id).subscribe({
+  isDelete(){
+    this.productService.delete(this.productId_delete).subscribe({
       next: data =>{
         if(data.success == false)
           console.log('error');
         else
-          window.location.reload();
+          this.load();
+        this.liveDemoVisible = !this.liveDemoVisible;
       },
       error: err => {
         console.log(err.error.errors);
       }
     });
+  }
+
+  toggleModal(id:number) {
+    this.productId_delete = id;
+    this.liveDemoVisible = !this.liveDemoVisible;
+    console.log(this.productId_delete);
+  }
+
+  handleLiveDemoChange(event: boolean) {
+    this.liveDemoVisible = event;
   }
 }
 

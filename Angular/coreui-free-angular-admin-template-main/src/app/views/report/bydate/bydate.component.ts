@@ -9,6 +9,9 @@ import { ReportService } from 'src/app/services/report.service';
   styleUrls: ['./bydate.component.scss']
 })
 export class BydateComponent {
+
+  report: any;
+
   reportForm = new FormGroup({
     dateFrom: new FormControl(''),
     dateTo: new FormControl('')
@@ -34,7 +37,11 @@ export class BydateComponent {
           if(data.success == false)
             this.toastr.error(data.message  , 'Error');
           else
+          {
+            this.report = data.response;
             this.toastr.success("Report generated succesfully"  , 'Success');
+          }
+            
         },
         error: err => {
           this.toastr.error(err.error.errors  , 'Error');

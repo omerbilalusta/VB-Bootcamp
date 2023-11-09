@@ -24,6 +24,5 @@ namespace Vb_Data.UnitOfWork
         IGenericRepository<OrderReject> OrderRejectRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }
-        IGenericRepository<DapperModel> DapperRepository { get; }
     }
 }

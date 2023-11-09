@@ -22,6 +22,10 @@
                   </tr>
                   </thead>
                   <tbody>
+                    <!--Eğer bu sayfa company türünde bir kullanıcı tarafından açıldıysa kendisine ait olan ürünlerin silme ve düzenleme butonları görünür.
+                    Bir company başka company'e ait product'ı güncelleyemesin diye server side'da onlem alındı.
+                    Bunu deneyen kullanıcılar productlist sayfasına geri yönlendiriliyor. Olurda bir şekilde
+                    güncellemeye çalışırlarsa yine updateProduct endpointi için server side'da önlem alındı.-->
                   <tr *ngFor="let item of products">
                     <th scope="row">{{item.id}}</th>
                     <td>{{item.name}}</td>
@@ -30,15 +34,29 @@
                     <td>{{item.stockQuantity}}</td>
                     <td>{{item.price}} ₺</td>
                     <td>{{item.company.name}}</td>
-                    <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="isDelete(item.id)"><button class="btn btn-danger">Delete</button></a></td>
+                    <td *ngIf="item.companyId == user.id && user.role =='admin'"><a (click)="toggleModal(item.id)"><button class="btn btn-danger">Delete</button></a></td>
                     <td *ngIf="item.companyId == user.id && user.role =='admin'"><a routerLink="/product/edit/{{item.id}}"><button class="btn btn-primary">Edit</button></a></td>
-                  </tr>     <!--Eğer bu sayfa company türünde bir kullanıcı tarafından açıldıysa kendisine ait olan ürünlerin silme ve düzenleme butonları görünür.
-                                Bir company başka company'e ait product'ı güncelleyemesin diye server side'da onlem alındı.
-                                Bunu deneyen kullanıcılar productlist sayfasına geri yönlendiriliyor. Olurda bir şekilde
-                                güncellemeye çalışırlarsa yine updateProduct endpointi için server side'da önlem alındı.-->
+                    
+                  
+                  </tr>     
                   </tbody>
                 </table>
             </c-card-body>
           </c-card>
      </c-card-body>
 </c-card>
+
+
+  <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Delete Product</h5>
+      <button (click)="toggleModal(0)" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure to delete product ?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleModal(0)" cButton color="secondary">
+        Close
+      </button>
+      <button (click)="isDelete()" cButton color="danger">Delete</button>
+    </c-modal-footer>
+  </c-modal>

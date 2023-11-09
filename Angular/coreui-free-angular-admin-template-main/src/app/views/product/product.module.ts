@@ -4,7 +4,7 @@ import { ListComponent } from './list/list.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
 import { ProductRoutingModule } from './product-routing-module';
-import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { ButtonModule, CardModule, FormModule, GridModule, ModalModule, TableModule } from '@coreui/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
@@ -28,7 +28,8 @@ import { IconModule } from '@coreui/icons-angular';
     FormsModule,
     ReactiveFormsModule,
     GridModule,
-    IconModule
+    IconModule,
+    ModalModule
   ],
   providers:[
     ProductService
