@@ -386,7 +386,7 @@ namespace Vb_Data.Migrations
 	        migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 2, 343434, "OpenAccount", "Room 907", 320, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 2, 343434, "OpenAccount", "Room 907", 320, false, false, 1, 5, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
             migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
@@ -394,7 +394,7 @@ namespace Vb_Data.Migrations
             migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },
-                values: new object[] { 4, 301737, "Transfer", "Room 907", 3, false, false, 1, 1, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
+                values: new object[] { 4, 301737, "Transfer", "Room 907", 3, false, false, 1, 3, new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null });
             migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "Id", "OrderNumber", "PaymentMethod", "Address", "Amount", "PaymentSuccess", "CompanyApprove", "DealerId", "CompanyId", "InsertDate", "InsertUserId", "UpdateDate" },

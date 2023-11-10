@@ -58,7 +58,7 @@ export class ListDealerComponent {
       this.router.navigate(['/payment/card/', orderNumber]);
     else if(paymentMethod == "EFT")
       this.router.navigate(['/payment/EFT/', orderNumber]);
-    else if(paymentMethod == "Open Account")
+    else if(paymentMethod == "OpenAccount")
       this.router.navigate(['/payment/openaccount/', orderNumber]);
     else if(paymentMethod == "Transfer")
       this.router.navigate(['/payment/transfer/', orderNumber]);
