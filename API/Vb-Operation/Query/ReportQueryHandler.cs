@@ -29,12 +29,14 @@ namespace Vb_Operation.Query
         public async Task<ApiResponse<ReportResponse>> Handle(GetReportByDateQuery request, CancellationToken cancellationToken)
         {
             decimal total = 0;
-            var list = DapperQuery(request.dateFrom, request.dateTo, request.userId);
-            var mostUsedPaymentMethod = list.OrderByDescending(d => d.PaymentMethod).First().PaymentMethod;
-            var mostSellingProductName = list.OrderByDescending(d => d.ProductName).First().ProductName;
-            var dealerNameWhoBuysMost = list.OrderByDescending(d => d.DealerName).First().DealerName;
-            foreach (var item in list)
-                total += item.Amount;
+            var listProduct = DapperQueryOrderDetails(request.dateFrom, request.dateTo, request.userId);
+            var listOrder = DapperQueryOrders(request.dateFrom, request.dateTo, request.userId);
+
+            var mostSellingProductName = listProduct.GroupBy(x => x.ProductName).First().Key;
+            var dealerNameWhoBuysMost = listOrder.GroupBy(x => x.DealerName).First().Key;
+            var mostUsedPaymentMethod = listOrder.GroupBy(x => x.PaymentMethod).First().Key;
+            foreach (var item in listProduct)
+                total += item.TotalAmountByProduct;
 
             ReportResponse response = new ReportResponse()
             {
@@ -45,28 +47,47 @@ namespace Vb_Operation.Query
                 mostUsedPaymentMethod = mostUsedPaymentMethod,
                 dealerNameWhoBuysMost = dealerNameWhoBuysMost
             };
-
             return new ApiResponse<ReportResponse>(response);
         }
 
 
-        public List<ReportByDate> DapperQuery(DateTime DateFrom, DateTime DateTo, int userId)
+        public List<ReportByProduct> DapperQueryOrderDetails(DateTime DateFrom, DateTime DateTo, int userId)
         {
             var dateFrom = DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + ".0000000";
             var dateTo = DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + ".0000000";
-            var query = "SELECT [o].Amount, [o0].TotalAmountByProduct, [d].Name as DealerName, [p].Name as ProductName, [o].PaymentMethod  FROM [Order] AS [o]" +
+            var query = "SELECT [o0].TotalAmountByProduct, [p].Name as ProductName, [o].PaymentMethod, [d].Name as DealerName  FROM [OrderDetail] AS [o0]" +
+                " LEFT JOIN [Order] AS [o] ON [o].[Id] = [o0].[OrderId]" +
                 " LEFT JOIN [Company] AS [c] ON [o].[CompanyId] = [c].[Id]" +
+                " LEFT JOIN [Product] AS [p] ON [p].[Id] = [o0].[Id]" +
                 " LEFT JOIN [Dealer] AS [d] ON [o].[DealerId] = [d].[Id]" +
-                " LEFT JOIN [Product] AS [p] ON [p].[CompanyId] = [c].[Id]" +
-                " LEFT JOIN [OrderDetail] AS [o0] ON [o].[Id] = [o0].[OrderId]" +
                 " where [o].InsertDate Between @dateFrom and @dateTo and [o].CompanyId = @companyId";
+
             var dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("dateFrom", DateFrom);
             dynamicParameters.Add("dateTo", DateTo);
             dynamicParameters.Add("companyId", userId);
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\mssqllocaldb; Database=Vb-DB;Trusted_Connection=false;TrustServerCertificate=True;"))
             {
-                List<ReportByDate> results = con.Query<ReportByDate>(query, dynamicParameters).ToList();
+                List<ReportByProduct> results = con.Query<ReportByProduct>(query, dynamicParameters).ToList();
+                return results;
+            }
+        }
+
+        public List<ReportByOrder> DapperQueryOrders(DateTime DateFrom, DateTime DateTo, int userId)
+        {
+            var dateFrom = DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + ".0000000";
+            var dateTo = DateFrom.ToString("yyyy-MM-dd HH:mm:ss") + ".0000000";
+            var query = "SELECT [d].Name as DealerName,[o].PaymentMethod   FROM [Order] AS [o]" +
+                " LEFT JOIN [Dealer] AS [d] ON [o].[DealerId] = [d].[Id]" +
+                " where [o].InsertDate Between @dateFrom and @dateTo and [o].CompanyId = @companyId";
+
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("dateFrom", DateFrom);
+            dynamicParameters.Add("dateTo", DateTo);
+            dynamicParameters.Add("companyId", userId);
+            using (SqlConnection con = new SqlConnection("Server=(localdb)\\mssqllocaldb; Database=Vb-DB;Trusted_Connection=false;TrustServerCertificate=True;"))
+            {
+                List<ReportByOrder> results = con.Query<ReportByOrder>(query, dynamicParameters).ToList();
                 return results;
             }
         }

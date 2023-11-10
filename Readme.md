@@ -93,3 +93,15 @@ git clone https://github.com/omerbilalusta/VB-Bootcamp.git
 ![](https://github.com/omerbilalusta/VB-Bootcamp/blob/main/images/companyOrderList.png?raw=true)
 
 
+
+##### Not: 
+Hazır veritabanı ile oluşturulan;
+- Company: testCompany@mail.com Şifre: hello
+- Dealer: testDealer@mail.com Şifre: hello
+
+
+<br>
+<br>
+[Postman Documentation](https://documenter.getpostman.com/view/29757054/2s9YXk2LYp)
+
+

@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Vb_Data.Domain.Report
 {
-    public class ReportByDate
+    public class ReportByProduct
     {
-        public decimal Amount { get; set; }
-
-        public decimal AmountByProduct { get; set; }
-        public string DealerName { get; set; }
+        public decimal TotalAmountByProduct { get; set; }
         public string ProductName { get; set; }
+
+    }
+
+    public class ReportByOrder
+    {
+        public string DealerName { get; set; }
         public string PaymentMethod { get; set; }
 
     }

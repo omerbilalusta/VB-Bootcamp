@@ -62,7 +62,7 @@ namespace Vb_Bootcamp.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("/UpdateStock")]
+        [HttpPut("UpdateStock")]
         public async Task<ApiResponse> UpdateProductStock([FromBody] ProductRequest2 request, int Id)
         {
             var userId = (User.Identity as ClaimsIdentity).FindFirst("Id").Value;
