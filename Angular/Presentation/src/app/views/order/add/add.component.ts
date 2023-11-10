@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { OrderService } from 'src/app/services/order.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -18,7 +19,7 @@ export class AddComponent implements OnInit{
   loading = true;
   cart: { [key: string]: number; } = {};
   
-  constructor(private productService:ProductService, private orderService:OrderService, private toastr:ToastrService) {}
+  constructor(private productService:ProductService, private orderService:OrderService, private toastr:ToastrService, private router:Router) {}
 
   ngOnInit(): void {
     this.load();
@@ -64,7 +65,7 @@ export class AddComponent implements OnInit{
             this.toastr.error('Error');
           else
             console.log(data);
-            window.location.reload();
+            this.router.navigate(['/order/list-dealer']);
             this.toastr.success("Order succeed"  , 'Success');
         },
         error: err => {

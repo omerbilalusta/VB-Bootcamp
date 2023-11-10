@@ -71,7 +71,7 @@ export class ListComponent {
     console.log(id + " payment confirmed");
     this.orderService.confirmPayment(id).subscribe((data) =>
     {
-      window.location.reload();
+      this.load();
       this.toastr.success('Payment confirmed successfully');
     },  (error) =>
     {

@@ -42,7 +42,7 @@
                       <p *ngIf="!item.paymentSuccess">X</p>
                     </td>
                     <td>
-                      <button *ngIf="item.paymentSuccess == false && (item.paymentMethod == 'Transfer' || item.paymentMethod == 'EFT')" class="btn btn-success text-white" (click)="confirmPayment(item.orderNumber)">Confirm Payment</button>
+                      <button *ngIf="item.paymentSuccess == false && (item.paymentMethod == 'Transfer' || item.paymentMethod == 'EFT')" [disabled]="item.isActive == false" class="btn btn-success text-white" (click)="confirmPayment(item.orderNumber)">Confirm Payment</button>
                     </td>
                     <td class="text-center">
                       <p *ngIf="item.companyApprove && item.isActive">✓</p>
