@@ -22,7 +22,7 @@ Clean Architecture ile inşa edilen bu proje veri tabanı modellerinin kullanım
 git clone https://github.com/omerbilalusta/VB-Bootcamp.git
 ```
 
-- Veritabanını kurduktan sonra tabloları eklemek:
+- Veritabanını kurulumunu tamamlamak:
 ```Console I'm A tab
 .\VB-Bootcamp\API> dotnet ef database update --project  "./Vb-Data" --startup-project "./Vb-Api"
 ```
@@ -33,7 +33,7 @@ git clone https://github.com/omerbilalusta/VB-Bootcamp.git
 - "dotnet restore" komutu ile paketlerin kurulumu garanti edilmelidir.
 - 5082 portuyla http://localhost:5082 üzerinden API çalışmaktadır.
 <br>
-- Node.js kurulumu yapılmalı.
+
 - Projeyi çalıştırmak(Frontend):
 ```Console I'm A tab
 .\VB-Bootcamp\Angular\Presentation> npm install
